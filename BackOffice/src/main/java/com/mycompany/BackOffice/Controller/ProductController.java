@@ -11,7 +11,27 @@ import lombok.extern.log4j.Log4j2;
 public class ProductController {
 	@RequestMapping("/list")
 	public String productList() {
-		log.info("productList 실행");
+		log.info("실행");
 		return "/product/productList";
+	}
+	@RequestMapping("/register")
+	public String productRegister() {
+		log.info("실행");
+		return "/product/register";
+	}
+	@RequestMapping("/detail")
+	public String productDetail() {
+		log.info("실행");
+		return "/product/detail";
+	}
+	@RequestMapping("/update")
+	public String productUpdate() {
+		log.info("실행");
+		return "/product/update";
+	}
+	@RequestMapping("/stock")
+	public String productStock() {
+		log.info("실행");
+		return "/product/stock";
 	}
 }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <th:block th:replace="~{common/layout::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+    
+      <h4 class="pb-2"><b>쿠폰 등록</b></h4>
+      <table class="table">
+        <tr>
+          <th scope="row" style="width:15%; vertical-align: middle">쿠폰번호</th>
+          <td colspan="2">
+            <input type="text" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" style="vertical-align: middle">쿠폰명</th>
+          <td colspan="2">
+            <input type="text" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" style="vertical-align: middle">만료 일자</th>
+          <td>
+            <input type="date" class="form-control" name="date" required="required">
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" style="vertical-align: middle">쿠폰 유형</th>
+          <td colspan="2">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="couponTypeRadio1" name="couponTypeRadio" value="discountPrice">
+              <label>할인</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="couponTypeRadio2" name="couponTypeRadio" value="earnPoint "> 
+              <label>포인트 적립</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" style="vertical-align: middle">할인금액/할인율</th>
+          <td colspan="2">
+            <input type="text" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" style="vertical-align: middle">발급 수량</th>
+          <td colspan="2">
+            <input type="text" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" style="vertical-align: middle">진행 여부</th>
+          <td colspan="2">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="couponProgressStatusRadio1" name="couponProgressStatusCRadio" value="inProgress">
+              <label>진행 중</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="couponProgressStatusRadio2" name="couponProgressStatusCRadio" value="notInProgress"> 
+              <label>진행 안함</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align: right">
+            <button class="btn btn-sm btn-info">등록</button>
+          </td>
+        </tr>
+      </table>
+      
+    </th:block>
+  </th:block>
+  
+</html>
