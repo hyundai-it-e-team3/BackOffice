@@ -19,4 +19,9 @@ public class ProductController {
 		log.info("실행");
 		return "/product/register";
 	}
+	@RequestMapping("/detail")
+	public String productDetail() {
+		log.info("실행");
+		return "/product/detail";
+	}
 }
