@@ -24,4 +24,9 @@ public class ProductController {
 		log.info("실행");
 		return "/product/detail";
 	}
+	@RequestMapping("/update")
+	public String productUpdate() {
+		log.info("실행");
+		return "/product/update";
+	}
 }
