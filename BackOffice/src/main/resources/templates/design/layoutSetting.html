@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<th:block th:replace="~{common/layout::setContent(~{this::content})}">
+		<th:block th:fragment="content">
+			<script type="text/javascript">
+			  $(function() {
+				    $("#sortable").sortable({
+				      cursor: "move",
+				      placeholder: "sortable-placeholder",
+				      helper: function(e, div)
+				      {
+				        var $originals = div.children();
+				        var $helper = div.clone();
+				        $helper.children().each(function(index)
+				        {
+				        // Set helper cell sizes to match the original sizes
+				        $(this).width($originals.eq(index).width());
+				        });
+				        return $helper;
+				      }
+				    }).disableSelection();
+				  });
+			  function btnClick(event){
+				  list = document.querySelectorAll("#colorList a");
+				  tid = event.target.id;
+				  appHeader = document.querySelector("#appHeader");
+				  appFooter = document.querySelector("#appFooter");
+				  bgClassList = ["bg-primary", "bg-secondary" ,"bg-success", "bg-danger", "bg-warning", "bg-info", "bg-light", "bg-dark" ,"bg-white"];
+				  
+				  for(const element of bgClassList){
+					  appHeader.classList.remove(element);
+					  appFooter.classList.remove(element);
+				  }
+				  
+				  for (const element of list) {
+					  //console.log(element);
+					  if(element.id==tid){
+						  element.innerHTML = "선택됨";
+						  element.classList.remove("btn-primary");
+						  element.classList.add("btn-success");
+						  bgColor = "bg-"+tid.substring(0,tid.indexOf('-'));
+						  console.log(bgColor);
+						  appFooter.classList.add(bgColor);
+						  appHeader.classList.add(bgColor);
+					  }else{
+						  element.innerHTML = "선택하기";
+						  element.classList.remove("btn-success");
+						  element.classList.add("btn-primary");
+					  }
+				  }
+				  console.log(event.target);
+			  }
+			</script>	
+			
+			<style>
+				* {
+				  font-family: 'Open Sans', sans-serif;
+				}
+				
+				.responsive-table {
+				  overflow: auto;
+				}
+				
+				table {
+				  width: 70%;
+				  border-spacing: 0;
+				  border-collapse: collapse;
+				  white-space:nowrap;
+				}
+				
+				table th {
+				  background: #BDBDBD;
+				}
+				
+				table tr:nth-child(odd) {
+				  background-color: #F2F2F2;
+				}
+				table tr:nth-child(even) {
+				  background-color: #E6E6E6;
+				}
+				
+				th, tr, td {
+				  text-align: center;
+				  border: 1px solid #E0E0E0;
+				  padding: 5px;
+				}
+				
+				img {
+				  font-style: italic;
+				  font-size: 11px;
+				}
+				
+				.fa-bars{
+				  cursor: move;
+				}		
+				#eventBox{
+					background-image:url('/images/event.png');
+					width:400px;
+					height:200px;
+					background-size: 100% 100%;
+				}
+				#newBox{
+					background-image:url('/images/new.png');
+					width:400px;
+					height:200px;
+					background-size: 100% 100%;
+				}
+				#bestBox{
+					background-image:url('/images/best.png');
+					width:400px;
+					height:200px;
+					background-size: 100% 100%;
+				}
+				.colorBox{
+					width:300px;
+				}
+				#appHeader{
+					height:40px;
+					width:400px;
+					background-color:black;
+				}
+				#appFooter{
+					height:80px;
+					width:400px;
+					background-color:black;
+				}
+			</style>
+			<div class="d-flex justify-content-between">
+				<h4>홈 레이아웃 배치 설정</h4>
+				<div><a class="btn btn-sm btn-info mr-2">수정</a><a class="btn btn-sm btn-info">취소</a></div>
+			</div>
+			<div>
+				<div class="d-flex justify-content-center">
+				  <div id="appHeader" class="d-flex justify-content-around">
+				  	<div style="font-size: 30px; color:white;">
+			      		<i class="fa fa-angle-left"></i>
+			    	</div>
+				  	<div style="font-size: 30px; color:white;">
+			      		<i class="fa fa-bars"></i>
+			    	</div>
+			    	<div class="mt-2"><h4 style="color:white">HANDSOME</h4></div>
+				  	<div style="font-size: 30px; color:white;">
+			      		<i class="fas fa-search"></i>
+			    	</div>	
+				  	<div style="font-size: 30px; color:white;">
+			      		<i class="fas fa-shopping-cart"></i>
+			    	</div>			
+					
+				  </div>
+				</div>
+				<div class="responsive-table d-flex justify-content-center">
+				  <div id="sortable">
+				    <div class="ui-state-default" id="eventBox">
+				    	
+				    </div>
+				    <div id="newBox">
+				    	
+				    </div>
+				    <div id="bestBox">
+		
+				    </div>
+				  </div>
+
+				</div>
+				<div class="d-flex justify-content-center">
+				  <div id="appFooter" class="d-flex justify-content-around">
+				  	<div>
+					  	<div style="font-size: 30px; color:white; text-align:center">
+				      		<i class="fas fa-list"></i>
+				    	</div>
+				    	<div style="color:white">
+				    		CATEGORY
+				    	</div>
+			    	</div>
+			    	<div>
+					  	<div style="font-size: 30px; color:white; text-align:center">
+				      		<i class="fas fa-tag"></i>
+				    	</div>
+				    	<div style="color:white">
+					    		BRAND
+					    </div>
+				    </div>
+				    <div>
+					  	<div style="font-size: 30px; color:white; text-align:center">
+				      		<i class="fas fa-home"></i>
+				    	</div>
+				    	<div style="color:white">
+						    		HOME
+						</div>
+					</div>
+					<div>
+					  	<div style="font-size: 30px; color:white; text-align:center">
+				      		<i class="far fa-heart"></i>
+				    	</div>	
+			    		<div style="color:white">
+						    		WISHLIST
+						</div>
+			    	</div>
+			    	<div>
+				   		<div style="font-size: 30px; color:white; text-align:center">
+				      		<i class="fas fa-user"></i>
+				    	</div>
+				  		<div style="color:white">
+						    		MYPAGE
+						</div>
+			    	</div>					
+				  </div>
+				</div>
+			</div>
+			<div class="d-flex justify-content-between mt-4">
+				<h4>배경색 설정</h4>
+				<div><a class="btn btn-sm btn-info mr-2">수정</a><a class="btn btn-sm btn-info">취소</a></div>
+			</div>
+			<div class="d-flex justify-content-center">
+				<div id="colorList">
+					<div class="d-flex mb-3"><a class="btn btn-sm btn-primary mr-3" id="primary-btn" onclick="javascript:btnClick(event)">선택하기</a><div class="p-3  bg-primary text-white colorBox"></div></div>
+					<div class="d-flex mb-3"><a class="btn btn-sm btn-primary mr-3" id="secondary-btn" onclick="javascript:btnClick(event)">선택하기</a><div class="p-3  bg-secondary text-white colorBox"></div></div>
+					<div class="d-flex mb-3"><a class="btn btn-sm btn-primary mr-3" id="success-btn" onclick="javascript:btnClick(event)">선택하기</a><div class="p-3  bg-success text-white colorBox"></div></div>
+					<div class="d-flex mb-3"><a class="btn btn-sm btn-success mr-4" id="danger-btn" onclick="javascript:btnClick(event)">선택됨</a><div class="p-3 bg-danger text-white colorBox"></div></div>
+					<div class="d-flex mb-3"><a class="btn btn-sm btn-primary mr-3" id="warning-btn" onclick="javascript:btnClick(event)">선택하기</a><div class="p-3 bg-warning text-dark colorBox"></div></div>
+					<div class="d-flex mb-3"><a class="btn btn-sm btn-primary mr-3" id="info-btn" onclick="javascript:btnClick(event)">선택하기</a><div class="p-3  bg-info text-white colorBox"></div></div>
+					<div class="d-flex mb-3"><a class="btn btn-sm btn-primary mr-3" id="light-btn" onclick="javascript:btnClick(event)">선택하기</a><div class="p-3 bg-light text-dark colorBox"></div></div>
+					<div class="d-flex mb-3"><a class="btn btn-sm btn-primary mr-3" id="dark-btn" onclick="javascript:btnClick(event)">선택하기</a><div class="p-3  bg-dark text-white colorBox"></div></div>
+					<div class="d-flex mb-3"><a class="btn btn-sm btn-primary mr-3" id="white-btn" onclick="javascript:btnClick(event)">선택하기</a><div class="p-3 bg-white text-dark colorBox"></div></div>
+				</div>
+			</div>
+		</th:block>
+	</th:block>
+</html>
