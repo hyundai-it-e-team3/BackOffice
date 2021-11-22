@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<th:block th:replace="~{common/layout::setContent(~{this::content})}">
+		<th:block th:fragment="content">
+		<script type="text/javascript">
+		</script>	
+			<h4>브랜드 이름(브랜드를 선택하세요)</h4>
+			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+			    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">브랜드</button>
+			    <div class="dropdown-menu">
+			      <a class="dropdown-item">TIME HOMME</a>
+			      <a class="dropdown-item">SYSTEM HOMME</a>
+			      <a class="dropdown-item">the CASHMERE</a>
+			    </div>
+			  </div>
+			  <input type="text" class="form-control" aria-label="Text input with dropdown button">
+			</div>
+			<div class="d-flex justify-content-between">
+				<h4>브랜드</h4>
+				<div><a class="btn btn-sm btn-info mr-2">수정</a><a class="btn btn-sm btn-info">취소</a></div>
+			</div>
+			<form>
+			  <div class="form-group row">
+			    <label for="brandName" class="col-sm-2 col-form-label">브랜드명</label>
+			    <div class="col-sm-10">
+			      <input type="text" readonly class="form-control-plaintext" id="brandName" value="TIME HOMME">
+			    </div>
+			  </div>
+			<div class="form-group row">
+			  <label for="brandCategory" class="col-sm-2 col-form-label">브랜드 카테고리</label>
+			  <div class="col-sm-10">
+				  <input class="form-check-input" type="checkbox" value="manCheck" id="manCheck" checked>
+				  <label class="form-check-label mr-4" for="manCheck">
+				    남성
+				  </label>
+				  <input class="form-check-input" type="checkbox" value="womanCheck" id="womanCheck">
+				  <label class="form-check-label mr-4" for="womanCheck">
+				    여성
+				  </label>
+				  <input class="form-check-input" type="checkbox" value="abroadCheck" id="abroadCheck" checked>
+				  <label class="form-check-label mr-4" for="abroadCheck">
+				    해외
+				  </label>
+				  <input class="form-check-input" type="checkbox" value="editCheck" id="editCheck">
+				  <label class="form-check-label mr-4" for="editCheck">
+				    편집
+				  </label>
+			  </div>
+			</div>
+			  <div class="form-group row">
+			    <label for="brandContent" class="col-sm-2 col-form-label">브랜드 설명</label>
+			    <div class="col-sm-10">
+			      <textarea class="form-control" id="brandContent" rows="3">롱앤린(Long & Lean) 실루엣을 표방하는 슬림(Slim)과 젊은 남성 고객들의 기호에 맞는 과감한 디자인 및 핏을 제시하는 스타일리시(Stylish), 이 둘을 접목시킨 시스템 옴므는 자신의 스타일을 제대로 파악해 보다 완성도 있게 표현할 줄 아는 남자를 위한 옷이다
+			      </textarea>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="brandLogoImg" class="col-sm-2 col-form-label">브랜드 로고 사진</label>
+			    <div class="col-sm-10">
+					<input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+    				<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="brandImg" class="col-sm-2 col-form-label">브랜드 대표 사진</label>
+			    <div class="col-sm-10">
+					<input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+    				<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+			    </div>
+			  </div>
+			</form>
+			<div class="d-flex justify-content-around">
+				<div class="card" style="width: 18rem;">
+				  <img class="card-img-top mb-3" src="/images/systemlogo.png" alt="brandlogo">
+				  <div class="card-body mt-3">
+				    <p class="card-text">브랜드 로고 사진</p>
+				  </div>
+				</div>
+				<div class="card" style="width: 18rem;">
+				  <img class="card-img-top" src="/images/systemhomme.png" alt="brandimg">
+				  <div class="card-body">
+				    <p class="card-text">브랜드 대표 사진</p>
+				  </div>
+				</div>
+			</div>
+			<div class="d-flex justify-content-between mt-3">
+				<h4>브랜드 상품 카테고리 활성화/ 비활성화</h4>
+				<div><a class="btn btn-sm btn-info mr-2">수정</a><a class="btn btn-sm btn-info">취소</a></div>
+			</div>
+			   <table class="table table-sm table-bordered">
+			     <thead>
+			       <tr>
+			         <th scope="col">체크</th>
+			         <th scope="col">대분류</th>
+			         <th scope="col">중분류</th>
+			         <th scope="col">소분류</th>
+			       </tr>
+			     </thead>
+			     <tbody>
+			       <tr>
+			          <td>
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+						</div>
+			          </td>
+			          <td>남성</td>
+			          <td>아우터</td>
+			          <td>재킷</td>
+			       </tr>
+			       <tr>
+			          <td>
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+						</div>
+			          </td>
+			          <td>남성</td>
+			          <td>탑</td>
+			          <td>셔츠</td>
+			       </tr>
+			       <tr>
+			          <td>
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+						</div>
+			          </td>
+			          <td>여성</td>
+			          <td>탑</td>
+			          <td>블라우스</td>
+			       </tr>
+			       <tr>
+			          <td>
+						<div class="form-check form-switch">
+						  <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+						</div>
+			          </td>
+			          <td>여성</td>
+			          <td>아우터</td>
+			          <td>점퍼</td>
+			       </tr>
+			     </tbody>
+			   </table>
+		</th:block>
+	</th:block>
+</html>
