@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">	
+<th:block th:replace="~{common/layout::setContent(~{this::content})}">
+<th:block th:fragment="content">
+	
+	<div>
+	<h4>상품 검색</h4>
+	<table class="table" style="width:100%; padding:0px; margin:0px;">
+		<colgroup>
+			<col style="width: 15%"/>
+			<col style="width: 85%"/>
+		</colgroup>
+		<tr style="text-align:center; vertical-align:middle">
+			<td>
+			검색 분류
+			</td>
+			<td style="padding:0px">
+				<div class="input-group mt-1">
+				  <div class="input-group-prepend">
+				    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Dropdown</button>
+				    <div class="dropdown-menu">
+				      <a class="dropdown-item" href="#">상품코드</a>
+				      <a class="dropdown-item" href="#">상품명</a>
+				      <a class="dropdown-item" href="#">브랜드명</a>
+				    </div>
+				  </div>
+				  <input type="text" class="form-control" aria-label="Text input with dropdown button">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3" style="text-align:right">
+				<input type="button" class="btn btn-sm btn-info" value="검색"/>
+			</td>
+		</tr>
+	</table>
+	</div> 
+
+	<h4>상세상품 재고관리</h4>
+	
+	<table class="table table-sm table-bordered">
+	  <thead>
+	    <tr>
+	      <th scope="col">브랜드</th>
+	      <th scope="col">상품코드</th>
+	      <th scope="col">상품명</th>
+	      <th scope="col">상세상품코드</th>
+	      <th scope="col">사이즈</th>
+	      <th scope="col">재고</th>
+	      <th scope="col">판매량</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	    	<td></td>
+	    	<td></td>
+	    	<td></td>
+	    	<td><a th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
+	    	<td></td>
+	    	<td>10 [수정]</td>
+	    	<td></td>
+	    </tr>
+	  </tbody>
+	</table>
+	
+</th:block>
+</th:block>
+</html>
