@@ -4,6 +4,15 @@
 
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
+  <script type="text/javascript">
+		function selectDropDownBtn(event,id){
+			inputBox = document.querySelector(id);
+			inputText = event.target.innerHTML;
+			inputBox.innerHTML = inputText;
+			console.log(inputBox);
+			console.log(inputText);
+		}
+	</script>
     <div>
       <h4>
         <b>주문 검색</b>
@@ -20,13 +29,13 @@
           <td colspan="2" style="padding: 0px">
             <div class="input-group mt-1">
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">분류</button>
+                <button class="btn btn-outline-secondary dropdown-toggle" id="orderSearchType" type="button" data-toggle="dropdown" aria-expanded="false">분류</button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">주문번호</a>
-                  <a class="dropdown-item" href="#">주문자 ID</a>
-                  <a class="dropdown-item" href="#">상품번호</a>
-                  <a class="dropdown-item" href="#">상품명</a>
-                  <a class="dropdown-item" href="#">브랜드명</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#orderSearchType')">주문번호</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#orderSearchType')">주문자 ID</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#orderSearchType')">상품번호</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#orderSearchType')">상품명</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#orderSearchType')">브랜드명</a>
                 </div>
               </div>
               <input type="text" class="form-control" aria-label="Text input with dropdown button">

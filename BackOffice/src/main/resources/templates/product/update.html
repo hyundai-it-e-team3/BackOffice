@@ -2,7 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">	
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
 <th:block th:fragment="content">
-	
+	<script type="text/javascript">
+		function selectDropDownInput(event,id){
+			inputBox = document.querySelector(id);
+			inputText = event.target.innerHTML;
+			console.log(inputText);
+			inputBox.value = inputText;
+		}
+		function selectDropDownBtn(event,id){
+			inputBox = document.querySelector(id);
+			inputText = event.target.innerHTML;
+			inputBox.innerHTML = inputText;
+			console.log(inputBox);
+			console.log(inputText);
+		}
+	</script>
 	<div>
 	<h4>상품 수정</h4>
 	<table class="table" style="width:100%; padding:0px; margin:0px;">
