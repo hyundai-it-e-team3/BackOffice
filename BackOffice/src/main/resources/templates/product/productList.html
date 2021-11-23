@@ -2,7 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
-
+    <script type="text/javascript">
+			  function selectDropDownInput(event,id){
+					inputBox = document.querySelector(id);
+					inputText = event.target.innerHTML;
+					console.log(inputText);
+					inputBox.value = inputText;
+			  }
+			  function selectDropDownBtn(event,id){
+					inputBox = document.querySelector(id);
+					inputText = event.target.innerHTML;
+					inputBox.innerHTML = inputText;
+			  }
+	</script>
     <div>
       <h4>
         <b>상품 검색</b>
@@ -36,7 +48,7 @@
           <td colspan="2" class="align-middle p-0">
             <div class="input-group">
               <div class="input-group-prepend ">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productGbn2" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productGbn1" data-toggle="dropdown" aria-expanded="false">
                   대분류
                 </button>
                 <div class="dropdown-menu">
