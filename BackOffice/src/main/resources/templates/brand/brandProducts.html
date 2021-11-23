@@ -2,18 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<th:block th:replace="~{common/layout::setContent(~{this::content})}">
 		<th:block th:fragment="content">
+			<script type="text/javascript">
+			  function selectDropDownInput(event,id){
+					inputBox = document.querySelector(id);
+					inputText = event.target.innerHTML;
+					console.log(inputText);
+					inputBox.value = inputText;
+			  }
+			  function selectDropDownBtn(event,id){
+					inputBox = document.querySelector(id);
+					inputText = event.target.innerHTML;
+					inputBox.innerHTML = inputText;
+			  }
+			</script>
 			<div>
 				<h4>브랜드 이름(브랜드를 선택하세요)</h4>
 				<div class="input-group mb-3">
 				  <div class="input-group-prepend">
 				    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">브랜드</button>
 				    <div class="dropdown-menu">
-				      <a class="dropdown-item">TIME HOMME</a>
-				      <a class="dropdown-item">SYSTEM HOMME</a>
-				      <a class="dropdown-item">the CASHMERE</a>
+				      <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">TIME HOMME</a>
+				      <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">SYSTEM HOMME</a>
+				      <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">the CASHMERE</a>
 				    </div>
 				  </div>
-				  <input type="text" class="form-control" aria-label="Text input with dropdown button">
+				  <input type="text" id="brandInput" class="form-control" aria-label="Text input with dropdown button">
 			</div>
 			   <h4>상품 검색</h4>
 			   <table class="table" style="width:100%; padding:0px; margin:0px;">
@@ -29,11 +42,11 @@
 			         <td colspan="2"  style="padding:0px">
 			            <div class="input-group mt-1">
 			              <div class="input-group-prepend">
-			                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Dropdown</button>
+			                <button class="btn btn-outline-secondary dropdown-toggle" id="searchType" type="button" data-toggle="dropdown" aria-expanded="false">분류</button>
 			                <div class="dropdown-menu">
-			                  <a class="dropdown-item" href="#">상품코드</a>
-			                  <a class="dropdown-item" href="#">상품명</a>
-			                  <a class="dropdown-item" href="#">브랜드명</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">상품코드</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">상품명</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">브랜드명</a>
 			                </div>
 			              </div>
 			              <input type="text" class="form-control" aria-label="Text input with dropdown button">
@@ -47,27 +60,27 @@
 			         <td colspan="2" style="padding:0px">
 			            <div class="input-group mt-1">
 			              <div class="input-group-prepend " >
-			                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">대분류</button>
+			                <button class="btn btn-outline-secondary dropdown-toggle" id="gbn1" type="button" data-toggle="dropdown" aria-expanded="false">대분류</button>
 			                <div class="dropdown-menu">
-			                  <a class="dropdown-item" href="#">여성</a>
-			                  <a class="dropdown-item" href="#">남성</a>
-			                  <a class="dropdown-item" href="#">아동</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn1')">여성</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn1')">남성</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn1')">아동</a>
 			                </div>
 			                </div>
 			                <div class="input-group-prepend">
-			                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">중분류</button>
+			                <button class="btn btn-outline-secondary dropdown-toggle" id="gbn2"  type="button" data-toggle="dropdown" aria-expanded="false">중분류</button>
 			                <div class="dropdown-menu">
-			                  <a class="dropdown-item" href="#">상의</a>
-			                  <a class="dropdown-item" href="#">하의</a>
-			                  <a class="dropdown-item" href="#">아우터</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn2')">상의</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn2')">하의</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn2')">아우터</a>
 			                </div>
 			                </div>
 			                <div class="input-group-prepend">
-			                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">소분류</button>
+			                <button class="btn btn-outline-secondary dropdown-toggle" id="gbn3" type="button" data-toggle="dropdown" aria-expanded="false">소분류</button>
 			                <div class="dropdown-menu">
-			                  <a class="dropdown-item" href="#">가디건</a>
-			                  <a class="dropdown-item" href="#">블라우스</a>
-			                  <a class="dropdown-item" href="#">셔츠</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn3')">가디건</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn3')">블라우스</a>
+			                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn3')">셔츠</a>
 			                </div>
 			             </div>
 			           </div>
@@ -119,14 +132,30 @@
 			         <th scope="col">상품코드</th>
 			         <th scope="col">상품명</th>
 			         <th scope="col">판매량</th>
+			         <th scope="col">등록</th>
 			       </tr>
 			     </thead>
 			     <tbody>
 			       <tr>
 			          <td></td>
+			          <td>CM2B0KJC210W</td>
+			          <td>벨티드 니트 재킷</td>
+			          <td>10</td>
+			          <td><button type="button" class="btn btn-sm btn-primary">등록</button></td>
+			       </tr>
+			       <tr>
+			          <td>2021.11.11</td>
+			          <td>CM2B0KCD231WP1</td>
+			          <td>캐시미어 블렌드 니트 가디건</td>
+			          <td>20</td>
+			          <td><button type="button" class="btn btn-sm btn-danger">취소</button></td>
+			       </tr>
+			       <tr>
 			          <td></td>
-			          <td></td>
-			          <td></td>
+			          <td>CM2B0KOT209W</td>
+			          <td>스티치 니트 재킷</td>
+			          <td>30</td>
+			          <td><button type="button" class="btn btn-sm btn-primary">등록</button></td>
 			       </tr>
 			     </tbody>
 			   </table>
