@@ -17,16 +17,15 @@
       <h4>
         <b>주문 검색</b>
       </h4>
-      <table class="table"
-        style="width: 100%; padding: 0px; margin: 0px;">
+      <table class="table p-0 m-0" style="width: 100%;">
         <colgroup>
           <col style="width: 10%" />
           <col style="width: 45%" />
           <col style="width: 45%" />
         </colgroup>
-        <tr style="text-align: center; vertical-align: middle">
-          <td>검색</td>
-          <td colspan="2" style="padding: 0px">
+        <tr>
+          <th class="align-middle">검색</th>
+          <td colspan="2" class="pt-2 pb-2">
             <div class="input-group mt-1">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary dropdown-toggle" id="orderSearchType" type="button" data-toggle="dropdown" aria-expanded="false">분류</button>
@@ -38,65 +37,67 @@
                   <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#orderSearchType')">브랜드명</a>
                 </div>
               </div>
-              <input type="text" class="form-control" aria-label="Text input with dropdown button">
+              <input type="text" class="form-control">
             </div>
           </td>
         </tr>
         <tr>
-          <td style="text-align: center; vertical-align: middle">기간 검색</td>
-          <td><input type="date" class="form-control" name="date"
-            required="required"></td>
-          <td><input type="date" class="form-control" name="date"
-            required="required"></td>
-        </tr>
+            <th class="align-middle">기간</th>
+            <td>
+              <input type="date" class="form-control" name="regDate" required="required">
+            </td>
+            <td>
+              <input type="date" class="form-control" name="expDate" required="required">
+            </td>
+          </tr>
         <tr>
-          <td style="text-align: center; vertical-align: middle">배송 상태</td>
+          <th class="align-middle">배송 상태</th>
           <td colspan="2">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
-              <label>전체</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"> 
-              <label>상품 준비 중</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-              <label>배송 중</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-              <label>배송 완료</label>
-            </div>
+            <span>
+              <input class="align-middle" type="checkbox" id="deliveryProgressStatusCheckbox1" value="전체">
+              <label class="align-middle mb-0">전체</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="deliveryProgressStatusCheckbox2" value="상품준비중">
+              <label class="align-middle mb-0">상품 준비 중</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="deliveryProgressStatusCheckbox3" value="배송중">
+              <label class="align-middle mb-0">배송 중</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="deliveryProgressStatusCheckbox4" value="배송완료">
+              <label class="align-middle mb-0">배송 완료</label>
+            </span>
           </td>
         </tr>
         <tr>
-          <td style="text-align: center; vertical-align: middle">주문 상태</td>
+          <th class="align-middle">주문 상태</th>
           <td colspan="2">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
-              <label>전체</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"> 
-              <label>미결제</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-              <label>입금 완료</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-              <label>주문 취소</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-              <label>교환</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-              <label>환불</label>
-            </div>
+            <span>
+              <input class="align-middle" type="checkbox" id="orderProgressStatusCheckbox1" value="전체">
+              <label class="align-middle mb-0">전체</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox2" value="미결제">
+              <label class="align-middle mb-0">미결제</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox3" value="입금완료">
+              <label class="align-middle mb-0">입금 완료</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox4" value="주문취소">
+              <label class="align-middle mb-0">주문 취소</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox5" value="교환">
+              <label class="align-middle mb-0">교환</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox6" value="환불">
+              <label class="align-middle mb-0">환불</label>
+            </span>
           </td>
         </tr>
         <tr>
@@ -112,10 +113,10 @@
       <b>주문 목록</b>
     </h4>
     <table class="table table-bordered table-sm">
-      <thead>
-        <tr style="text-align: center">
+      <thead class="text-center">
+        <tr>
           <th scope="col">주문일자</th>
-          <th scope="col"><a href="/order/orderDetail">주문번호</a></th>
+          <th scope="col">주문번호</th>
           <th scope="col">상품명</th>
           <th scope="col">주문자 ID</th>
           <th scope="col">결제 금액</th>
@@ -130,22 +131,22 @@
           <th scope="col">환불</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="text-center">
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>2021-11-23</td>
+          <td><a href="/order/orderDetail">202111231023451234</a></td>
+          <td>가디건 외 3</td>
+          <td>user</td>
+          <td>456000</td>
+          <td>카드</td>
+          <td>0</td>
+          <td>3</td>
+          <td>0</td>
+          <td>1</td>
+          <td>2</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
         </tr>
       </tbody>
     </table>

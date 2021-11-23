@@ -1,94 +1,108 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">	
+<html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
-<th:block th:fragment="content">
-	<script type="text/javascript">
-		function selectDropDownBtn(event,id){
-			inputBox = document.querySelector(id);
-			inputText = event.target.innerHTML;
-			inputBox.innerHTML = inputText;
-			console.log(inputBox);
-			console.log(inputText);
-		}
-	</script>
-	<div>
-	<h4>상품 검색</h4>
-	<table class="table" style="width:100%; padding:0px; margin:0px;">
-		<colgroup>
-			<col style="width: 15%"/>
-			<col style="width: 85%"/>
-		</colgroup>
-		<tr style="text-align:center; vertical-align:middle">
-			<td>
-			검색 분류
-			</td>
-			<td style="padding:0px">
-				<div class="input-group mt-1">
-				  <div class="input-group-prepend">
-				    <button class="btn btn-outline-secondary dropdown-toggle" id="stockSearchType" type="button" data-toggle="dropdown" aria-expanded="false">분류</button>
-				    <div class="dropdown-menu">
-				      <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockSearchType')">상품코드</a>
-				      <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockSearchType')">상품명</a>
-				      <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockSearchType')">브랜드명</a>
-				    </div>
-				  </div>
-				  <input type="text" class="form-control" aria-label="Text input with dropdown button">
-				</div>
-			</td>
-		</tr >
-		<tr>
-			<td colspan="3" style="text-align:right">
-				<input type="button" class="btn btn-sm btn-info" value="검색"/>
-			</td>
-		</tr>
-	</table>
-	</div> 
+  <th:block th:fragment="content">
+    <script type="text/javascript">
+      function selectDropDownBtn(event,id){
+        inputBox = document.querySelector(id);
+        inputText = event.target.innerHTML;
+        inputBox.innerHTML = inputText;
+        console.log(inputBox);
+        console.log(inputText);
+      }
+    </script>
 
-	<h4>상세상품 재고관리</h4>
-	
-	<table class="table table-sm table-bordered">
-	  <thead>
-	    <tr style="text-align:center; vertical-align:middle">
-	      <th scope="col">브랜드</th>
-	      <th scope="col">상품코드</th>
-	      <th scope="col">상품명</th>
-	      <th scope="col">상세상품코드</th>
-	      <th scope="col">사이즈</th>
-	      <th scope="col">재고</th>
-	      <th scope="col">판매량</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr style="text-align:center; vertical-align:middle">
-	    	<td>the CASHMERE</td>
-	    	<td>CM2B0KJC210W</td>
-	    	<td>벨티드 니트 가디건</td>
-	    	<td><a th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
-	    	<td>L</td>
-	    	<td>6 [수정]</td>
-	    	<td>4/10</td>
-	    </tr>
-	    <tr style="text-align:center; vertical-align:middle">
-	    	<td>the CASHMERE</td>
-	    	<td>CM2B0KJC210W</td>
-	    	<td>벨티드 니트 가디건</td>
-	    	<td><a th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
-	    	<td>M</td>
-	    	<td>7 [수정]</td>
-	    	<td>5/12</td>
-	    </tr>
-	    <tr style="text-align:center; vertical-align:middle">
-	    	<td>the CASHMERE</td>
-	    	<td>CM2B0KJC210W</td>
-	    	<td>벨티드 니트 가디건</td>
-	    	<td><a th:href="@{/product/detail}">CM2B0KJC210W_BK</a></td>
-	    	<td>L</td>
-	    	<td>7 [수정]</td>
-	    	<td>3/10</td>
-	    </tr>
-	  </tbody>
-	</table>
-	
-</th:block>
+    <div>
+      <h4><b>상품 검색</b></h4>
+      <table class="table p-0 m-0" style="width: 100%;">
+        <colgroup>
+          <col style="width: 15%" />
+          <col style="width: 85%" />
+        </colgroup>
+        <tr class="align-middle text-center">
+          <th>검색 분류</th>
+          <td class="p-0">
+            <div class="input-group mt-1">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockSearchType" data-toggle="dropdown" aria-expanded="false">
+                  Dropdown
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockSearchType')">상품코드</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockSearchType')">상품명</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockSearchType')">브랜드명</a>
+                </div>
+              </div>
+              <input type="text" class="form-control">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="text-right">
+            <input type="button" class="btn btn-info" value="검색" />
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    
+    <br/>
+    <h4><b>상세상품 재고관리</b></h4>
+    <table class="table table-sm table-bordered">
+      <thead class="align-middle text-center">
+        <tr>
+          <th scope="col">브랜드</th>
+          <th scope="col">상품코드</th>
+          <th scope="col">상품명</th>
+          <th scope="col">상세상품코드</th>
+          <th scope="col">사이즈</th>
+          <th scope="col">재고</th>
+          <th scope="col">판매량</th>
+        </tr>
+      </thead>
+      <tbody class="align-middle text-center">
+        <tr>
+          <td>the CASHMERE</td>
+          <td>CM2B0KJC210W</td>
+          <td>벨티드 니트 가디건</td>
+          <td><a th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
+          <td>L</td>
+          <td>
+            <button class="btn btn-light btn-sm mr-1">-</button>
+            6
+            <button class="btn btn-light btn-sm ml-1">+</button>
+          </td>
+          <td>4/10</td>
+        </tr>
+        <tr class="align-middle text-center">
+          <td>the CASHMERE</td>
+          <td>CM2B0KJC210W</td>
+          <td>벨티드 니트 가디건</td>
+          <td><a th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
+          <td>M</td>
+          <td>
+            <button class="btn btn-light btn-sm mr-1">-</button>
+            7
+            <button class="btn btn-light btn-sm ml-1">+</button>
+          </td>
+          <td>5/12</td>
+        </tr>
+        <tr class="align-middle text-center">
+          <td>the CASHMERE</td>
+          <td>CM2B0KJC210W</td>
+          <td>벨티드 니트 가디건</td>
+          <td><a th:href="@{/product/detail}">CM2B0KJC210W_BK</a></td>
+          <td>L</td>
+          <td>
+            <button class="btn btn-light btn-sm mr-1">-</button>
+            7
+            <button class="btn btn-light btn-sm ml-1">+</button>
+          </td>
+          <td>3/10</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </th:block>
 </th:block>
 </html>
