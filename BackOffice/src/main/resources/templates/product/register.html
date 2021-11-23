@@ -6,15 +6,12 @@
 		function selectDropDownInput(event,id){
 			inputBox = document.querySelector(id);
 			inputText = event.target.innerHTML;
-			console.log(inputText);
 			inputBox.value = inputText;
 		}
 		function selectDropDownBtn(event,id){
 			inputBox = document.querySelector(id);
 			inputText = event.target.innerHTML;
 			inputBox.innerHTML = inputText;
-			console.log(inputBox);
-			console.log(inputText);
 		}
 	</script>
 	<div>
@@ -24,7 +21,7 @@
 			<col style="width: 20%"/>
 			<col style="width: 80%"/>
 		</colgroup>
-		<tr style="text-align:center; vertical-align:middle">
+		<tr style="vertical-align:middle">
 			<td>
 				상품 코드
 			</td>
@@ -32,7 +29,7 @@
 				<input type="text" class="form-control">
 			</td>
 		</tr >
-		<tr style="text-align:center; vertical-align:middle">
+		<tr style="vertical-align:middle">
 			<td>
 				상품 명
 			</td>
@@ -40,7 +37,7 @@
 				<input type="text" class="form-control">
 			</td>
 		</tr>
-		<tr style="text-align:center; vertical-align:middle" >
+		<tr style="vertical-align:middle" >
 			<td>
 				상품 상세 문구
 			</td>
@@ -48,7 +45,7 @@
 				<input type="text" class="form-control">
 			</td>
 		</tr>
-		<tr style="text-align:center; vertical-align:middle">
+		<tr style="vertical-align:middle">
 			<td>
 				상품 가격
 			</td>
@@ -89,7 +86,7 @@
 			  </div>
 			</td>
 		</tr>
-		<tr style="text-align:center; vertical-align:middle">
+		<tr style="vertical-align:middle">
 			<td>
 				브랜드
 			</td>
@@ -98,7 +95,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="text-align:center; vertical-align:middle">
+			<td style="vertical-align:middle">
 				진열 여부
 			</td>
 			<td>
@@ -113,19 +110,36 @@
 			</td>
 		</tr>
 	</table>
+	
+	
+	<div style="width:100%; text-align:right;">
+		<a class="btn btn-secondary" href="#">상품 저장</a>
+	</div>
 	</div> 
 	
-	<button class="btn btn-info">-</button>
-	<button class="btn btn-info">+</button>
+	
+	
 	
 	<div class="mt-3">
 	<h4>상품 상세 정보</h4>
+	<ul class="nav nav-pills">
+	  <li class="nav-item">
+	    <button class="btn btn-info">-</button>
+		<button class="btn btn-info">+</button>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#">CM2B0KJC210W_BK</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#">CM2B0KJC210W_OW</a>
+	  </li>
+	</ul>
 	<table class="table" style="width:100%; padding:0px; margin:0px;">
 		<colgroup>
 			<col style="width: 20%"/>
 			<col style="width: 80%"/>
 		</colgroup>
-		<tr style="text-align:center; vertical-align:middle">
+		<tr style="vertical-align:middle">
 			<td>
 				칼라 코드
 			</td>
@@ -133,7 +147,7 @@
 				<input type="text" class="form-control">
 			</td>
 		</tr >
-		<tr style="text-align:center; vertical-align:middle">
+		<tr style="vertical-align:middle">
 			<td>
 				상품 상세 이미지 URL1
 			</td>
@@ -141,7 +155,7 @@
 				<input type="text" class="form-control">
 			</td>
 		</tr>
-		<tr style="text-align:center; vertical-align:middle" >
+		<tr style="vertical-align:middle" >
 			<td>
 				상품 상세 이미지 URL2
 			</td>
@@ -149,7 +163,7 @@
 				<input type="text" class="form-control">
 			</td>
 		</tr>
-		<tr style="text-align:center; vertical-align:middle">
+		<tr style="vertical-align:middle">
 			<td>
 				상품 상세 이미지 URL3
 			</td>
@@ -174,19 +188,36 @@
 			</td>
 		</tr>
 	</table>
-	</div> 
 	
-	<button class="btn btn-info">-</button>
-	<button class="btn btn-info">+</button>
+	
+	<div style="width:100%; text-align:right;">
+		<a class="btn btn-secondary" href="#">상품 상세 저장</a>
+	</div>
+	</div> 
 	
 	<div class="mt-3">
 	<h4>상품 사이즈 정보</h4>
+	<ul class="nav nav-pills">
+	  <li class="nav-item">
+	    <button class="btn btn-info">-</button>
+		<button class="btn btn-info">+</button>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#">CM2B0KJC210W_OW_L</a>
+	  </li>
+	  <li class="nav-item">
+	  	<a class="nav-link" href="#">CM2B0KJC210W_OW_M</a>
+	  </li>
+	  <li class="nav-item">
+	  	<a class="nav-link" href="#">CM2B0KJC210W_OW_S</a>
+	  </li>
+	</ul>
 	<table class="table" style="width:100%; padding:0px; margin:0px;">
 		<colgroup>
 			<col style="width: 20%"/>
 			<col style="width: 80%"/>
 		</colgroup>
-		<tr style="text-align:center; vertical-align:middle">
+		<tr style="vertical-align:middle">
 			<td>
 				사이즈 코드
 			</td>
@@ -194,7 +225,7 @@
 				<input type="text" class="form-control">
 			</td>
 		</tr >
-		<tr style="text-align:center; vertical-align:middle">
+		<tr style="vertical-align:middle">
 			<td>
 				재고량
 			</td>
@@ -203,8 +234,13 @@
 			</td>
 		</tr>
 	</table>
-	</div> 
+	 
 	
+	<div style="width:100%; text-align:right;">
+		<a class="btn btn-secondary" href="#">사이즈 저장</a>
+	</div>
+	</div>
+	<hr/>
 	<div style="width:100%; text-align:right;">
 		<a class="btn btn-info" th:href="@{/product/list}">상품 등록</a>
 	</div>

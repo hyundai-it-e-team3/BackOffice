@@ -7,57 +7,56 @@
     
       <div>
       <h4><b>이벤트 목록</b></h4>
-      <table class="table"
-        style="width: 100%; padding: 0px; margin: 0px;">
+      <table class="table p-0 m-0" style="width: 100%;">
         <colgroup>
           <col style="width: 15%" />
           <col style="width: 45%" />
           <col style="width: 45%" />
         </colgroup>
         <tr>
-          <th style="vertical-align:middle">검색</th>
+          <th class="align-middle">검색</th>
           <td colspan="2">
-            <input type="text" class="form-control" aria-label="Text input with dropdown button">
+            <input type="text" class="form-control">
           </td>
         </tr>
         <tr>
-          <th style="vertical-align: middle">기간</th>
-          <td><input type="date" class="form-control" name="date"
-            required="required"></td>
-          <td><input type="date" class="form-control" name="date"
-            required="required"></td>
+          <th class="align-middle">기간</th>
+          <td>
+            <input type="date" class="form-control" name="regDate" required="required"></td>
+          <td>
+            <input type="date" class="form-control" name="expDate" required="required"></td>
         </tr>
         <tr>
-          <th style="vertical-align: middle">이벤트 유형</th>
+          <th scope="row" class="align-middle">이벤트 유형</th>
           <td colspan="2">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="evnetTypeCheckbock1" value="coupon"
-                     th:onclick="javascript:setCouponDisplay()">
-              <label>쿠폰</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="evnetTypeCheckbock2" value="discountOfProduct"
-                     th:onclick="javascript:setDiscountDisplay()"> 
-              <label>상품 할인</label>
-            </div>
+            <span>
+              <input type="radio" class="align-middle" id="evnetTypeRadio1" name="evnetTypeRadio" value="coupon"
+                     th:onclick="javascript:setDisplay()">
+              <label class="mb-0 align-middle">쿠폰</label>
+            </span>
+            <span>
+              <input type="radio" class="align-middle ml-2" id="evnetTypeRadio2" name="evnetTypeRadio" value="discountOfProduct"
+                     th:onclick="javascript:setDisplay()"> 
+              <label class="mb-0 align-middle">상품 할인</label>
+            </span>
           </td>
         </tr>
         <tr>
-          <th style="vertical-align: middle">진행 여부</th>
+          <th scope="row" class="align-middle">진행 여부</th>
           <td colspan="2">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="eventProgressStatusCheckbox1" value="inProgress" checked>
-              <label>진행 중</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="eventProgressStatusCheckbox2" value="notInProgress"> 
-              <label>진행 안함</label>
-            </div>
+            <span>
+              <input class="align-middle" type="radio" id="eventProgressStatusRadio1" name="eventProgressStatusCRadio" value="inProgress">
+              <label class="align-middle mb-0">진행 중</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="radio" id="eventProgressStatusRadio2" name="eventProgressStatusCRadio" value="notInProgress"> 
+              <label class="align-middle mb-0">진행 안함</label>
+            </span>
           </td>
         </tr>
         <tr>
-          <td colspan="3" style="text-align: right">
-            <input type="button" class="btn btn-sm btn-info" value="검색" />
+          <td colspan="3">
+            <input type="button" class="btn btn-info btn-sm float-right" value="검색" />
           </td>
         </tr>
       </table>
@@ -72,7 +71,7 @@
         </div>
       <table class="table table-bordered table-sm">
         <thead>
-          <tr style="text-align: center">
+          <tr class="align-middle text-center">
             <th scope="col">체크박스</th>
             <th scope="col">등록 일자</th>
             <th scope="col">이벤트명</th>
@@ -83,15 +82,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr style="text-align: center">
-            <td><input type="checkbox"></td>
+          <tr class="align-middle text-center">
+            <td><input type="checkbox" class="align-middle"></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td>
-              <a href="" class="btn btn-secondary btn-sm">수정</a>
+              <a href="/promotion/editEvent" class="btn btn-secondary btn-sm">수정</a>
             </td>
           </tr>
         </tbody>

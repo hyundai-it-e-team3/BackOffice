@@ -15,6 +15,12 @@ public class PromotionController {
 		return "/promotion/registerWithEvent";
 	}
 	
+	@RequestMapping("/editEvent")
+	public String editEvent() {
+		log.info("Run EditEvent");
+		return "/promotion/editEvent";
+	}
+	
 	@RequestMapping("/eventList")
 	public String eventList() {
 		log.info("Run EventList");
@@ -25,6 +31,12 @@ public class PromotionController {
 	public String registerWithCoupon() {
 		log.info("Run RegisterWithCoupon");
 		return "/promotion/registerWithCoupon";
+	}
+	
+	@RequestMapping("/editCoupon")
+	public String editCoupon() {
+		log.info("Run EditCoupon");
+		return "/promotion/editCoupon";
 	}
 	
 	@RequestMapping("/couponList")
