@@ -18,13 +18,13 @@
           <td colspan="2" class="p-0">
             <div class="input-group mt-1">
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productSearchType" data-toggle="dropdown" aria-expanded="false">
                   Dropdown
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">상품코드</a>
-                  <a class="dropdown-item" href="#">상품명</a>
-                  <a class="dropdown-item" href="#">브랜드명</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productSearchType')">상품코드</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productSearchType')">상품명</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productSearchType')">브랜드명</a>
                 </div>
               </div>
               <input type="text" class="form-control">
@@ -36,33 +36,33 @@
           <td colspan="2" class="align-middle p-0">
             <div class="input-group">
               <div class="input-group-prepend ">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productGbn2" data-toggle="dropdown" aria-expanded="false">
                   대분류
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">여성</a>
-                  <a class="dropdown-item" href="#">남성</a>
-                  <a class="dropdown-item" href="#">아동</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productGbn1')">여성</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productGbn1')">남성</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productGbn1')">아동</a>
                 </div>
               </div>
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productGbn2" data-toggle="dropdown" aria-expanded="false">
                   중분류
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">상의</a>
-                  <a class="dropdown-item" href="#">하의</a>
-                  <a class="dropdown-item" href="#">아우터</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productGbn2')">상의</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productGbn2')">하의</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productGbn2')">아우터</a>
                 </div>
               </div>
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productGbn3" data-toggle="dropdown" aria-expanded="false">
                   소분류
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">가디건</a>
-                  <a class="dropdown-item" href="#">블라우스</a>
-                  <a class="dropdown-item" href="#">셔츠</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productGbn3')">가디건</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productGbn3')">블라우스</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productGbn3')">셔츠</a>
                 </div>
               </div>
             </div>
@@ -145,7 +145,6 @@
         </tr>
       </tbody>
     </table>
-
 
   </th:block>
 </th:block>

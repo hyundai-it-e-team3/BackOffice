@@ -2,6 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
+    <script type="text/javascript">
+      function selectDropDownBtn(event,id){
+        inputBox = document.querySelector(id);
+        inputText = event.target.innerHTML;
+        inputBox.innerHTML = inputText;
+        console.log(inputBox);
+        console.log(inputText);
+      }
+    </script>
 
     <div>
       <h4><b>상품 검색</b></h4>
@@ -15,13 +24,13 @@
           <td class="p-0">
             <div class="input-group mt-1">
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockSearchType" data-toggle="dropdown" aria-expanded="false">
                   Dropdown
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">상품코드</a>
-                  <a class="dropdown-item" href="#">상품명</a>
-                  <a class="dropdown-item" href="#">브랜드명</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockSearchType')">상품코드</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockSearchType')">상품명</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockSearchType')">브랜드명</a>
                 </div>
               </div>
               <input type="text" class="form-control">

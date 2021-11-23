@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
-
+    <script type="text/javascript">
+      function selectDropDownBtn(event,id){
+        inputBox = document.querySelector(id);
+        inputText = event.target.innerHTML;
+        inputBox.innerHTML = inputText;
+        console.log(inputBox);
+        console.log(inputText);
+      }
+    </script>
+    
     <div>
       <h4>
         <b>회원 검색</b>
@@ -20,10 +28,10 @@
           <td colspan="2" class="pt-2 pb-2">
             <div class="input-group mt-1">
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">분류</button>
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="memberSearchType" data-toggle="dropdown" aria-expanded="false">분류</button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">회원 ID</a>
-                  <a class="dropdown-item" href="#">회원명</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#memberSearchType')">주문자 ID</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#memberSearchType')">회원명</a>
                 </div>
               </div>
               <input type="text" class="form-control">
@@ -113,5 +121,4 @@
 
   </th:block>
 </th:block>
-
 </html>

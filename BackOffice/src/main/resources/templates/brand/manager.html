@@ -2,18 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
+    <script type="text/javascript">
+      function selectDropDownInput(event,id){
+        inputBox = document.querySelector(id);
+        inputText = event.target.innerHTML;
+        console.log(inputText);
+        inputBox.value = inputText;
+      }
+    </script>
 
     <h5><b>브랜드를 선택하세요</b></h5>
     <div class="input-group mt-3 mb-3">
       <div class="input-group-prepend">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">브랜드</button>
         <div class="dropdown-menu">
-          <a class="dropdown-item">TIME HOMME</a>
-          <a class="dropdown-item">SYSTEM HOMME</a>
-          <a class="dropdown-item">the CASHMERE</a>
+          <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">TIME HOMME</a>
+          <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">SYSTEM HOMME</a>
+          <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">the CASHMERE</a>
         </div>
       </div>
-      <input type="text" class="form-control">
+      <input type="text" id="brandInput" class="form-control">
     </div>
     
     <br/>

@@ -2,6 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
+    <script type="text/javascript">
+      function selectDropDownInput(event,id){
+        inputBox = document.querySelector(id);
+        inputText = event.target.innerHTML;
+        inputBox.value = inputText;
+      }
+      function selectDropDownBtn(event,id){
+        inputBox = document.querySelector(id);
+        inputText = event.target.innerHTML;
+        inputBox.innerHTML = inputText;
+      }
+    </script>
 
     <div>
       <h4><b>상품 등록</b></h4>
@@ -33,33 +45,33 @@
           <td class="pt-2 pb-2">
             <div class="input-group mt-1">
               <div class="input-group-prepend ">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn1" data-toggle="dropdown" aria-expanded="false">
                   대분류
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">여성</a> 
-                  <a class="dropdown-item" href="#">남성</a> 
-                  <a class="dropdown-item" href="#">아동</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1')">여성</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1')">남성</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1')">아동</a>
                 </div>
               </div>
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn2" data-toggle="dropdown" aria-expanded="false">
                   중분류
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">상의</a>
-                  <a class="dropdown-item" href="#">하의</a>
-                  <a class="dropdown-item" href="#">아우터</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn2')">상의</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn2')">하의</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn2')">아우터</a>
                 </div>
               </div>
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn3" data-toggle="dropdown" aria-expanded="false">
                   소분류
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">가디건</a>
-                  <a class="dropdown-item" href="#">블라우스</a>
-                  <a class="dropdown-item" href="#">셔츠</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn3')">가디건</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn3')">블라우스</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn3')">셔츠</a>
                 </div>
               </div>
             </div>
@@ -187,6 +199,5 @@
       <a class="btn btn-info" th:href="@{/product/list}">상품 최종 등록</a>
     </div>
 
-  </th:block>
 </th:block>
 </html>
