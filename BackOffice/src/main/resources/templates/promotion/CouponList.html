@@ -7,54 +7,57 @@
     
       <div>
         <h4><b>쿠폰 목록</b></h4>
-        <table class="table" style="width: 100%; padding: 0px; margin: 0px;">
+        <table class="table p-0 m-0" style="width: 100%;">
           <colgroup>
             <col style="width: 15%" />
             <col style="width: 45%" />
             <col style="width: 45%" />
           </colgroup>
           <tr>
-            <th style="vertical-align:middle">검색</th>
+            <th class="align-middle">검색</th>
             <td colspan="2">
-              <input type="text" class="form-control" aria-label="Text input with dropdown button">
+              <input type="text" class="form-control">
             </td>
           </tr>
           <tr>
             <th style="vertical-align: middle">기간</th>
-            <td><input type="date" class="form-control" name="date"
-              required="required"></td>
-            <td><input type="date" class="form-control" name="date"
-              required="required"></td>
-          </tr>
-          <tr>
-            <th scope="row" style="vertical-align: middle">쿠폰 유형</th>
-            <td colspan="2">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="couponTypeRadio1" name="couponTypeRadio" value="discountPrice">
-                <label>할인</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="couponTypeRadio2" name="couponTypeRadio" value="earnPoint "> 
-                <label>포인트 적립</label>
-              </div>
+            <td>
+              <input type="date" class="form-control" name="regDate" required="required">
+            </td>
+            <td>
+              <input type="date" class="form-control" name="expDate" required="required">
             </td>
           </tr>
           <tr>
-            <th scope="row" style="vertical-align: middle">진행 여부</th>
+            <th scope="row" class="align-middle">쿠폰 유형</th>
             <td colspan="2">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="couponProgressStatusRadio1" name="couponProgressStatusCRadio" value="inProgress">
-                <label>진행 중</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="couponProgressStatusRadio2" name="couponProgressStatusCRadio" value="notInProgress"> 
-                <label>진행 안함</label>
-              </div>
+              <span>
+                <input type="radio" class="align-middle" id="couponTypeRadio1" name="couponTypeRadio" value="discountPrice">
+                <label class="align-middle mb-0">할인</label>
+              </span>
+              <span>
+                <input type="radio" class="align-middle ml-2" id="couponTypeRadio2" name="couponTypeRadio" value="earnPoint "> 
+                <label class="align-middle mb-0">포인트 적립</label>
+              </span>
             </td>
           </tr>
           <tr>
-            <td colspan="3" style="text-align: right">
-              <input type="button" class="btn btn-sm btn-info" value="검색" />
+            <tr>
+            <th scope="row" class="align-middle">진행 여부</th>
+            <td colspan="2">
+              <span>
+                <input class="align-middle" type="radio" id="couponProgressStatusRadio1" name="couponProgressStatusRadio" value="inProgress">
+                <label class="align-middle mb-0">진행 중</label>
+              </span>
+              <span>
+                <input class="align-middle ml-2" type="radio" id="couponProgressStatusRadio2" name="couponProgressStatusRadio1" value="notInProgress"> 
+                <label class="align-middle mb-0">진행 안함</label>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <input type="button" class="btn btn-info btn-sm float-right" value="검색" />
             </td>
           </tr>
         </table>
@@ -69,7 +72,7 @@
         </div>
         <table class="table table-bordered table-sm">
           <thead>
-            <tr style="text-align: center">
+            <tr class="align-middle text-center">
               <th scope="col">체크박스</th>
               <th scope="col">쿠폰번호</th>
               <th scope="col">쿠폰명</th>
@@ -83,8 +86,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="text-align: center">
-              <td><input type="checkbox"></td>
+            <tr class="align-middle text-center">
+              <td><input type="checkbox" class="align-middle"></td>
               <td></td>
               <td></td>
               <td></td>
@@ -94,7 +97,7 @@
               <td></td>
               <td></td>
               <td>
-                <a href="" class="btn btn-secondary btn-sm">수정</a>
+                <a href="/promotion/editCoupon" class="btn btn-secondary btn-sm">수정</a>
               </td>
             </tr>
           </tbody>
