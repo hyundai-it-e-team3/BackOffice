@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <th:block th:replace="~{common/layout::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+    
+      <h4 class="pb-2">
+        <b>회원 - 포인트내역</b>
+      </h4>
+      <table class="table table-bordered table-sm">
+      <thead class="text-center">
+        <tr>
+          <th scope="col">회원 ID</th>
+          <th scope="col">회원 이름</th>
+          <th scope="col">사용 일자</th>
+          <th scope="col">금액</th>
+          <th scope="col">내용</th>
+          <th scope="col">적립/차감/만료/환불</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        <tr>
+          <td>user</td>
+          <td>홍길동</td>
+          <td>2021-11-15</td>
+          <td>2000</td>
+          <td>상품 구입</td>
+          <td>차감</td>
+        </tr>
+      </tbody>
+    </table>
+      
+    </th:block>
+  </th:block>
+  
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <th:block th:replace="~{common/layout::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+    
+      <div>
+        <h4><b>쿠폰 목록</b></h4>
+        <table class="table p-0 m-0" style="width: 100%;">
+          <colgroup>
+            <col style="width: 15%" />
+            <col style="width: 45%" />
+            <col style="width: 45%" />
+          </colgroup>
+          <tr>
+            <th class="align-middle">검색</th>
+            <td colspan="2">
+              <input type="text" class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <th class="align-middle">기간</th>
+            <td>
+              <input type="date" class="form-control" name="regDate" required="required">
+            </td>
+            <td>
+              <input type="date" class="form-control" name="expDate" required="required">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">쿠폰 유형</th>
+            <td colspan="2">
+              <span>
+                <input type="radio" class="align-middle" id="couponTypeRadio1" name="couponTypeRadio" value="discountPrice">
+                <label class="align-middle mb-0">할인</label>
+              </span>
+              <span>
+                <input type="radio" class="align-middle ml-2" id="couponTypeRadio2" name="couponTypeRadio" value="earnPoint "> 
+                <label class="align-middle mb-0">포인트 적립</label>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <tr>
+            <th scope="row" class="align-middle">진행 여부</th>
+            <td colspan="2">
+              <span>
+                <input class="align-middle" type="radio" id="couponProgressStatusRadio1" name="couponProgressStatusRadio" value="inProgress">
+                <label class="align-middle mb-0">진행 중</label>
+              </span>
+              <span>
+                <input class="align-middle ml-2" type="radio" id="couponProgressStatusRadio2" name="couponProgressStatusRadio1" value="notInProgress"> 
+                <label class="align-middle mb-0">진행 안함</label>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <input type="button" class="btn btn-info float-right" value="검색" />
+            </td>
+          </tr>
+        </table>
+      </div>
+  
+      <br />
+        <h4 class="pb-2">
+          <b>쿠폰 목록</b>
+        </h4>
+        <div class="pl-1 pb-2">
+          <button class="btn btn-info btn-sm">선택 삭제</button>
+        </div>
+        <table class="table table-bordered table-sm">
+          <thead class="align-middle text-center">
+            <tr>
+              <th scope="col">체크박스</th>
+              <th scope="col">쿠폰번호</th>
+              <th scope="col">쿠폰명</th>
+              <th scope="col">유형</th>
+              <th scope="col">만료 일자</th>
+              <th scope="col">할인금액/할인율</th>
+              <th scope="col">발급 수량</th>
+              <th scope="col">재고</th>
+              <th scope="col">진행여부</th>
+              <th scope="col">수정</th>
+            </tr>
+          </thead>
+          <tbody class="align-middle text-center">
+            <tr>
+              <td><input type="checkbox" class="align-middle"></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="align-middle">
+                <a href="/promotion/editCoupon" class="btn btn-secondary btn-sm">수정</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      
+    </th:block>
+  </th:block>
+  
+</html>

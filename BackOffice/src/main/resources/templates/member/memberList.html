@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{common/layout::setContent(~{this::content})}">
+  <th:block th:fragment="content">
+    <script type="text/javascript">
+      function selectDropDownBtn(event,id){
+        inputBox = document.querySelector(id);
+        inputText = event.target.innerHTML;
+        inputBox.innerHTML = inputText;
+        console.log(inputBox);
+        console.log(inputText);
+      }
+    </script>
+    
+    <div>
+      <h4>
+        <b>회원 검색</b>
+      </h4>
+      <table class="table p-0 m-0" style="width: 100%;">
+        <colgroup>
+          <col style="width: 10%" />
+          <col style="width: 45%" />
+          <col style="width: 45%" />
+        </colgroup>
+        <tr>
+          <th class="align-middle">검색</th>
+          <td colspan="2" class="pt-2 pb-2">
+            <div class="input-group mt-1">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="memberSearchType" data-toggle="dropdown" aria-expanded="false">분류</button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#memberSearchType')">주문자 ID</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#memberSearchType')">회원명</a>
+                </div>
+              </div>
+              <input type="text" class="form-control">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th class="align-middle">등급</th>
+          <td colspan="2">
+            <span>
+              <input class="align-middle" type="checkbox" id="memberlevelCheckbox1" value="전체" checked>
+              <label class="align-middle mb-0">전체</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox1" value="level1">
+              <label class="align-middle mb-0">Lv.1</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox2" value="level2">
+              <label class="align-middle mb-0">Lv.2</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox3" value="level3">
+              <label class="align-middle mb-0">Lv.3</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox4" value="level4">
+              <label class="align-middle mb-0">Lv.4</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox5" value="level5">
+              <label class="align-middle mb-0">Lv.5</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox6" value="level6">
+              <label class="align-middle mb-0">Lv.6</label>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align: right">
+            <input type="button" class="btn btn-sm btn-info" value="검색" />
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <br />
+    <h4 class="pb-2"><b>회원 목록</b></h4>
+    <div class="pl-1 pb-2">
+          <button class="btn btn-info btn-sm">선택 삭제</button>
+        </div>
+    <table class="table table-bordered table-sm">
+      <thead class="align-middle text-center">
+        <tr>
+          <th scope="col">체크박스</th>
+          <th scope="col">가입일자</th>
+          <th scope="col">ID</th>
+          <th scope="col">이름</th>
+          <th scope="col">전화번호</th>
+          <th scope="col">나이</th>
+          <th scope="col">주소</th>
+          <th scope="col">등급</th>
+          <th scope="col">포인트</th>
+          <th scope="col">관련 내역 보기</th>
+        </tr>
+      </thead>
+      <tbody class="align-middle text-center">
+        <tr>
+          <td class="align-middle"><input type="checkbox" class="align-middle"></td>
+          <td class="align-middle">2021-11-11</td>
+          <td class="align-middle">user</td>
+          <td class="align-middle">홍길동</td>
+          <td class="align-middle">010-1111-1111</td>
+          <td class="align-middle">34</td>
+          <td class="align-middle">서울</td>
+          <td class="align-middle">3</td>
+          <td class="align-middle">1234</td>
+          <td  class="align-middle">
+            <a href="memberOrder" class="btn btn-secondary btn-sm">주문</a>
+            <a href="memberCoupon" class="btn btn-secondary btn-sm">쿠폰</a>
+            <a href="memberPoint" class="btn btn-secondary btn-sm">포인트</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </th:block>
+</th:block>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <th:block th:replace="~{common/layout::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+    
+      <h4 class="pb-2">
+        <b>회원 - 쿠폰내역</b>
+      </h4>
+      <table class="table table-bordered table-sm">
+      <thead>
+        <tr class="text-center">
+          <th scope="col">회원 ID</th>
+          <th scope="col">회원 이름</th>
+          <th scope="col">쿠폰번호</th>
+          <th scope="col">쿠폰명</th>
+          <th scope="col">유형</th>
+          <th scope="col">금액/할인율</th>
+          <th scope="col">발행 일자</th>
+          <th scope="col">사용 일자</th>
+          <th scope="col">만료 일자</th>
+          <th scope="col">사용 여부</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="text-center">
+          <td>user</td>
+          <td>홍길동</td>
+          <td>2143123</td>
+          <td>신규 가입 할인 쿠폰</td>
+          <td>할인율</td>
+          <td>10%</td>
+          <td>2021-11-11</td>
+          <td>x</td>
+          <td>2022-01-11</td>
+          <td>x</td>
+        </tr>
+      </tbody>
+    </table>
+      
+    </th:block>
+  </th:block>
+  
+</html>

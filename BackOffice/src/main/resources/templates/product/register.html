@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{common/layout::setContent(~{this::content})}">
+  <th:block th:fragment="content">
+    <script type="text/javascript">
+      function selectDropDownInput(event,id){
+        inputBox = document.querySelector(id);
+        inputText = event.target.innerHTML;
+        inputBox.value = inputText;
+      }
+      function selectDropDownBtn(event,id){
+        inputBox = document.querySelector(id);
+        inputText = event.target.innerHTML;
+        inputBox.innerHTML = inputText;
+      }
+    </script>
+
+    <div>
+      <h4><b>상품 등록</b></h4>
+      <table class="table p-0 m-0" style="width: 100%;">
+        <colgroup>
+          <col style="width: 20%" />
+          <col style="width: 80%" />
+        </colgroup>
+        <tr>
+          <th class="align-middle">상품 코드</th>
+          <td>
+            <input type="text" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <th class="align-middle">상품 명</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <th class="align-middle">상품 상세 문구</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <th class="align-middle">상품 가격</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <th class="align-middle">카테고리</th>
+          <td class="pt-2 pb-2">
+            <div class="input-group mt-1">
+              <div class="input-group-prepend ">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn1" data-toggle="dropdown" aria-expanded="false">
+                  대분류
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1')">여성</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1')">남성</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1')">아동</a>
+                </div>
+              </div>
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn2" data-toggle="dropdown" aria-expanded="false">
+                  중분류
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn2')">상의</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn2')">하의</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn2')">아우터</a>
+                </div>
+              </div>
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn3" data-toggle="dropdown" aria-expanded="false">
+                  소분류
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn3')">가디건</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn3')">블라우스</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn3')">셔츠</a>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th class="align-middle">브랜드</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <tr>
+          <th scope="row" class="align-middle">진행 여부</th>
+          <td colspan="2">
+            <span>
+              <input class="align-middle" type="radio" id="productProgressStatusRadio1" name="productProgressStatusRadio" value="inProgress">
+              <label class="align-middle mb-0">진행 중</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="radio" id="productProgressStatusRadio2" name="productProgressStatusRadio" value="notInProgress"> 
+              <label class="align-middle mb-0">진행 안함</label>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <button class="btn btn-secondary float-right">상품 등록</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <br/>
+    <div>
+      <h4>상품 상세 정보</h4>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <button class="btn btn-secondary btn-sm">-</button>
+          <button class="btn btn-secondary btn-sm">+</button>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">CM2B0KJC210W_BK</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">CM2B0KJC210W_OW</a>
+        </li>
+      </ul>
+      <table class="table p-0 m-0" style="width: 100%;">
+        <colgroup>
+          <col style="width: 30%" />
+          <col style="width: 70%" />
+        </colgroup>
+        <tr>
+          <th class="align-middle">칼라 코드</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <th class="align-middle">상품 상세 이미지 URL1</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <th class="align-middle">상품 상세 이미지 URL2</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <th class="align-middle">상품 상세 이미지 URL3</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <th class="align-middle">칼라칩 이미지 URL</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <th class="align-middle">함께 코디한 상품 코드</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <button class="btn btn-secondary float-right">상품 상세 등록</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <br/>
+    <div>
+      <h4><b>상품 사이즈 정보</b></h4>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <button class="btn btn-secondary btn-sm">-</button>
+          <button class="btn btn-secondary btn-sm">+</button>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">CM2B0KJC210W_OW_L</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">CM2B0KJC210W_OW_M</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">CM2B0KJC210W_OW_S</a>
+        </li>
+      </ul>
+      <table class="table p-0 m-0" style="width: 100%;">
+        <colgroup>
+          <col style="width: 25%" />
+          <col style="width: 75%" />
+        </colgroup>
+        <tr>
+          <th class="align-middle">사이즈 코드</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <th class="align-middle">재고량</th>
+          <td><input type="text" class="form-control"></td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <button class="btn btn-secondary float-right">상품 상세 사이즈 등록</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    
+    <hr />
+    <div class="text-left">
+      <a class="btn btn-info" th:href="@{/product/list}">상품 최종 등록</a>
+    </div>
+
+</th:block>
+</html>

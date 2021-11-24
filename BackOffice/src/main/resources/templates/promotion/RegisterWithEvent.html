@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <th:block th:replace="~{common/layout::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+    
+      <h4><b>이벤트 등록</b></h4>
+      <table class="table">
+        <tr>
+          <th scope="row" class="align-middle" style="width:15%;">이벤트명</th>
+          <td colspan="2">
+            <input type="text" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-middle">이벤트 유형</th>
+          <td colspan="2">
+            <span>
+              <input type="radio" id="evnetTypeRadio1" class="align-middle" name="evnetTypeRadio" value="coupon"
+                     th:onclick="javascript:setDisplay()">
+              <label class="mb-0 align-middle">쿠폰</label>
+            </span>
+            <span>
+              <input type="radio" id="evnetTypeRadio2" class="ml-2 align-middle" name="evnetTypeRadio" value="discountOfProduct"
+                     th:onclick="javascript:setDisplay()"> 
+              <label class="mb-0 align-middle">상품 할인</label>
+            </span>
+          </td>
+        </tr>
+        <tr id="rateOfDiscount" style="display:none;">
+          <th scope="row" class="mb-0 align-middle" style="width:13%;">할인율</th>
+          <td colspan="2">
+            <input type="text" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-middle">진행 여부</th>
+          <td colspan="2">
+            <span>
+              <input class="align-middle" type="radio" id="eventProgressStatusRadio1" name="eventProgressStatusCRadio" value="inProgress">
+              <label class="align-middle mb-0">진행 중</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="radio" id="eventProgressStatusRadio2" name="eventProgressStatusCRadio" value="notInProgress"> 
+              <label class="align-middle mb-0">진행 안함</label>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-middle">기간</th>
+          <td>
+            <input type="date" class="form-control" name="date" required="required">
+          </td>
+          <td>
+            <input type="date" class="form-control" name="date" required="required">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <button class="btn btn-info btn-sm float-right">등록</button>
+          </td>
+        </tr>
+      </table>
+      
+      <script th:inline="javascript">
+      	function setDisplay(){
+    	    if($('input:radio[id=evnetTypeRadio1]').is(':checked')){
+    	    	console.log("show 실행")
+    	    	$('#rateOfDiscount').hide();
+    	    	$('#registerWithCoupon').show();
+    	    }else{
+    	    	console.log("hide 실행")
+    	        $('#registerWithCoupon').hide();
+    	    	$('#rateOfDiscount').show()
+    	    }
+    	}
+      </script>
+      
+      <br />
+      <div id="registerWithCoupon" style="display:none; width:800px;">
+        <h5 class="pb-2"><b>쿠폰 등록</b></h5>
+        <table class="table">
+          <tr>
+            <td colspan="3" class="pl-1 pt-2 pb-2 align-middle">
+              <button class="btn btn-secondary bnt-sm float-right">쿠폰 불러오기</button>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle" style="width:20%;">쿠폰번호</th>
+            <td colspan="2">
+              <input type="text" class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">쿠폰명</th>
+            <td colspan="2">
+              <input type="text" class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">만료 일자</th>
+            <td>
+              <input type="date" class="form-control" name="date" required="required">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">쿠폰 유형</th>
+            <td colspan="2">
+              <span>
+                <input type="radio" class="align-middle" id="couponTypeRadio1" name="couponTypeRadio" value="discountPrice">
+                <label class="align-middle mb-0">할인</label>
+              </span>
+              <span>
+                <input type="radio" class="align-middle ml-2" id="couponTypeRadio2" name="couponTypeRadio" value="earnPoint "> 
+                <label class="align-middle mb-0">포인트 적립</label>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">할인금액/할인율</th>
+            <td colspan="2">
+              <input type="text" class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">발급수량</th>
+            <td colspan="2">
+              <input type="text" class="form-control">
+            </td>
+          </tr>
+        </table>
+      </div>
+      
+    </th:block>
+  </th:block>
+  
+</html>
