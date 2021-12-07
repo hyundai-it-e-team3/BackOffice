@@ -7,6 +7,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mycompany.BackOffice.dto.CategoryDTO;
+import com.mycompany.BackOffice.dto.ProductDTO;
+import com.mycompany.BackOffice.service.ProductService;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -15,7 +18,8 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/product")
 public class ProductController {
 	
-	
+	@Resource 
+	private ProductService productService;
 	
 	@RequestMapping("/list")
 	public String productList() {
@@ -25,6 +29,8 @@ public class ProductController {
 	@RequestMapping("/register")
 	public String productRegister() {
 		log.info("실행");
+		ProductDTO product = productService.getProduct();
+		log.info(product.getContent());
 		return "/product/register";
 	}
 	@RequestMapping("/detail")
