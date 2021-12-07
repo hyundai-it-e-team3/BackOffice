@@ -39,7 +39,7 @@
         </tr>
         <tr>
           <td colspan="3" class="text-right">
-            <input type="button" class="btn btn-info" value="검색" />
+            <input type="button" class="btn btn-success" value="검색" />
           </td>
         </tr>
       </table>
@@ -47,7 +47,10 @@
 
     
     <br/>
-    <h4><b>상세상품 재고관리</b></h4>
+    <div class="d-flex justify-content-between mb-2">
+	    <h4><b>상세상품 재고관리</b></h4>
+	    <div><a class="btn btn-primary mr-2"/>수정</a><a class="btn btn-danger"/>취소</a></div>
+    </div>
     <table class="table table-sm table-bordered">
       <thead class="align-middle text-center">
         <tr>
@@ -65,7 +68,7 @@
           <td>the CASHMERE</td>
           <td>CM2B0KJC210W</td>
           <td>벨티드 니트 가디건</td>
-          <td><a th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
+          <td><a class="text-warning" th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
           <td>L</td>
           <td>
             <button class="btn btn-light btn-sm mr-1">-</button>
@@ -78,7 +81,7 @@
           <td>the CASHMERE</td>
           <td>CM2B0KJC210W</td>
           <td>벨티드 니트 가디건</td>
-          <td><a th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
+          <td><a class="text-warning" th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
           <td>M</td>
           <td>
             <button class="btn btn-light btn-sm mr-1">-</button>
@@ -91,7 +94,7 @@
           <td>the CASHMERE</td>
           <td>CM2B0KJC210W</td>
           <td>벨티드 니트 가디건</td>
-          <td><a th:href="@{/product/detail}">CM2B0KJC210W_BK</a></td>
+          <td><a class="text-warning" th:href="@{/product/detail}">CM2B0KJC210W_BK</a></td>
           <td>L</td>
           <td>
             <button class="btn btn-light btn-sm mr-1">-</button>

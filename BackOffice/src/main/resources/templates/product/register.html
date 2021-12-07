@@ -13,6 +13,15 @@
         inputText = event.target.innerHTML;
         inputBox.innerHTML = inputText;
       }
+      $(function(){
+		$.ajax({ 
+			url: "http://kosa1.iptime.org:50203/category",
+			type:"GET",
+			success:function(data){
+				console.log(data);
+			}
+		});
+      }); 
     </script>
 
     <div>
