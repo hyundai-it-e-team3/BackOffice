@@ -3,15 +3,17 @@
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
     <script th:inline="javascript">
-      var temp = "aaaa";
-      let mainIndex = 0;
-      let middleIndex = 0;
-      let subIndex = 0;
+
+
       function selectDropDownInput(event,id){
         inputBox = document.querySelector(id);
         inputText = event.target.innerHTML;
         inputBox.value = inputText;
       }
+      
+      let mainIndex = 0;
+      let middleIndex = 0;
+      let subIndex = 0;
       function selectDropDownBtn(event,id,index){
         inputBox = document.querySelector(id);
         console.log([[${categoryList}]][index]);
