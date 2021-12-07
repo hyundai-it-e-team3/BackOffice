@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mycompany.BackOffice.dto.CategoryDTO;
@@ -27,10 +28,11 @@ public class ProductController {
 		return "/product/productList";
 	}
 	@RequestMapping("/register")
-	public String productRegister() {
+	public String productRegister(Model model) {
 		log.info("실행");
-		ProductDTO product = productService.getProduct();
-		log.info(product.getContent());
+		List<CategoryDTO> categoryList = productService.getCategory();
+		log.info(categoryList.toString());
+		model.addAttribute("categoryList", categoryList);
 		return "/product/register";
 	}
 	@RequestMapping("/detail")
