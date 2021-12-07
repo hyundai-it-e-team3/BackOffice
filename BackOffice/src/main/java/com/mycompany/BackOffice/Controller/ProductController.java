@@ -23,8 +23,11 @@ public class ProductController {
 	private ProductService productService;
 	
 	@RequestMapping("/list")
-	public String productList() {
+	public String productList(Model model) {
 		log.info("실행");
+		List<CategoryDTO> categoryList = productService.getCategory();
+		log.info(categoryList.toString());
+		model.addAttribute("categoryList", categoryList);
 		return "/product/productList";
 	}
 	@RequestMapping("/register")
