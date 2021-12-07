@@ -1,60 +1,57 @@
 <ul class="nav flex-column">
-
   <li class="nav-item mb-2">
-  	<div th:if="${#httpServletRequest.requestURI.indexOf('/product') != -1}">	
-	    <h6>
-	      <a class="text-white" th:href="@{/product/register}">상품 등록</a>
-	    </h6>
-	    <h6>
-	      <a class="text-white" th:href="@{/product/list}">상품 목록 및 수정</a>
-	    </h6>
-	    <h6>
-	      <a class="text-white" th:href="@{/product/stock}">상세상품 재고관리</a>
-	    </h6>
-	</div>
+    <!-- 상품 관리 -->
+  	<div th:if="${#httpServletRequest.requestURI.indexOf('/product') != -1}">
+      <ul class="pl-0 mb-2">
+        <a class="text-white" th:href="@{/product/list}">상품 목록 및 수정</a>
+      </ul>
+      <ul class="pl-0 mb-2">
+        <a class="text-white" th:href="@{/product/register}">상품 등록</a>
+      </ul>
+      <ul class="pl-0 mb-2">
+        <a class="text-white" th:href="@{/product/stock}">상세상품 재고관리</a>
+	  </ul>
+    </div>
     
-    
-    <!-- 주문 -->
+    <!-- 주문 관리 -->
     <div th:if="${#httpServletRequest.requestURI.indexOf('/order') != -1}">	
-    <h6>
-      <a class="text-white" th:href="@{/order/orderList}">전체 주문 목록</a>  
-    </h6>
+      <a class="text-white" th:href="@{/order/orderList}">주문 목록</a>  
     </div>
-    <!-- 고객 -->
+    
+    <!-- 고객 관리 -->
     <div th:if="${#httpServletRequest.requestURI.indexOf('/member') != -1}">	
-    <h6>
-      <a class="text-white" th:href="@{/member/memberList}">고객 관리</a>  
-    </h6>
+      <a class="text-white" th:href="@{/member/memberList}">고객 목록</a>  
     </div>
-    <!-- 브랜드 -->
-    <div th:if="${#httpServletRequest.requestURI.indexOf('/brand') != -1}">	
-    <h6>
-      <a class="text-white" th:href="@{/brand/manager}">브랜드 관리</a>  
-    </h6>
-    <h6>
-      <a class="text-white" th:href="@{/brand/brandProducts}">브랜드 상품 관리(MD's Pick)</a>  
-    </h6>
+    
+    <!-- 브랜드 관리 -->
+    <div th:if="${#httpServletRequest.requestURI.indexOf('/brand') != -1}">
+      <ul class="pl-0 mb-2">
+        <a class="text-white" th:href="@{/brand/manager}">브랜드 관리</a>  
+      </ul>
+      <ul class="pl-0 mb-2">
+        <a class="text-white" th:href="@{/brand/brandProducts}">브랜드 상품 관리</a>  
+      </ul>
     </div>
-    <!-- 디자인 -->
+    
+    <!-- 프로모션 관리-->
+    <div th:if="${#httpServletRequest.requestURI.indexOf('/promotion') != -1}"> 
+      <ul class="pl-0 mb-2">
+        <a class="text-white" th:href="@{/promotion/eventList}">이벤트 목록</a>  
+      </ul>
+      <ul class="pl-0 mb-2">
+        <a class="text-white" th:href="@{/promotion/registerWithEvent}">이벤트 등록</a>
+      </ul>
+      <ul class="pl-0 mb-2">
+        <a class="text-white" th:href="@{/promotion/couponList}">쿠폰 목록</a>  
+      </ul>
+      <ul class="pl-0 mb-2">
+        <a class="text-white" th:href="@{/promotion/registerWithCoupon}">쿠폰 등록</a>  
+      </ul>
+    </div>
+        
+    <!-- 디자인 관리-->
     <div th:if="${#httpServletRequest.requestURI.indexOf('/design') != -1}">	
-    <h6>
       <a class="text-white" th:href="@{/design/layoutSetting}">레이아웃 설정</a>  
-    </h6>
-    </div>
-    <!-- 프로모션 -->
-    <div th:if="${#httpServletRequest.requestURI.indexOf('/promotion') != -1}">	
-    <h6>
-      <a class="text-white" th:href="@{/promotion/eventList}">이벤트 목록</a>  
-    </h6>
-    <h6>
-      <a class="text-white" th:href="@{/promotion/registerWithEvent}">이벤트 등록</a>  
-    </h6>
-    <h6>
-      <a class="text-white" th:href="@{/promotion/couponList}">쿠폰 목록</a>  
-    </h6>
-    <h6>
-      <a class="text-white" th:href="@{/promotion/registerWithCoupon}">쿠폰 등록</a>  
-    </h6>
     </div>
   </li>
 
