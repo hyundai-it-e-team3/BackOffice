@@ -3,32 +3,31 @@
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
     <script type="text/javascript">
-			  function selectDropDownInput(event,id){
-					inputBox = document.querySelector(id);
-					inputText = event.target.innerHTML;
-					console.log(inputText);
-					inputBox.value = inputText;
-			  }
-			  function selectDropDownBtn(event,id){
-					inputBox = document.querySelector(id);
-					inputText = event.target.innerHTML;
-					inputBox.innerHTML = inputText;
-			  }
-			    function fnModuleInfo(){
-			    	   $('#detailModal .modal-content').load("./detailModal");
-			    	   $('#detailModal').modal();
-			    }
+        function selectDropDownInput(event,id){
+      		inputBox = document.querySelector(id);
+      		inputText = event.target.innerHTML;
+      		console.log(inputText);
+      		inputBox.value = inputText;
+        }
+        function selectDropDownBtn(event,id){
+      		inputBox = document.querySelector(id);
+      		inputText = event.target.innerHTML;
+      		inputBox.innerHTML = inputText;
+        }
+        function fnModuleInfo(){
+    	    $('#detailModal .modal-content').load("./detailModal");
+  	    	$('#detailModal').modal();
+        }
 	</script>
 	<style>
-		.status {
-		    font-size: 50px;
-		    margin: 2px 2px 0 0;
-		    display: inline-block;
-		    vertical-align: middle;
-		    line-height: 10px;
-		   	height:20px;
-		}
-		
+    	.status {
+    	    font-size: 50px;
+    	    margin: 2px 2px 0 0;
+    	    display: inline-block;
+    	    vertical-align: middle;
+    	    line-height: 10px;
+    	   	height:20px;
+    	}
 	</style>
     <div>
       <h4>
@@ -40,13 +39,13 @@
           <col style="width: 45%" />
           <col style="width: 45%" />
         </colgroup>
-        <tr class="align-middle">
-          <th>검색 분류</th>
-          <td colspan="2" class="p-0">
+        <tr>
+          <th class="align-middle">검색 분류</th>
+          <td colspan="2">
             <div class="input-group mt-1">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productSearchType" data-toggle="dropdown" aria-expanded="false">
-                  Dropdown
+                  분류
                 </button>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productSearchType')">상품코드</a>
@@ -58,9 +57,9 @@
             </div>
           </td>
         </tr>
-        <tr class="align-middle">
-          <th>카테고리</th>
-          <td colspan="2" class="align-middle p-0">
+        <tr>
+          <th class="align-middle">카테고리</th>
+          <td colspan="2">
             <div class="input-group">
               <div class="input-group-prepend ">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productGbn1" data-toggle="dropdown" aria-expanded="false">
@@ -97,10 +96,10 @@
         </tr>
         <tr>
           <th class="align-middle">상품등록일</th>
-          <td class="pl-0 pt-1 pb-1">
+          <td>
             <input type="date" class="form-control" name="date" required="required">
           </td>
-          <td class="pl-0 pt-1 pb-1">
+          <td>
             <input type="date" class="form-control" name="date" required="required">
           </td>
         </tr>
@@ -120,13 +119,13 @@
         </tr>
         <tr>
             <td colspan="3">
-              <input type="button" class="btn btn-success float-right" value="검색" />
+              <input type="button" class="btn btn-primary float-right" value="검색" />
             </td>
           </tr>
       </table>
     </div>
 
-    <h4>상품 목록</h4>
+    <h4><b>상품 목록</b></h4>
 
     <table class="table table-sm table-bordered">
       <thead class="align-middle text-center">

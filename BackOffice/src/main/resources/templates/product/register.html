@@ -106,27 +106,22 @@
         </tr>
         <tr>
           <td colspan="3">
-            <button class="btn btn-secondary float-right">상품 등록</button>
+            <button class="btn btn-success btn-sm">-</button>
+            <button class="btn btn-success btn-sm">+</button>
+            <button class="btn btn-primary float-right">상품 등록</button>
           </td>
         </tr>
       </table>
     </div>
 
-    <br/>
     <div>
-      <h4>상품 상세 정보</h4>
-      <ul class="nav nav-pills">
-        <li class="nav-item">
-          <button class="btn btn-secondary btn-sm">-</button>
-          <button class="btn btn-secondary btn-sm">+</button>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">CM2B0KJC210W_BK</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">CM2B0KJC210W_OW</a>
-        </li>
-      </ul>
+      <h4 class="mt-4"><b>상품 상세 정보</b></h4>
+
+      <div class="my-2">
+        <a class="mr-4" href="#">CM2B0KJC210W_BK</a>
+        <a class="mr-4" href="#">CM2B0KJC210W_OW</a>
+      </div>
+      
       <table class="table p-0 m-0" style="width: 100%;">
         <colgroup>
           <col style="width: 30%" />
@@ -158,30 +153,23 @@
         </tr>
         <tr>
           <td colspan="3">
-            <button class="btn btn-secondary float-right">상품 상세 등록</button>
+            <button class="btn btn-success btn-sm">-</button>
+            <button class="btn btn-success btn-sm">+</button>
+            <button class="btn btn-primary float-right">상품 상세 등록</button>
           </td>
         </tr>
       </table>
     </div>
 
-    <br/>
     <div>
-      <h4><b>상품 사이즈 정보</b></h4>
-      <ul class="nav nav-pills">
-        <li class="nav-item">
-          <button class="btn btn-secondary btn-sm">-</button>
-          <button class="btn btn-secondary btn-sm">+</button>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">CM2B0KJC210W_OW_L</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">CM2B0KJC210W_OW_M</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">CM2B0KJC210W_OW_S</a>
-        </li>
-      </ul>
+      <h4 class="mt-4"><b>상품 사이즈 정보</b></h4>
+      
+      <div class="my-2">
+        <a class="mr-4" href="#">CM2B0KJC210W_OW_L</a>
+        <a class="mr-4" href="#">CM2B0KJC210W_OW_M</a>
+        <a class="mr-4" href="#">CM2B0KJC210W_OW_S</a>
+      </div>
+      
       <table class="table p-0 m-0" style="width: 100%;">
         <colgroup>
           <col style="width: 25%" />
@@ -197,15 +185,15 @@
         </tr>
         <tr>
           <td colspan="3">
-            <button class="btn btn-secondary float-right">상품 상세 사이즈 등록</button>
+            <button class="btn btn-primary float-right">상품 상세 사이즈 등록</button>
           </td>
         </tr>
       </table>
     </div>
     
     <hr />
-    <div class="text-left">
-      <a class="btn btn-info" th:href="@{/product/list}">상품 최종 등록</a>
+    <div class="text-right">
+      <a class="btn btn-success" th:href="@{/product/list}">상품 최종 등록</a>
     </div>
 
 </th:block>
