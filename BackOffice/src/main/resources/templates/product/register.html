@@ -2,28 +2,62 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
-    <script type="text/javascript">
+    <script th:inline="javascript">
+
+
       function selectDropDownInput(event,id){
         inputBox = document.querySelector(id);
         inputText = event.target.innerHTML;
         inputBox.value = inputText;
       }
-      function selectDropDownBtn(event,id){
+      
+      let mainIndex = 0;
+      let middleIndex = 0;
+      let subIndex = 0;
+      function selectDropDownBtn(event,id,index){
         inputBox = document.querySelector(id);
+        console.log([[${categoryList}]][index]);
+        mainIndex = index;
+        let categoryList = [[${categoryList}]][mainIndex].categoryList;
+        console.log(categoryList);
+        $('#middleGbn').html("");
+        $('#subGbn').html("");
+        for(let i = 0; i < categoryList.length; i++){
+        	var $temp = $(`<a class="dropdown-item" onclick="javascript:selectDropDownBtnGbn2(event,'#stockGbn2',${i})">${categoryList[i].name}</a>`);
+            $('#middleGbn').append($temp);
+        }
         inputText = event.target.innerHTML;
         inputBox.innerHTML = inputText;
       }
+      
+      function selectDropDownBtnGbn2(event,id,index){
+          inputBox = document.querySelector(id);
+          middleIndex = index;
+          let categoryList = [[${categoryList}]][mainIndex].categoryList[middleIndex].categoryList;
+          console.log(categoryList);
+          $('#subGbn').html("");
+          for(let i = 0; i < categoryList.length; i++){
+        	var $temp = $(`<a class="dropdown-item" onclick="javascript:selectDropDownBtnGbn3(event,'#stockGbn3',${i})">${categoryList[i].name}</a>`);
+          	$('#subGbn').append($temp);
+          }
+          inputText = event.target.innerHTML;
+          inputBox.innerHTML = inputText;
+        }
+      function selectDropDownBtnGbn3(event,id,index){
+          inputBox = document.querySelector(id);
+          subIndex = index;
+          let category = [[${categoryList}]][mainIndex].categoryList[middleIndex].categoryList[subIndex];
+          console.log(category);
+          inputText = event.target.innerHTML;
+          inputBox.innerHTML = inputText;
+        }
       $(function(){
-		$.ajax({ 
-			url: "http://kosa1.iptime.org:50203/category",
-			type:"GET",
-			success:function(data){
-				console.log(data);
-			}
-		});
+    	let categoryList = [[${categoryList}]];
+		console.log(categoryList);
+		//let categoryList = [[${categoryList}]];
+		console.log("-------");
       }); 
     </script>
-
     <div>
       <h4><b>상품 등록</b></h4>
       <table class="table p-0 m-0" style="width: 100%;">
@@ -57,30 +91,22 @@
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn1" data-toggle="dropdown" aria-expanded="false">
                   대분류
                 </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1')">여성</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1')">남성</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1')">아동</a>
+                <div class="dropdown-menu" >
+                  <a th:each="category, status: ${categoryList}" class="dropdown-item" th:onclick="javascript:selectDropDownBtn(event,'#stockGbn1',[[${status.index}]])">[[${category.name}]]</a>
                 </div>
               </div>
               <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn2" data-toggle="dropdown" aria-expanded="false">
                   중분류
                 </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn2')">상의</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn2')">하의</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn2')">아우터</a>
+                <div class="dropdown-menu" id="middleGbn">
                 </div>
               </div>
               <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn3" data-toggle="dropdown" aria-expanded="false">
                   소분류
                 </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn3')">가디건</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn3')">블라우스</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn3')">셔츠</a>
+                <div class="dropdown-menu" id="subGbn">
                 </div>
               </div>
             </div>
