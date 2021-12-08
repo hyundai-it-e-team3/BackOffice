@@ -38,18 +38,18 @@
           <col style="width: 45%" />
           <col style="width: 45%" />
         </colgroup>
-        <tr class="align-middle">
-          <th>검색 분류</th>
-          <td colspan="2" class="p-0">
+        <tr>
+          <th class="align-middle">검색 분류</th>
+          <td colspan="2">
             <div class="input-group mt-1">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="searchType" data-toggle="dropdown" aria-expanded="false">
-                  Dropdown
+                  분류
                 </button>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">상품코드</a>
-			            <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">상품명</a>
-			            <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">브랜드명</a>
+	              <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">상품명</a>
+	              <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">브랜드명</a>
                 </div>
               </div>
               <input type="text" class="form-control">
@@ -57,8 +57,8 @@
           </td>
         </tr>
         <tr class="align-middle">
-          <th>카테고리</th>
-          <td colspan="2" class="align-middle p-0">
+          <th class="align-middle">카테고리</th>
+          <td colspan="2">
             <div class="input-group">
               <div class="input-group-prepend ">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="gbn1" data-toggle="dropdown" aria-expanded="false">
@@ -95,10 +95,10 @@
         </tr>
         <tr>
           <th class="align-middle">상품등록일</th>
-          <td class="pl-0 pt-1 pb-1">
+          <td>
             <input type="date" class="form-control" name="date" required="required">
           </td>
-          <td class="pl-0 pt-1 pb-1">
+          <td>
             <input type="date" class="form-control" name="date" required="required">
           </td>
         </tr>
@@ -118,7 +118,7 @@
         </tr>
         <tr>
             <td colspan="3">
-              <input type="button" class="btn btn-info float-right" value="검색" />
+              <input type="button" class="btn btn-primary float-right" value="검색" />
             </td>
           </tr>
       </table>
@@ -126,7 +126,7 @@
     
     <br/>
     <h4>MD's Pick</h4>
-    <table class="table table-sm">
+    <table class="table table-sm table-bordered">
       <thead class="align-middle text-center">
         <tr>
           <th scope="col">등록 일자</th>
@@ -142,27 +142,21 @@
           <td>CM2B0KJC210W</td>
           <td>벨티드 니트 가디건</td>
           <td>123</td>
-          <td><button type="button" class="btn btn-sm btn-danger">취소</button></td>
+          <td><button type="button" class="btn btn-sm btn-outline-danger">취소</button></td>
         </tr>
         <tr>
           <td>2021.11.11</td>
           <td>CM2B0KCD231WP1</td>
           <td>캐시미어 블렌드 니트 가디건</td>
           <td>20</td>
-          <td><button type="button" class="btn btn-sm btn-danger">취소</button></td>
+          <td><button type="button" class="btn btn-sm btn-outline-danger">취소</button></td>
         </tr>
         <tr>
           <td></td>
           <td>CM2B0KOT209W</td>
           <td>스티치 니트 재킷</td>
           <td>30</td>
-          <td><button type="button" class="btn btn-sm btn-primary">등록</button></td>
-        </tr>
-        <tr>
-          <td colspan="5">
-            <a class="btn btn-info btn-sm float-right ml-2">수정</a>
-            <a class="btn btn-info btn-sm float-right">취소</a>
-          </td>
+          <td><button type="button" class="btn btn-sm btn-success">등록</button></td>
         </tr>
       </tbody>
     </table>
