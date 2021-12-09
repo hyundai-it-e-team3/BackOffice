@@ -25,15 +25,14 @@
 				    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
 				  </ol>
 				  <div class="carousel-inner">
-				    <div class="carousel-item active">
-				      <img class="d-block w-100" src="http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_BK_W01.jpg/dims/resize/684x1032/" alt="First slide">
-				    </div>
-				    <div class="carousel-item">
-				      <img class="d-block w-100" src="http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_BK_W02.jpg/dims/resize/684x1032/" alt="Second slide">
-				    </div>
-				    <div class="carousel-item">
-				      <img class="d-block w-100" src="http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_BK_W03.jpg/dims/resize/684x1032/" alt="Third slide">
-				    </div>
+					<th:block th:each="img,status :${product.productDetailList[0].imgList}">
+				  		<div th:if="${status.index}==0" class="carousel-item active">
+				  			<img class="d-block w-100" th:src="${img.img}">
+				  		</div>
+				  		<div th:if="${status.index}!=0" class="carousel-item">
+				  			<img class="d-block w-100" th:src="${img.img}">
+				  		</div>
+				  	</th:block>
 				  </div>
 				  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 				    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -52,28 +51,32 @@
 		        </colgroup>
 		        <tr class="align-middle">
 		          <th class="text-center">상품 번호</th>
-		          <td>CM2B0KOP301W</td>
+		          <td>[[${product.productId}]]</td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th class="text-center">상품 명</th>
-		          <td>브이넥 니트 드레스</td>
+		          <td>[[${product.name}]]</td>
 		        </tr>
 		        <tr class="align-middler">
 		          <th class="text-center">상품 상세 문구</th>
-		          <td>라인이 드러나지 않는 실루엣으로 체형을 커버하기 좋아 손길이 가는 니트 드레스입니다. 브이넥 디자인으로 편안함과 스타일을 겸비하였으며, 2개의 포켓을 블록하여 실용성을 더해주었습니다.
+		          <td>[[${product.content}]]
 		          </td>
 		        </tr>
 		        <tr class="align-middle ">
 		          <th class="text-center">상품 가격</th>
-		          <td>545,000</td>
+		          <td>[[${product.price}]]</td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th class="text-center">카테고리</th>
-		          <td>여성<i class="bi bi-caret-right-fill">상의<i class="bi bi-caret-right-fill">드레스</td>
+		          <td>
+		          	<th:block th:each="category,status :${product.categoryList}">
+		          		[[${category}]]<i th:if="${status.index}!=2" class="bi bi-caret-right-fill"/>
+		          	</th:block>
+		          </td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th class="text-center">브랜드</th>
-		          <td>the CASHMERE</td>
+		          <td>[[${product.brandName}]]</td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th class="text-center">진열 여부</th>
@@ -85,81 +88,44 @@
 		    <br/>
 		    <div>
 		      <h4><b>상품 상세 정보</b></h4>
-		      <table class="table table-bordered p-0 mb-4" style="width: 100%;">
+		      <table th:each="productDetail :${product.productDetailList}" class="table table-bordered p-0 mb-4" style="width: 100%;">
 		        <colgroup>
 		          <col style="width: 30%" />
 		          <col style="width: 70%" />
 		        </colgroup>
 		        <tr class="align-middle">
 		          <th>칼라 코드</th>
-		          <td>BK</td>
+		          <td>
+		          	[[${productDetail.colorCode}]]
+		          </td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th>상품 상세 이미지 URL1</th>
 		          <td>
-		            http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_BK_W01.jpg/dims/resize/684x1032/
+		            [[${productDetail.imgList[0].img}]]
 		          </td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th>상품 상세 이미지 URL2</th>
 		          <td>
-		            http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_BK_W02.jpg/dims/resize/684x1032/
+		          	[[${productDetail.imgList[1].img}]]
 		          </td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th>상품 상세 이미지 URL3</th>
 		          <td>
-		            http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_BK_W03.jpg/dims/resize/684x1032/
+		            [[${productDetail.imgList[2].img}]]
 		          </td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th>칼라칩 코드 이미지 URL</th>
 		          <td>
-		            http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_OW_C01.jpg
+		            [[${productDetail.colorChip}]]
 		          </td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th>함께 코디한 상품 코드</th>
-		          <td>CM2B0WPC541W_CR</td>
-		        </tr>
-		      </table>
-		
-		      <table class="table table-bordered p-0 m-0" style="width: 100%;">
-		        <colgroup>
-		          <col style="width: 30%" />
-		          <col style="width: 70%" />
-		        </colgroup>
-		        <tr class="align-middle">
-		          <th>칼라 코드</th>
-		          <td>OW</td>
-		        </tr>
-		        <tr class="align-middle">
-		          <th>상품 상세 이미지 URL1</th>
-		          <td>
-		            http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_BK_W01.jpg/dims/resize/684x1032/
-		          </td>
-		        </tr>
-		        <tr class="align-middle">
-		          <th>상품 상세 이미지 URL2</th>
-		          <td>
-		            http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_BK_W02.jpg/dims/resize/684x1032/
-		          </td>
-		        </tr>
-		        <tr class="align-middle">
-		          <th>상품 상세 이미지 URL3</th>
-		          <td>
-		            http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_BK_W03.jpg/dims/resize/684x1032/
-		          </td>
-		        </tr>
-		        <tr class="align-middle">
-		          <th>칼라칩 코드 이미지 URL</th>
-		          <td>
-		            http://newmedia.thehandsome.com/CM/2B/SS/CM2B0KOP301W_OW_C01.jpg
-		          </td>
-		        </tr>
-		        <tr class="align-middle">
-		          <th>함께 코디한 상품 코드</th>
-		          <td>CM2B0WPC541W_CR</td>
+		          <td>[[${productDetail.withProduct}]]</td>
 		        </tr>
 		      </table>
 		    </div>
@@ -180,38 +146,19 @@
 		            <th>재고량</th>
 		          </tr>
 		        </thead>
-		        <tr class="align-middle">
-		          <td rowspan="3">BK</td>
-		          <td>L</td>
-		          <td>10</td>
-		        </tr>
-		        <tr class="align-middle">
-		          <td>M</td>
-		          <td>15</td>
-		        </tr>
-		        <tr class="align-middle">
-		          <td>S</td>
-		          <td>8</td>
-		        </tr>
-		        <tr class="align-middle">
-		          <td rowspan="3">OW</td>
-		          <td>L</td>
-		          <td>10</td>
-		        </tr>
-		        <tr class="align-middle">
-		          <td>M</td>
-		          <td>15</td>
-		        </tr>
-		        <tr class="align-middle">
-		          <td>S</td>
-		          <td>8</td>
-		        </tr>
+		        <th:block th:each="productDetail,status1 :${product.productDetailList}">
+				    <tr class="align-middle" th:each="stock,status2 :${productDetail.stockList}">
+			          <td th:if="${status2.index}==0"  th:rowspan="${status2.size}">[[${productDetail.colorCode}]]</td>
+			          <td>[[${stock.psize}]]</td>
+			          <td>[[${stock.amount}]]</td>
+			        </tr>	        
+		        </th:block>
 		      </table>
 		    </div>
 		
 		    <br/>
 		    <div class="text-right" style="width: 100%;">
-		      <a class="btn btn-secondary" th:href="@{/product/list}">닫기</a>
+		      <a class="btn btn-secondary" onclick="modalHide()">닫기</a>
 		      <a class="btn btn-info" th:href="@{/product/update}">상품 수정</a>
 		    </div>
 	    </div>
