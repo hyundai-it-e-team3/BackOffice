@@ -31,6 +31,7 @@ public class ProductController {
 		model.addAttribute("categoryList", categoryList);
 		return "/product/productList";
 	}
+
 	@RequestMapping("/register")
 	public String productRegister(Model model) {
 		log.info("실행");
