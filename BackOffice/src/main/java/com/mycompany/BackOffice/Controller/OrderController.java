@@ -30,9 +30,11 @@ public class OrderController {
 	}
 	
 	@RequestMapping("/orderDetail")
-	public String orderDetail() {
+	public String orderDetail(
+			String oid,
+			Model model) {
 		log.info("Run orderDetail");
-		
+		model.addAttribute("data", orderService.getOrderInfo(oid));
 		return "order/orderDetail";
 	}
 }

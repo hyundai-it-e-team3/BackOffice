@@ -12,10 +12,6 @@
 			console.log(inputBox);
 			console.log(inputText);
 		}
-		$(function(){
-	    	let orderList = [[${orderList}]];
-			console.log(orderList);
-	    });
 	</script>
     <div>
       <h4>
@@ -55,7 +51,7 @@
             </td>
           </tr>
         <tr>
-          <th class="align-middle">배송 상태</th>
+          <th class="align-middle">상품 상태</th>
           <td colspan="2">
             <span>
               <input class="align-middle" type="checkbox" id="deliveryProgressStatusCheckbox1" value="전체">
@@ -73,6 +69,14 @@
               <input class="align-middle ml-2" type="checkbox" id="deliveryProgressStatusCheckbox4" value="배송완료">
               <label class="align-middle mb-0">배송 완료</label>
             </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox5" value="교환">
+              <label class="align-middle mb-0">교환</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox6" value="환불">
+              <label class="align-middle mb-0">환불</label>
+            </span>
           </td>
         </tr>
         <tr>
@@ -84,24 +88,17 @@
             </span>
             <span>
               <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox2" value="미결제">
-              <label class="align-middle mb-0">미결제</label>
+              <label class="align-middle mb-0">입금 대기</label>
             </span>
             <span>
               <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox3" value="입금완료">
-              <label class="align-middle mb-0">입금 완료</label>
+              <label class="align-middle mb-0">주문 완료</label>
             </span>
             <span>
               <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox4" value="주문취소">
               <label class="align-middle mb-0">주문 취소</label>
             </span>
-            <span>
-              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox5" value="교환">
-              <label class="align-middle mb-0">교환</label>
-            </span>
-            <span>
-              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox6" value="환불">
-              <label class="align-middle mb-0">환불</label>
-            </span>
+            
           </td>
         </tr>
         <tr>
@@ -121,13 +118,10 @@
         <tr>
           <th scope="col">주문일자</th>
           <th scope="col">주문번호</th>
-          <th scope="col">상품명</th>
           <th scope="col">주문자 ID</th>
           <th scope="col">결제 금액</th>
           <th scope="col">결제 수단</th>
-          <th scope="col">미결제</th>
-          <th scope="col">입금완료</th>
-          <th scope="col">주문취소</th>
+          <th scope="col">주문상태</th>
           <th scope="col">상품준비중</th>
           <th scope="col">배송중</th>
           <th scope="col">배송완료</th>
@@ -136,21 +130,18 @@
         </tr>
       </thead>
       <tbody class="text-center">
-        <tr>
-          <td>2021-11-23</td>
-          <td><a href="/order/orderDetail">202111231023451234</a></td>
-          <td>가디건 외 3</td>
-          <td>user</td>
-          <td>456000</td>
-          <td>카드</td>
-          <td>0</td>
-          <td>3</td>
-          <td>0</td>
-          <td>1</td>
-          <td>2</td>
-          <td>1</td>
-          <td>0</td>
-          <td>0</td>
+        <tr th:each="orderInfo : ${orderList}">
+          <td>[[${orderInfo.orderDate}]]</td>
+          <td><a  th:href="@{orderDetail(oid=${orderInfo.orderId})}">[[${orderInfo.orderId}]]</a></td>
+          <td>[[${orderInfo.memberId}]]</td>
+          <td>[[${orderInfo.totalPrice}]]</td>
+          <td>[[${orderInfo.payType}]]</td>
+          <td>[[${orderInfo.orderState}]]</td>
+          <td>[[${orderInfo.state1}]]</td>
+          <td>[[${orderInfo.state2}]]</td>
+          <td>[[${orderInfo.state3}]]</td>
+          <td>[[${orderInfo.state4}]]</td>
+          <td>[[${orderInfo.state5}]]</td>
         </tr>
       </tbody>
     </table>

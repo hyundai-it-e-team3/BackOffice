@@ -1,6 +1,7 @@
 package com.mycompany.BackOffice.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +27,15 @@ public class OrderService {
 							.uri("/order/infolist")
 							.retrieve()
 							.bodyToMono(new ParameterizedTypeReference<List<OrderInfo>>() {});
+		return response.block();
+	}
+	
+	public Map<String, Object> getOrderInfo(String oid) {
+		Mono<Map<String, Object>> response = client
+							.get()
+							.uri("/order/"+oid)
+							.retrieve()
+							.bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
 		return response.block();
 	}
 
