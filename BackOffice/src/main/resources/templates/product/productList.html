@@ -3,26 +3,50 @@
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
     <script th:inline="javascript">
+    
+		    let mainIndex = 0;
+		    let middleIndex = 0;
+		    let subIndex = 0;
+		    let searchType = 'None';
+		    let categoryId = 'None';
+		    let status = 0;
 			  function selectDropDownInput(event,id){
 					inputBox = document.querySelector(id);
 					inputText = event.target.innerHTML;
 					console.log(inputText);
 					inputBox.value = inputText;
+					
 			  }
-			    function fnModuleInfo(){
-			    	   $('#detailModal .modal-content').load("./detailModal");
+			    function fnModuleInfo(productId){
+			    	   console.log(productId);
+			    	   $('#detailModal .modal-content').load(`./detailModal?productId=${productId}`);
 			    	   $('#detailModal').modal();
 			    }
-			    
-			      let mainIndex = 0;
-			      let middleIndex = 0;
-			      let subIndex = 0;
+
+			      function selectDropDownBtn(event,id){
+				        inputBox = document.querySelector(id);
+				        inputText = event.target.innerHTML;
+				        inputBox.innerHTML = inputText;
+				        if(inputText=='상품명'){
+				        	searchType = 'name';
+				        }else if(inputText=='상품코드'){
+				        	searchType = 'product_id';
+				        }else{
+				        	searchType = 'brand_name';
+				        }
+				        
+				   }
 			      
-			      function selectDropDownBtn(event,id,index){
+			      function modalHide(){
+			    	  $('#detailModal').modal("hide");
+			      }
+			      
+			      function selectDropDownBtGbn1(event,id,index){
 			        inputBox = document.querySelector(id);
 			        console.log([[${categoryList}]][index]);
 			        mainIndex = index;
 			        let categoryList = [[${categoryList}]][mainIndex].categoryList;
+			        categoryId = [[${categoryList}]][mainIndex].categoryId;
 			        console.log(categoryList);
 			        $('#middleGbn').html("");
 			        $('#subGbn').html("");
@@ -37,6 +61,7 @@
 			      function selectDropDownBtnGbn2(event,id,index){
 			          inputBox = document.querySelector(id);
 			          middleIndex = index;
+			          categoryId = [[${categoryList}]][mainIndex].categoryList[middleIndex].categoryId;
 			          let categoryList = [[${categoryList}]][mainIndex].categoryList[middleIndex].categoryList;
 			          console.log(categoryList);
 			          $('#subGbn').html("");
@@ -52,6 +77,7 @@
 			          subIndex = index;
 			          let category = [[${categoryList}]][mainIndex].categoryList[middleIndex].categoryList[subIndex];
 			          console.log(category);
+			          categoryId = category.categoryId;
 			          inputText = event.target.innerHTML;
 			          inputBox.innerHTML = inputText;
 			        }
@@ -61,6 +87,45 @@
 					//let categoryList = [[${categoryList}]];
 					console.log("-------");
 			      }); 
+			      
+			      
+			      function goSearch(pageNo){
+			    	  if(!$('#inProgressChk').is(':checked')&&!$('#notInProgressChk').is(':checked')){
+			    		  status = 2;
+			    	  }else if($('#inProgressChk').is(':checked')&&!$('#notInProgressChk').is(':checked')){
+			    		  status = 1;
+			    	  }else if(!$('#inProgressChk').is(':checked')&&$('#notInProgressChk').is(':checked')){
+			    		  status = 0;
+			    	  }else{
+			    		  status = 2;
+			    	  }
+			    	  console.log(pageNo);
+			    	  let keyWord = $("#keyWord").val();
+			    	  let regStart = $("#regStart").val();
+			    	  let regEnd = $("#regEnd").val();
+			    	  $.ajax({
+			    	        url:"http://localhost:83/productFragment/productList",
+			    	        type:"GET",
+			    	        data:{
+			    	        	searchType,
+			    	        	keyWord,
+			    	        	categoryId,
+			    	        	regStart,
+			    	        	regEnd,
+			    	        	status,
+			    	        	pageNo
+			    	        },
+			    	        success: function(fragment){
+			    	        	console.log(fragment);
+			    	        	console.log("success");
+			    	        	$("#productTable").replaceWith(fragment);
+			    	        },
+			    	        error: function(xhr, status, error) {
+			    	            alert(error);
+			    	        }  
+			    	    });
+			      }
+			      
 	</script>
 	<style>
 		.status {
@@ -97,7 +162,7 @@
                   <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productSearchType')">브랜드명</a>
                 </div>
               </div>
-              <input type="text" class="form-control">
+              <input type="text" id="keyWord"  class="form-control">
             </div>
           </td>
         </tr>
@@ -110,7 +175,7 @@
                   대분류
                 </button>
                 <div class="dropdown-menu" >
-                  <a th:each="category, status: ${categoryList}" class="dropdown-item" th:onclick="javascript:selectDropDownBtn(event,'#stockGbn1',[[${status.index}]])">[[${category.name}]]</a>
+                  <a th:each="category, status: ${categoryList}" class="dropdown-item" th:onclick="javascript:selectDropDownBtGbn1(event,'#stockGbn1',[[${status.index}]])">[[${category.name}]]</a>
                 </div>
               </div>
               <div class="input-group-prepend">
@@ -133,10 +198,10 @@
         <tr>
           <th class="align-middle">상품등록일</th>
           <td class="pl-0 pt-1 pb-1">
-            <input type="date" class="form-control" name="date" required="required">
+            <input type="date" id="regStart" class="form-control" name="date">
           </td>
           <td class="pl-0 pt-1 pb-1">
-            <input type="date" class="form-control" name="date" required="required">
+            <input type="date" id="regEnd" class="form-control" name="date">
           </td>
         </tr>
         <tr>
@@ -144,69 +209,26 @@
           <th scope="row" class="align-middle">진행 여부</th>
           <td colspan="2">
             <span>
-              <input class="align-middle" type="checkbox" id="productProgressStatusCheckbox1" value="inProgress">
+              <input class="align-middle" type="checkbox" id="inProgressChk" value="inProgress">
               <label class="align-middle mb-0 ">진행 중</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="productProgressStatusCheckbox2" value="notInProgress"> 
+              <input class="align-middle ml-2" type="checkbox" id="notInProgressChk" value="notInProgress"> 
               <label class="align-middle mb-0">진행 안함</label>
             </span>
           </td>
         </tr>
         <tr>
             <td colspan="3">
-              <input type="button" class="btn btn-success float-right" value="검색" />
+              <a type="button" class="btn btn-success float-right" onclick="javascript:goSearch(1)">검색</a>
             </td>
           </tr>
       </table>
     </div>
 
     <h4>상품 목록</h4>
-
-    <table class="table table-sm table-bordered">
-      <thead class="align-middle text-center">
-        <tr>
-          <th scope="col"><input type="checkbox"></th>
-          <th scope="col">카테고리</th>
-          <th scope="col">상품코드</th>
-          <th scope="col">상품명</th>
-          <th scope="col">진열 상태</th>
-          <th scope="col">판매가</th>
-          <th scope="col">상품 등록일</th>
-          <th scope="col">조회수 대비 구매율</th>
-        </tr>
-      </thead>
-      <tbody class="align-middle text-center">
-        <tr>
-          <td><input type="checkbox"></td>
-          <td>여성<i class="bi bi-caret-right-fill"></i>상의<i class="bi bi-caret-right-fill"></i>가디건</td>
-          <td><a class="text-warning" th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
-          <td>벨티드 니트 가디건</td>
-          <td><span class="status text-success">&bull;</span>진열중</td>
-          <td>354,000</td>
-          <td>2021-11-21</td>
-          <td class="align-middle">
-			<div class="progress">
-			  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
-			</div>
-          </td>
-        </tr>
-        <tr style="text-align: center; vertical-align: middle">
-          <td><input type="checkbox"></td>
-          <td>여성<i class="bi bi-caret-right-fill"></i>상의<i class="bi bi-caret-right-fill"></i>가디건</td>
-          <td><a class="text-warning" onclick="fnModuleInfo()">CM2B0KJC210W_BK</a></td>
-          <td>벨티드 니트 가디건</td>
-          <td><span class="status text-danger">&bull;</span>진열안됨</td>
-          <td>354,000</td>
-          <td>2021-11-21</td>
-          <td class="align-middle">
-			<div class="progress">
-			  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
-			</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+	<div id="productTable">
+    </div>
   	<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">

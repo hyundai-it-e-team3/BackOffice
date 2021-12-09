@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mycompany.BackOffice.dto.CategoryDTO;
 import com.mycompany.BackOffice.dto.ProductDTO;
@@ -44,8 +45,12 @@ public class ProductController {
 		return "/product/detail";
 	}
 	@RequestMapping("/detailModal")
-	public String productDetailModal() {
+	public String productDetailModal(@RequestParam String productId, Model model) {
 		log.info("실행");
+		log.info(productId);
+		ProductDTO productDTO = productService.getProduct(productId);
+		log.info(productDTO.toString());
+		model.addAttribute("product", productDTO);
 		return "/product/detailModal";
 	}
 	@RequestMapping("/update")

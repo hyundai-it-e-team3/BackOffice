@@ -1,15 +1,19 @@
 package com.mycompany.BackOffice.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.mycompany.BackOffice.dto.CategoryDTO;
 import com.mycompany.BackOffice.dto.ProductDTO;
+import com.mycompany.BackOffice.dto.ProductSearchDTO;
 
 import reactor.core.publisher.Mono;
 
@@ -18,7 +22,7 @@ public class ProductService {
 	
 	private WebClient client = WebClient
 								.builder()
-								.baseUrl("http://kosa1.iptime.org:50503")
+								.baseUrl("http://localhost:83")
 								.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 								.build();
 
@@ -32,8 +36,7 @@ public class ProductService {
 		return response.block();
 	}
 	
-	public ProductDTO getProduct() {
-		String productId = "CM2B0KJC210W";
+	public ProductDTO getProduct(String productId) {
 		Mono<ProductDTO> response = client
 							.get()
 							.uri("/product/"+productId)
@@ -41,4 +44,5 @@ public class ProductService {
 							.bodyToMono(ProductDTO.class);
 		return response.block();
 	}
+
 }
