@@ -19,13 +19,13 @@
           <col style="width: 15%" />
           <col style="width: 85%" />
         </colgroup>
-        <tr class="align-middle text-center">
-          <th>검색 분류</th>
-          <td class="p-0">
+        <tr>
+          <th class="align-middle">검색 분류</th>
+          <td>
             <div class="input-group mt-1">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockSearchType" data-toggle="dropdown" aria-expanded="false">
-                  Dropdown
+                  분류
                 </button>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockSearchType')">상품코드</a>
@@ -39,7 +39,7 @@
         </tr>
         <tr>
           <td colspan="3" class="text-right">
-            <input type="button" class="btn btn-success" value="검색" />
+            <input type="button" class="btn btn-primary" value="검색" />
           </td>
         </tr>
       </table>
@@ -49,7 +49,6 @@
     <br/>
     <div class="d-flex justify-content-between mb-2">
 	    <h4><b>상세상품 재고관리</b></h4>
-	    <div><a class="btn btn-primary mr-2"/>수정</a><a class="btn btn-danger"/>취소</a></div>
     </div>
     <table class="table table-sm table-bordered">
       <thead class="align-middle text-center">
@@ -71,9 +70,9 @@
           <td><a class="text-warning" th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
           <td>L</td>
           <td>
-            <button class="btn btn-light btn-sm mr-1">-</button>
+            <button class="btn btn-outline-dark btn-sm mr-1" style="height: 25px; width: 25px; padding: 1px;">-</button>
             6
-            <button class="btn btn-light btn-sm ml-1">+</button>
+            <button class="btn btn-outline-dark btn-sm ml-1" style="height: 25px; width: 25px; padding: 1px;">+</button>
           </td>
           <td>4/10</td>
         </tr>
@@ -84,9 +83,9 @@
           <td><a class="text-warning" th:href="@{/product/detail}">CM2B0KJC210W_OW</a></td>
           <td>M</td>
           <td>
-            <button class="btn btn-light btn-sm mr-1">-</button>
+            <button class="btn btn-outline-dark btn-sm mr-1" style="height: 25px; width: 25px; padding: 1px;">-</button>
             7
-            <button class="btn btn-light btn-sm ml-1">+</button>
+            <button class="btn btn-outline-dark btn-sm ml-1" style="height: 25px; width: 25px; padding: 1px;">+</button>
           </td>
           <td>5/12</td>
         </tr>
@@ -97,14 +96,18 @@
           <td><a class="text-warning" th:href="@{/product/detail}">CM2B0KJC210W_BK</a></td>
           <td>L</td>
           <td>
-            <button class="btn btn-light btn-sm mr-1">-</button>
+            <button class="btn btn-outline-dark btn-sm mr-1" style="height: 25px; width: 25px; padding: 1px;">-</button>
             7
-            <button class="btn btn-light btn-sm ml-1">+</button>
+            <button class="btn btn-outline-dark btn-sm ml-1" style="height: 25px; width: 25px; padding: 1px;">+</button>
           </td>
           <td>3/10</td>
         </tr>
       </tbody>
     </table>
+    <div class="text-right">
+      <a class="btn btn-success">수정</a>
+      <a class="btn btn-light">취소</a>
+    </div>
 
   </th:block>
 </th:block>

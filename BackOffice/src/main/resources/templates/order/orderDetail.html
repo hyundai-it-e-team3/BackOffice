@@ -8,48 +8,74 @@
       <table class="table table-bordered">
         <tr>
           <th scope="row" style="width:20%">주문일자</th>
-          <td>2021-11-23</td>
+          <td>[[${data.order.orderDate}]]</td>
         </tr>
         <tr>
           <th scope="row">주문번호</th>
-          <td>202111231023451234</td>
+          <td>[[${data.order.orderId}]]</td>
         </tr>
         <tr>
           <th scope="row">주문자 ID</th>
-          <td>user</td>
+          <td>[[${data.order.memberId}]]</td>
         </tr>
         <tr>
           <th scope="row">총 결제 금액</th>
-          <td>456000</td>
+          <td>[[${data.order.totalPrice}]]</td>
         </tr>
         <tr>
           <th scope="row">결제 수단</th>
-          <td>카드</td>
+          <td>[[${data.order.payType}]]</td>
         </tr>
         <tr>
           <th scope="row">수령인</th>
-          <td>홍길동</td>
+          <td>[[${data.order.name}]]</td>
         </tr>
         <tr>
           <th scope="row">배송지 정보</th>
-          <td>서울특별시 송파구 가락동 IT벤처타워</td>
+          <td>([[${data.order.zipCode}]]) [[${data.order.address1}]] / [[${data.order.address2}]] </td>
         </tr>
         <tr>
           <th scope="row">요청사항</th>
-          <td>빠른 배송 부탁드립니다.</td>
+          <td>[[${data.order.request}]]</td>
         </tr>
         <tr>
-          <th scope="row">결제상태</th>
-          <td>입금완료</td>
+          <th scope="row">주문상태</th>
+          <td>[[${data.order.state}]]</td>
         </tr>
       </table>
-      
       <br/>
-      <h4><b>주문 상세 상품 정보</b></h4>
+      <h4><b>결제 상세 정보</b></h4>
       <table class="table table-bordered table-sm">
         <thead class="text-center">
           <tr>
-            <th scope="col">주문 상세 번호</th>
+            <th scope="col">분류</th>
+            <th scope="col">가격</th>
+            <th scope="col">상태</th>
+            <th scope="col">결제정보</th>
+            <th scope="col">은행사</th>
+            <th scope="col">할부</th>
+            <th scope="col">비고</th>
+          </tr>
+        </thead>
+        <tbody class="text-center">
+          <tr th:each="payment : ${data.payments}">
+            <td>[[${payment.type}]]</td>
+            <td>[[${payment.price}]]</td>
+            <td>[[${payment.state}]]</td>
+            <td>[[${payment.accountNo}]]</td>
+            <td>[[${payment.bank}]]</td>
+            <td>[[${payment.installment}]]</td>
+            <td></td>
+       
+          </tr>
+        </tbody>
+      </table>
+      
+      <br/>
+      <h4><b>상세 상품 정보</b></h4>
+      <table class="table table-bordered table-sm">
+        <thead class="text-center">
+          <tr>
             <th scope="col">상품 상세 번호</th>
             <th scope="col">브랜드명</th>
             <th scope="col">상품명</th>
@@ -58,22 +84,27 @@
             <th scope="col">주문수량</th>
             <th scope="col">송장번호</th>
             <th scope="col">배송상태</th>
+            <th scope="col">물류</th>
+            <th scope="col">CS</th>
           </tr>
         </thead>
+        
         <tbody class="text-center">
-          <tr>
-            <td>202111231023451234_1</td>
-            <td>CM2B0KJC210W_OW</td>
-            <td>the CASHMERE</td>
-            <td>브이넥 니트 드레스</td>
-            <td>BK</td>
-            <td>85</td>
-            <td>1</td>
-            <td>1234123</td>
-            <td>배송 중</td>
+          <tr th:each="orderDetail : ${data.orderDetails}">
+            <td>[[${orderDetail.productDetailId}]]</td>
+            <td>[[${orderDetail.brand}]]</td>
+            <td>[[${orderDetail.name}]]</td>
+            <td>[[${orderDetail.color}]]</td>
+            <td>[[${orderDetail.psize}]]</td>
+            <td>[[${orderDetail.amount}]]</td>
+            <td>[[${orderDetail.deliveryNo}]]</td>
+            <td>[[${orderDetail.state}]]</td>
+            <td><button class="btn btn-secondary btn-sm">배송상태 변경</button></td>
+            <td><button class="btn btn-secondary btn-sm">교환</button><button class="btn btn-secondary btn-sm">환불</button></td>
           </tr>
         </tbody>
       </table>
+      <button class="btn btn-secondary btn-sm">전체 취소</button>
     </th:block>
   </th:block>
   

@@ -6,7 +6,7 @@
     <th:block th:fragment="content">
     
       <div>
-        <h4><b>쿠폰 목록</b></h4>
+        <h4><b>쿠폰 검색</b></h4>
         <table class="table p-0 m-0" style="width: 100%;">
           <colgroup>
             <col style="width: 15%" />
@@ -57,51 +57,52 @@
           </tr>
           <tr>
             <td colspan="3">
-              <input type="button" class="btn btn-info float-right" value="검색" />
+              <input type="button" class="btn btn-primary float-right" value="검색" />
             </td>
           </tr>
         </table>
       </div>
   
       <br />
-        <h4 class="pb-2">
-          <b>쿠폰 목록</b>
-        </h4>
-        <div class="pl-1 pb-2">
-          <button class="btn btn-info btn-sm">선택 삭제</button>
-        </div>
-        <table class="table table-bordered table-sm">
-          <thead class="align-middle text-center">
-            <tr>
-              <th scope="col">체크박스</th>
-              <th scope="col">쿠폰번호</th>
-              <th scope="col">쿠폰명</th>
-              <th scope="col">유형</th>
-              <th scope="col">만료 일자</th>
-              <th scope="col">할인금액/할인율</th>
-              <th scope="col">발급 수량</th>
-              <th scope="col">재고</th>
-              <th scope="col">진행여부</th>
-              <th scope="col">수정</th>
-            </tr>
-          </thead>
-          <tbody class="align-middle text-center">
-            <tr>
-              <td><input type="checkbox" class="align-middle"></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td class="align-middle">
-                <a href="/promotion/editCoupon" class="btn btn-secondary btn-sm">수정</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      
+      <h4 class="pb-2">
+        <b>쿠폰 목록</b>
+      </h4>
+      <div class="pl-1 pb-2">
+        <button class="btn btn-outline-danger btn-sm">선택 삭제</button>
+      </div>
+      <table class="table table-bordered table-sm">
+        <thead class="align-middle text-center">
+          <tr>
+            <th scope="col">체크박스</th>
+            <th scope="col">쿠폰번호</th>
+            <th scope="col">쿠폰명</th>
+            <th scope="col">유형</th>
+            <th scope="col">만료 일자</th>
+            <th scope="col">할인금액/할인율</th>
+            <th scope="col">발급 수량</th>
+            <th scope="col">재고</th>
+            <th scope="col">진행여부</th>
+            <th scope="col">수정</th>
+          </tr>
+        </thead>
+        <tbody class="align-middle text-center">
+          <tr>
+            <td><input type="checkbox" class="align-middle"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="align-middle">
+              <a href="/promotion/editCoupon" class="btn btn-success btn-sm">수정</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       
     </th:block>
   </th:block>

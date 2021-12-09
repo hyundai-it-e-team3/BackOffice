@@ -128,15 +128,14 @@
 			      
 	</script>
 	<style>
-		.status {
-		    font-size: 50px;
-		    margin: 2px 2px 0 0;
-		    display: inline-block;
-		    vertical-align: middle;
-		    line-height: 10px;
-		   	height:20px;
-		}
-		
+    	.status {
+    	    font-size: 50px;
+    	    margin: 2px 2px 0 0;
+    	    display: inline-block;
+    	    vertical-align: middle;
+    	    line-height: 10px;
+    	   	height:20px;
+    	}
 	</style>
     <div>
       <h4>
@@ -148,13 +147,13 @@
           <col style="width: 45%" />
           <col style="width: 45%" />
         </colgroup>
-        <tr class="align-middle">
-          <th>검색 분류</th>
-          <td colspan="2" class="p-0">
+        <tr>
+          <th class="align-middle">검색 분류</th>
+          <td colspan="2">
             <div class="input-group mt-1">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productSearchType" data-toggle="dropdown" aria-expanded="false">
-                  Dropdown
+                  분류
                 </button>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productSearchType')">상품코드</a>
@@ -166,10 +165,10 @@
             </div>
           </td>
         </tr>
-        <tr class="align-middle">
-          <th>카테고리</th>
-          <td colspan="2" class="align-middle p-0">
-            <div class="input-group mt-1">
+        <tr>
+          <th class="align-middle">카테고리</th>
+          <td colspan="2">
+            <div class="input-group">
               <div class="input-group-prepend ">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn1" data-toggle="dropdown" aria-expanded="false">
                   대분류
@@ -225,11 +224,10 @@
           </tr>
       </table>
     </div>
-
     <h4>상품 목록</h4>
 	<div id="productTable">
-    </div>
-  	<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel" aria-hidden="true">
+  </div>
+  <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	    </div>
