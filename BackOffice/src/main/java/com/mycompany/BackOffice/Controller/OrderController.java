@@ -1,15 +1,14 @@
 package com.mycompany.BackOffice.Controller;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mycompany.BackOffice.dto.order.OrderDetail;
-import com.mycompany.BackOffice.dto.order.OrderInfo;
+import com.mycompany.BackOffice.dto.order.PagerAndOrderInfo;
 import com.mycompany.BackOffice.service.OrderService;
 
 import lombok.extern.log4j.Log4j2;
@@ -23,9 +22,10 @@ public class OrderController {
 	
 	
 	@RequestMapping("/orderList")
-	public String orderList(Model model) {
-		List<OrderInfo> orderList = orderService.getOrderInfoList();
-		model.addAttribute("orderList", orderList);
+	public String orderList(@RequestParam(defaultValue="1") int pageNo, Model model) {
+		PagerAndOrderInfo data = orderService.getOrderInfoList(pageNo);
+		model.addAttribute("orderList", data.getOrderInfos());
+		model.addAttribute("pager", data.getPager());
 		return "order/orderList";
 	}
 	

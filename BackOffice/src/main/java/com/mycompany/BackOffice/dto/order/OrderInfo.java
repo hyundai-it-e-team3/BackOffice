@@ -16,6 +16,7 @@ public class OrderInfo {
 	int state3;
 	int state4;
 	int state5;
+	int state6;
 	int totalPrice;
 	String payType;
 }
