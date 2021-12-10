@@ -16,7 +16,7 @@
 		    	inputBox = document.querySelector(id);
 				inputText = event.target.innerHTML;
 				console.log(inputText);
-				inputBox.value = inputText;
+				inputBox.innerHTML = inputText;
 				
 				if(inputText=='등록순'){
 					sortId =  'reg_date';
@@ -32,7 +32,11 @@
 					sortId =  'reg_date desc';
 				}
 				
+				console.log(inputBox);
+				
 				goSearch(1);
+				
+				console.log(inputBox);
 		    }
 		    
 		    

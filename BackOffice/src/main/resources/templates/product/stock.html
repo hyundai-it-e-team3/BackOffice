@@ -5,6 +5,7 @@
     <script type="text/javascript">
     
       let searchType = 'None';
+      let sortId = 'product_detail_id'
     
       function selectDropDownBtn(event,id){
         inputBox = document.querySelector(id);
@@ -23,6 +24,28 @@
         console.log(inputText);
       }
       
+	    function selectSort(event,id){
+	    	inputBox = document.querySelector(id);
+			inputText = event.target.innerHTML;
+			console.log(inputText);
+			inputBox.innerHTML = inputText;
+			
+			if(inputText=='브랜드순'){
+				sortId =  'brand_name';
+			}else if(inputText=='상세상품 코드순'){
+				sortId =  'product_detail_id';
+			}else if(inputText=='상품이름순'){
+				sortId =  'name';
+			}
+			console.log(inputBox);
+			
+			goSearch(1);
+			
+			console.log(inputBox);
+	    }
+	    
+	    
+	    
 	    function fnModuleInfo(productId){
 	    	   console.log(productId);
 	    	   $('#detailModal .modal-content').load(`./detailModal?productId=${productId}`);
@@ -39,7 +62,8 @@
     	        data:{
     	        	searchType,
     	        	keyWord,
-    	        	pageNo
+    	        	pageNo,
+    	        	sortId
     	        },
     	        success: function(fragment){
     	        	console.log(fragment);
@@ -89,7 +113,17 @@
     
     <br/>
     <div class="d-flex justify-content-between mb-2">
-	    <h4><b>상세상품 재고관리</b></h4>
+    	<h4><b>상세상품 재고관리</b></h4>
+        <div class="input-group-prepend">
+        	<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortType" data-toggle="dropdown" aria-expanded="false">
+            	정렬
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">브랜드순</a>
+                <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">상세상품 코드순</a>
+                <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">상품이름순</a>
+            </div>
+        </div>
     </div>
     <div id="stockTable">
 	    
