@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.mycompany.BackOffice.dto.order.OrderDetail;
 import com.mycompany.BackOffice.dto.order.OrderInfo;
+import com.mycompany.BackOffice.dto.order.PagerAndOrderInfo;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -27,12 +28,12 @@ public class OrderService {
 			.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 			.build();
 	
-	public List<OrderInfo> getOrderInfoList() {
-		Mono<List<OrderInfo>> response = client
+	public PagerAndOrderInfo getOrderInfoList(int pageNo) {
+		Mono<PagerAndOrderInfo> response = client
 							.get()
-							.uri("/order/infolist")
+							.uri("/order/infolist?pageNo="+pageNo)
 							.retrieve()
-							.bodyToMono(new ParameterizedTypeReference<List<OrderInfo>>() {});
+							.bodyToMono(PagerAndOrderInfo.class);
 		return response.block();
 	}
 	
