@@ -90,21 +90,70 @@
         </thead>
         
         <tbody class="text-center">
-          <tr th:each="orderDetail : ${data.orderDetails}">
-            <td>[[${orderDetail.productDetailId}]]</td>
-            <td>[[${orderDetail.brand}]]</td>
-            <td>[[${orderDetail.name}]]</td>
-            <td>[[${orderDetail.color}]]</td>
-            <td>[[${orderDetail.psize}]]</td>
-            <td>[[${orderDetail.amount}]]</td>
-            <td>[[${orderDetail.deliveryNo}]]</td>
-            <td>[[${orderDetail.state}]]</td>
-            <td><button class="btn btn-secondary btn-sm">배송상태 변경</button></td>
+          <tr th:each="orderDetail,index : ${data.orderDetails}">
+            <td th:text="${orderDetail.productDetailId}"></td>
+            <td th:text="${orderDetail.brand}"></td>
+            <td th:text="${orderDetail.name}"></td>
+            <td th:text="${orderDetail.color}"></td>
+            <td th:text="${orderDetail.psize}"></td>
+            <td th:text="${orderDetail.amount}"></td>
+            <td th:text="${orderDetail.deliveryNo}"></td>
+            <td th:text="${orderDetail.state}"></td>
+            <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" th:onclick="changeODInfo([[${orderDetail.productDetailId}]],[[${orderDetail.psize}]]);">배송상태 변경</button></td>
             <td><button class="btn btn-secondary btn-sm">교환</button><button class="btn btn-secondary btn-sm">환불</button></td>
           </tr>
         </tbody>
       </table>
       <button class="btn btn-secondary btn-sm">전체 취소</button>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLongTitle">배송상태 변경</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body d-flex justify-content-between">
+		      	<form id="delivery-form" action="/order/changestate" method="post">
+		      		<input type="hidden" id="hidden-oid" name="orderId"/>
+		      		<input type="hidden" id="hidden-pdid" name="productDetailId"/>
+		      		<input type="hidden" id="hidden-psize" name="psize"/>
+		      		<input type="hidden" id="hidden-state" name="state"/>
+			        <button type="button" class="btn btn-primary" onclick="changeState(1)">출고대기</button>
+			        <button type="button" class="btn btn-primary" onclick="changeState(2)">배송준비</button>
+			        <button type="button" class="btn btn-primary" onclick="changeState(3)">배송중</button>
+			        <button type="button" class="btn btn-primary" onclick="changeState(4)">배송완료</button>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<script th:inline="javascript">
+	      	var OdInfo = {
+	      		orderId : [[${data.order.orderId}]],
+	      		productDetailId : null,
+	      		psize : null,
+	      	};
+	        function changeODInfo(pdId, psize) {
+	            OdInfo.productDetailId = pdId;
+	            OdInfo.psize = psize;
+	            $("#hidden-oid").val(OdInfo.orderId);
+	            $("#hidden-pdid").val(pdId);
+	            $("#hidden-psize").val(psize);
+	            console.log(OdInfo);
+	        };
+	        function changeState(state) {
+	        	console.log(state)
+	        	$("#hidden-state").val(state);
+	        	$('#delivery-form').submit();
+	        }
+      	</script>
     </th:block>
   </th:block>
   

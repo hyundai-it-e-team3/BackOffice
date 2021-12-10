@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mycompany.BackOffice.dto.order.OrderDetail;
 import com.mycompany.BackOffice.dto.order.OrderInfo;
 import com.mycompany.BackOffice.service.OrderService;
 
@@ -23,7 +24,6 @@ public class OrderController {
 	
 	@RequestMapping("/orderList")
 	public String orderList(Model model) {
-		log.info("Run orderList");
 		List<OrderInfo> orderList = orderService.getOrderInfoList();
 		model.addAttribute("orderList", orderList);
 		return "order/orderList";
@@ -33,8 +33,16 @@ public class OrderController {
 	public String orderDetail(
 			String oid,
 			Model model) {
-		log.info("Run orderDetail");
 		model.addAttribute("data", orderService.getOrderInfo(oid));
 		return "order/orderDetail";
+	}
+	
+	@RequestMapping("/changestate")
+	public String changeState(
+			OrderDetail orderDetail,
+			Model model) {
+		log.info(orderDetail.toString());
+		orderService.updateOdState(orderDetail);
+		return "redirect:/order/orderDetail?oid="+orderDetail.getOrderId();
 	}
 }
