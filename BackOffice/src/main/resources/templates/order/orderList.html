@@ -58,23 +58,27 @@
               <label class="align-middle mb-0">전체</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="deliveryProgressStatusCheckbox2" value="상품준비중">
+              <input class="align-middle" type="checkbox" id="deliveryProgressStatusCheckbox2" value="출고대기">
+              <label class="align-middle mb-0">출고 대기</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="deliveryProgressStatusCheckbox3" value="상품준비중">
               <label class="align-middle mb-0">상품 준비 중</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="deliveryProgressStatusCheckbox3" value="배송중">
+              <input class="align-middle ml-2" type="checkbox" id="deliveryProgressStatusCheckbox4" value="배송중">
               <label class="align-middle mb-0">배송 중</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="deliveryProgressStatusCheckbox4" value="배송완료">
+              <input class="align-middle ml-2" type="checkbox" id="deliveryProgressStatusCheckbox5" value="배송완료">
               <label class="align-middle mb-0">배송 완료</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox5" value="교환">
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox6" value="교환">
               <label class="align-middle mb-0">교환</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox6" value="환불">
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox7" value="환불">
               <label class="align-middle mb-0">환불</label>
             </span>
           </td>
@@ -95,7 +99,15 @@
               <label class="align-middle mb-0">주문 완료</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox4" value="주문취소">
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox4" value="입금완료">
+              <label class="align-middle mb-0">주문 처리중</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox5" value="입금완료">
+              <label class="align-middle mb-0">주문 확정</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="orderProgressStatusCheckbox6" value="주문취소">
               <label class="align-middle mb-0">주문 취소</label>
             </span>
             
@@ -122,6 +134,7 @@
           <th scope="col">결제 금액</th>
           <th scope="col">결제 수단</th>
           <th scope="col">주문상태</th>
+          <th scope="col">전체</th>
           <th scope="col">상품준비중</th>
           <th scope="col">배송중</th>
           <th scope="col">배송완료</th>
@@ -137,6 +150,7 @@
           <td>[[${orderInfo.totalPrice}]]</td>
           <td>[[${orderInfo.payType}]]</td>
           <td>[[${orderInfo.orderState}]]</td>
+          <td>[[${orderInfo.totalProduct}]]</td>
           <td>[[${orderInfo.state1}]]</td>
           <td>[[${orderInfo.state2}]]</td>
           <td>[[${orderInfo.state3}]]</td>
@@ -145,6 +159,32 @@
         </tr>
       </tbody>
     </table>
+    
+    <!-- Button trigger modal -->
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+	  Launch demo modal
+	</button>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
   </th:block>
 </th:block>
