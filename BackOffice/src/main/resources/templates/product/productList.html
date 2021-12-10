@@ -10,6 +10,32 @@
 		    let searchType = 'None';
 		    let categoryId = 'None';
 		    let status = 0;
+		    let sortId = 'category_id';
+		    
+		    function selectSort(event,id){
+		    	inputBox = document.querySelector(id);
+				inputText = event.target.innerHTML;
+				console.log(inputText);
+				inputBox.value = inputText;
+				
+				if(inputText=='등록순'){
+					sortId =  'reg_date';
+				}else if(inputText=='고가순'){
+					sortId =  'price desc';
+				}else if(inputText=='저가순'){
+					sortId =  'price';
+				}else if(inputText=='상품코드순'){
+					sortId =  'product_id';
+				}else if(inputText=='상품이름순'){
+					sortId =  'name';
+				}else if(inputText=='최신등록순'){
+					sortId =  'reg_date desc';
+				}
+				
+				goSearch(1);
+		    }
+		    
+		    
 			  function selectDropDownInput(event,id){
 					inputBox = document.querySelector(id);
 					inputText = event.target.innerHTML;
@@ -113,7 +139,8 @@
 			    	        	regStart,
 			    	        	regEnd,
 			    	        	status,
-			    	        	pageNo
+			    	        	pageNo,
+			    	        	sortId
 			    	        },
 			    	        success: function(fragment){
 			    	        	console.log(fragment);
@@ -224,7 +251,23 @@
           </tr>
       </table>
     </div>
-    <h4>상품 목록</h4>
+    <div class="d-flex justify-content-between mb-2">
+    	<h4>상품 목록</h4>
+        <div class="input-group-prepend">
+        	<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortType" data-toggle="dropdown" aria-expanded="false">
+            	정렬
+            </button>
+            <div class="dropdown-menu">
+            	<a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">등록순</a>
+            	<a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">최신등록순</a>
+                <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">고가순</a>
+                <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">저가순</a>
+                <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">상품코드순</a>
+                <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">상품이름순</a>
+            </div>
+        </div>
+    </div>
+    
 	<div id="productTable">
   </div>
   <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel" aria-hidden="true">
