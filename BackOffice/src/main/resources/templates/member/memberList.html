@@ -91,29 +91,39 @@
           <th scope="col">가입일자</th>
           <th scope="col">ID</th>
           <th scope="col">이름</th>
+          <th scope="col">이메일</th>
           <th scope="col">전화번호</th>
-          <th scope="col">나이</th>
+          <th scope="col">생년월일</th>
           <th scope="col">주소</th>
           <th scope="col">등급</th>
           <th scope="col">포인트</th>
+          <th scope="col">회원상태</th>
           <th scope="col">관련 내역 보기</th>
         </tr>
       </thead>
       <tbody class="align-middle text-center">
-        <tr>
+        <tr th:each="member : ${memberList}">
           <td class="align-middle"><input type="checkbox" class="align-middle"></td>
-          <td class="align-middle">2021-11-11</td>
-          <td class="align-middle">user</td>
-          <td class="align-middle">홍길동</td>
-          <td class="align-middle">010-1111-1111</td>
-          <td class="align-middle">34</td>
-          <td class="align-middle">서울</td>
-          <td class="align-middle">3</td>
-          <td class="align-middle">1234</td>
-          <td  class="align-middle">
-            <a href="memberOrder" class="btn btn-success btn-sm">주문</a>
-            <a href="memberCoupon" class="btn btn-success btn-sm">쿠폰</a>
-            <a href="memberPoint" class="btn btn-success btn-sm">포인트</a>
+          <td class="align-middle">[[${#dates.format(member.regDate, 'yyyy-mm-dd')}]]</td>
+          <td class="align-middle">[[${member.memberId}]]</td>
+          <td class="align-middle">[[${member.name}]]</td>
+          <td class="align-middle">[[${member.email}]]</td>
+          <td class="align-middle">[[${member.tel}]]</td>
+          <td class="align-middle">[[${#dates.format(member.birthday, 'yyyy-mm-dd')}]]</td>
+          <td class="align-middle">[[${member.address1}]] [[${member.address2}]]</td>
+          <td class="align-middle">[[${member.memberLevel}]]</td>
+          <td class="align-middle">[[${member.point}]]</td>
+          <td class="align-middle">
+            <th:block th:switch="${member.status}">
+              <th:block th:case="'0'">탈퇴회원</th:block>
+              <th:block th:case="'1'">일반회원</th:block>
+              <th:block th:case="'2'">휴면회원</th:block>
+            </th:block>
+          </td>
+          <td class="align-middle">
+            <a th:href="@{'/member/memberOrder/' + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">주문</a>
+            <a th:href="@{'/member/memberCoupon/' + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">쿠폰</a>
+            <a th:href="@{'/member/memberPoint/'  + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">포인트</a>
           </td>
         </tr>
       </tbody>
