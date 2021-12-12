@@ -128,7 +128,40 @@
         </tr>
       </tbody>
     </table>
-
+    
+    <!-- Pagination -->
+    <nav>
+      <ul class="pagination d-flex justify-content-center">
+        <li class="page-item">
+          <a class="page-link" th:href="@{/member/memberList(pageNo=1)}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">First</span>
+          </a>
+        </li>
+        <li class="page-item" th:if="${pager.groupNo>1}">
+          <a class="page-link"  th:href="@{memberList(pageNo=${pager.startPageNo-1})}"  aria-label="Previous">
+            <span aria-hidden="true">이전</span>
+            <span class="sr-only">이전</span>
+          </a>
+        </li>
+        <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
+          <li class="page-item"><a class="page-link" th:href="@{memberList(pageNo=${i})}">[[${i}]]</a></li>
+        </th:block>
+        <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
+          <a class="page-link" th:href="@{memberList(pageNo=${pager.endPageNo+1})}" aria-label="Previous">
+            <span aria-hidden="true">다음</span>
+            <span class="sr-only">다음</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" th:href="@{memberList(pageNo=${pager.totalPageNo})}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Last</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
   </th:block>
 </th:block>
 </html>

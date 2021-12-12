@@ -1,8 +1,5 @@
 package com.mycompany.BackOffice.Controller;
 
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -12,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.mycompany.BackOffice.dto.member.Member;
-import com.mycompany.BackOffice.dto.member.MemberCoupon;
-import com.mycompany.BackOffice.dto.member.Point;
-import com.mycompany.BackOffice.dto.order.OrderInfo;
+import com.mycompany.BackOffice.dto.member.PagerAndMember;
+import com.mycompany.BackOffice.dto.member.PagerAndMemberCoupon;
+import com.mycompany.BackOffice.dto.member.PagerAndPoint;
+import com.mycompany.BackOffice.dto.order.PagerAndOrderInfo;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -31,68 +28,72 @@ public class MemberController {
 									.build();
 	
 	@RequestMapping("/memberList")
-	public String memberList(Model model) {
+	public String memberList(@RequestParam(defaultValue="1") int pageNo, Model model) {
 		log.info("Run MemberList");
 		
-		List<Member> memberList = webClient
-									.get()
-								    .uri("/member")
-								    .retrieve()
-								    .bodyToMono(new ParameterizedTypeReference<List<Member>>() {})
-								    .block();
+		PagerAndMember data = webClient
+				.get()
+			    .uri("/member")
+			    .retrieve()
+			    .bodyToMono(PagerAndMember.class)
+			    .block();
 		
-		model.addAttribute(memberList);
+		model.addAttribute("pager", data.getPager());
+		model.addAttribute("memberList", data.getMember());
 		
 		return "member/memberList";
 	}
 
 	@RequestMapping("/memberCoupon/{memberId}")
-	public String memberCoupon(@PathVariable String memberId, @RequestParam String name, Model model) {
+	public String memberCoupon(@PathVariable String memberId, @RequestParam(defaultValue="1") int pageNo, @RequestParam String name, Model model) {
 		log.info("Run MemberCoupon");
 		
-		List<MemberCoupon> couponList = webClient
+		PagerAndMemberCoupon data = webClient
 				.get()
-				.uri("/member/coupon/list/" + memberId)
+				.uri("/member/coupon/list/" + memberId + "?pageNo=" + pageNo)
 				.retrieve()
-				.bodyToMono(new ParameterizedTypeReference<List<MemberCoupon>>() {})
+				.bodyToMono(PagerAndMemberCoupon.class)
 				.block();
 
-		model.addAttribute("couponList", couponList);
+		model.addAttribute("couponList", data.getMemberCoupon());
 		model.addAttribute("name", name);
-		log.info(couponList.toString());
+		model.addAttribute("pager", data.getPager());
 		
 		return "member/memberCoupon";
 	}
 	
 	@RequestMapping("/memberOrder/{memberId}")
-	public String memberOrder(@PathVariable String memberId, Model model) {
+	public String memberOrder(@PathVariable String memberId, @RequestParam(defaultValue="1") int pageNo, @RequestParam String name, Model model) {
 		log.info("Run MemberOrder");
 		
-		List<OrderInfo> orderList = webClient
+		PagerAndOrderInfo data = webClient
 				.get()
-				.uri("/order/infolist/" + memberId)
+				.uri("/order/infolist/" + memberId + "?pageNo=" + pageNo)
 				.retrieve()
-				.bodyToMono(new ParameterizedTypeReference<List<OrderInfo>>() {})
+				.bodyToMono(PagerAndOrderInfo.class)
 				.block();
 		
-		model.addAttribute("orderList", orderList);
+		model.addAttribute("orderList", data.getOrderInfos());
+		model.addAttribute("name", name);
+		model.addAttribute("pager", data.getPager());
 		
 		return "member/memberOrder";
 	}
 	
 	@RequestMapping("/memberPoint/{memberId}")
-	public String memberPoint(@PathVariable String memberId, @RequestParam String name, Model model) {
+	public String memberPoint(@PathVariable String memberId, @RequestParam(defaultValue="1") int pageNo, @RequestParam String name, Model model) {
 		log.info("Run memberPoint");
 		
-		List<Point> pointList = webClient
+		PagerAndPoint data = webClient
 				.get()
-				.uri("/point/list/" + memberId)
+				.uri("/point/list/" + memberId + "?pageNo=" + pageNo)
 				.retrieve()
-				.bodyToMono(new ParameterizedTypeReference<List<Point>>() {})
+				.bodyToMono(PagerAndPoint.class)
 				.block();
 
-		model.addAttribute("pointList", pointList);
+		model.addAttribute("pointList", data.getPoint());
 		model.addAttribute("name", name);
+		model.addAttribute("pager", data.getPager());
 	
 		return "member/memberPoint";
 	}
