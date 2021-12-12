@@ -13,13 +13,9 @@
         <tr>
           <th scope="col">주문일자</th>
           <th scope="col">주문번호</th>
-          <th scope="col">상품명</th>
-          <th scope="col">주문자 ID</th>
           <th scope="col">결제 금액</th>
           <th scope="col">결제 수단</th>
-          <th scope="col">미결제</th>
-          <th scope="col">입금완료</th>
-          <th scope="col">주문취소</th>
+          <th scope="col">주문상태</th>
           <th scope="col">상품준비중</th>
           <th scope="col">배송중</th>
           <th scope="col">배송완료</th>
@@ -28,21 +24,17 @@
         </tr>
       </thead>
       <tbody class="text-center">
-        <tr>
-          <td>2021-11-23</td>
-          <td><a href="/order/orderDetail">202111231023451234</a></td>
-          <td>가디건 외 3</td>
-          <td>user</td>
-          <td>456000</td>
-          <td>카드</td>
-          <td>0</td>
-          <td>3</td>
-          <td>0</td>
-          <td>1</td>
-          <td>2</td>
-          <td>1</td>
-          <td>0</td>
-          <td>0</td>
+        <tr th:each="orderInfo : ${orderList}">
+          <td>[[${#dates.format(orderInfo.orderDate, 'yyyy-mm-dd')}]]</td>
+          <td><a  th:href="@{/order/orderDetail(oid=${orderInfo.orderId})}">[[${orderInfo.orderId}]]</a></td>
+          <td>[[${#numbers.formatInteger(orderInfo.totalPrice, 3, 'COMMA')}]]</td>
+          <td>[[${orderInfo.payType}]]</td>
+          <td>[[${orderInfo.orderState}]]</td>
+          <td>[[${orderInfo.state1}]]</td>
+          <td>[[${orderInfo.state2}]]</td>
+          <td>[[${orderInfo.state3}]]</td>
+          <td>[[${orderInfo.state4}]]</td>
+          <td>[[${orderInfo.state5}]]</td>
         </tr>
       </tbody>
     </table>

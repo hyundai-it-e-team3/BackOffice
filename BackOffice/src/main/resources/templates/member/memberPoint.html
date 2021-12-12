@@ -6,27 +6,27 @@
     <th:block th:fragment="content">
     
       <h4 class="pb-2">
-        <b>회원 - 포인트내역</b>
+        <b>[[${name}]] 님의 포인트내역</b>
       </h4>
       <table class="table table-bordered table-sm">
       <thead class="text-center">
         <tr>
-          <th scope="col">회원 ID</th>
-          <th scope="col">회원 이름</th>
-          <th scope="col">사용 일자</th>
-          <th scope="col">금액</th>
-          <th scope="col">내용</th>
-          <th scope="col">적립/차감/만료/환불</th>
+          <th scope="col">번호</th>
+          <th scope="col">ID</th>
+          <th scope="col">일자</th>
+          <th scope="col">관련주문번호</th>
+          <th scope="col">포인트</th>
+          <th scope="col">적립/사용/소멸</th>
         </tr>
       </thead>
       <tbody class="text-center">
-        <tr>
-          <td>user</td>
-          <td>홍길동</td>
-          <td>2021-11-15</td>
-          <td>2000</td>
-          <td>상품 구입</td>
-          <td>차감</td>
+        <tr th:each="point : ${pointList}">
+          <td>[[${point.pointSeq}]]</td>
+          <td>[[${point.memberId}]]</td>
+          <td>[[${#dates.format(point.regDate, 'yyyy-mm-dd')}]]</td>
+          <td>[[${point.orderId}]]</td>
+          <td>[[${#numbers.formatInteger(point.point, 3, 'COMMA')}]]</td>
+          <td>[[${point.type}]]</td>
         </tr>
       </tbody>
     </table>
