@@ -6,13 +6,12 @@
     <th:block th:fragment="content">
     
       <h4 class="pb-2">
-        <b>[[${name}]] 님의 포인트내역</b>
+        <b>[[${name}]]([[${memberId}]]) 님의 포인트내역</b>
       </h4>
       <table class="table table-bordered table-sm">
       <thead class="text-center">
         <tr>
           <th scope="col">번호</th>
-          <th scope="col">ID</th>
           <th scope="col">일자</th>
           <th scope="col">관련주문번호</th>
           <th scope="col">포인트</th>
@@ -22,8 +21,7 @@
       <tbody class="text-center">
         <tr th:each="point : ${pointList}">
           <td>[[${point.pointSeq}]]</td>
-          <td>[[${point.memberId}]]</td>
-          <td>[[${#dates.format(point.regDate, 'yyyy-mm-dd')}]]</td>
+          <td>[[${#dates.format(point.regDate, 'yyyy-MM-dd')}]]</td>
           <td>[[${point.orderId}]]</td>
           <td>[[${#numbers.formatInteger(point.point, 3, 'COMMA')}]]</td>
           <td>[[${point.type}]]</td>
@@ -32,7 +30,7 @@
     </table>
     
     <!-- Pagination -->
-    <nav>
+    <nav th:if="${pager.totalRows} > 0">
       <ul class="pagination d-flex justify-content-center">
         <li class="page-item">
           <a class="page-link" th:href="@{'/member/memberPoint/' + ${memberId}(name=${name})}"  aria-label="Previous">

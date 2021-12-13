@@ -6,13 +6,12 @@
     <th:block th:fragment="content">
     
       <h4 class="pb-2">
-        <b>[[${name}]] 님의 쿠폰내역</b>
+        <b>[[${name}]]([[${memberId}]]) 님의 쿠폰내역</b>
       </h4>
       
       <table class="table table-bordered table-sm">
       <thead>
         <tr class="text-center">
-          <th scope="col">회원 ID</th>
           <th scope="col">쿠폰번호</th>
           <th scope="col">쿠폰명</th>
           <th scope="col">유형</th>
@@ -24,7 +23,6 @@
       </thead>
       <tbody class="text-center">
         <tr th:each="coupon : ${couponList}">
-          <td>[[${coupon.memberId}]]</td>
           <td>[[${coupon.couponId}]]</td>
           <td>[[${coupon.name}]]</td>
           <td>
@@ -41,8 +39,8 @@
               [[${coupon.amount}]]
             </th:block>
           </td>
-          <td>[[${#dates.format(coupon.regDate, 'yyyy-mm-dd')}]]</td>
-          <td>[[${#dates.format(coupon.expDate, 'yyyy-mm-dd')}]]</td>
+          <td>[[${#dates.format(coupon.regDate, 'yyyy-MM-dd')}]]</td>
+          <td>[[${#dates.format(coupon.expDate, 'yyyy-MM-dd')}]]</td>
           <td>
             <th:block th:switch="${coupon.status}">
               <th:block th:case="'1'">사용 전</th:block>
@@ -55,7 +53,7 @@
     </table>
     
     <!-- Pagination -->
-    <nav>
+    <nav th:if="${pager.totalRows} > 0">
       <ul class="pagination d-flex justify-content-center">
         <li class="page-item">
           <a class="page-link" th:href="@{'/member/memberCoupon/' + ${memberId}(name=${name})}"  aria-label="Previous">
