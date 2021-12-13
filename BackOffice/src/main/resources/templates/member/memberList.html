@@ -104,12 +104,12 @@
       <tbody class="align-middle text-center">
         <tr th:each="member : ${memberList}">
           <td class="align-middle"><input type="checkbox" class="align-middle"></td>
-          <td class="align-middle">[[${#dates.format(member.regDate, 'yyyy-mm-dd')}]]</td>
+          <td class="align-middle">[[${#dates.format(member.regDate, 'yyyy-MM-dd')}]]</td>
           <td class="align-middle">[[${member.memberId}]]</td>
           <td class="align-middle">[[${member.name}]]</td>
           <td class="align-middle">[[${member.email}]]</td>
           <td class="align-middle">[[${member.tel}]]</td>
-          <td class="align-middle">[[${#dates.format(member.birthday, 'yyyy-mm-dd')}]]</td>
+          <td class="align-middle">[[${#dates.format(member.birthday, 'yyyy-MM-dd')}]]</td>
           <td class="align-middle">[[${member.address1}]] [[${member.address2}]]</td>
           <td class="align-middle">[[${member.memberLevel}]]</td>
           <td class="align-middle">[[${member.point}]]</td>
@@ -130,7 +130,7 @@
     </table>
     
     <!-- Pagination -->
-    <nav>
+    <nav  th:if="${pager.totalRows} > 0">
       <ul class="pagination d-flex justify-content-center">
         <li class="page-item">
           <a class="page-link" th:href="@{/member/memberList(pageNo=1)}" aria-label="Previous">
