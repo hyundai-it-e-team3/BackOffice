@@ -22,8 +22,13 @@
         <tr th:each="point : ${pointList}">
           <td>[[${point.pointSeq}]]</td>
           <td>[[${#dates.format(point.regDate, 'yyyy-MM-dd')}]]</td>
-          <td>[[${point.orderId}]]</td>
-          <td>[[${#numbers.formatInteger(point.point, 3, 'COMMA')}]]</td>
+          <td><a th:href="@{/order/orderDetail(oid=${point.orderId})}">[[${point.orderId}]]</a></td>
+          <th:block th:if="${point.point}  > 99 or ${point.point} < -99">
+            <td>[[${#numbers.formatInteger(point.point, 3, 'COMMA')}]]</td>
+          </th:block>
+          <th:block th:unless="${point.point}  > 99 or ${point.point} < -99">
+            <td>[[${point.point}]]</td>
+          </th:block>
           <td>[[${point.type}]]</td>
         </tr>
       </tbody>

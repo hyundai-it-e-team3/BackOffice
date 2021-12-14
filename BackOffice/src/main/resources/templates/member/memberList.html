@@ -3,20 +3,78 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
-    <script type="text/javascript">
-      function selectDropDownBtn(event,id){
-        inputBox = document.querySelector(id);
-        inputText = event.target.innerHTML;
-        inputBox.innerHTML = inputText;
-        console.log(inputBox);
-        console.log(inputText);
-      }
+    <script th:inline="javascript">
+    	let searchType;
+  		function selectDropDownBtn(event,id){
+    		inputBox = document.querySelector(id);
+    		searchType = event.target.innerHTML;
+    		inputBox.innerHTML = searchType;
+  		}
+  		
+		$(document).ready(function() {
+  			
+  			$("#memberLevelListAll").click(function() {
+  				if ($("#memberLevelListAll").prop("checked")) {
+  					$("[name='memberLevelList']").prop("checked",  true);
+  				} else {
+  					$("[name='memberLevelList']").prop("checked",  false);	
+				}
+  			});
+  			
+  			$("[name='memberLevelList']").click(function() {
+  				if ($("input:checkbox[name='memberLevelList']:checked").length == 6) {
+  					$("#memberLevelListAll").prop("checked",  true);
+  				} else {
+  					$("#memberLevelListAll").prop("checked",  false);
+  				}
+  			});
+  			
+  		});
+  		
+  		function goSearch() {
+			let searchTypeMember = {
+	    		searchMemberId: "",
+	    		searchName: "",
+	    		memberLevelList: []
+		    };
+			
+    		let searchKeyword = $("#searchKeyword").val();
+    
+    		if(searchType ===  "주문자 ID") {
+    			searchTypeMember.searchMemberId = searchKeyword;
+    		} else if (searchType === "회원명") {
+    			searchTypeMember.searchName = searchKeyword;
+    		}
+    		
+    		$("input:checkbox[name='memberLevelList']:checked").each(
+        		function() {
+        			searchTypeMember.memberLevelList.push(this.value);
+    	    	}
+        	);
+    		console.log(searchTypeMember);
+    
+    		$.ajax({
+    			type: "POST",
+    			url: "/member/memberList",
+    			contentType: 'application/json',
+    			data: JSON.stringify(searchTypeMember),
+    			dataType: "html",
+    			success: function(fragment) {
+    				$("#memberTable").replaceWith(fragment);
+    				console.log(fragment);
+    			},
+    			error: function(error) {
+    				console.log(error);
+    			}
+    		});
+		}
     </script>
     
     <div>
       <h4>
         <b>회원 검색</b>
       </h4>
+
       <table class="table p-0 m-0" style="width: 100%;">
         <colgroup>
           <col style="width: 10%" />
@@ -34,7 +92,7 @@
                   <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#memberSearchType')">회원명</a>
                 </div>
               </div>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" id="searchKeyword" value="">
             </div>
           </td>
         </tr>
@@ -42,125 +100,125 @@
           <th class="align-middle">등급</th>
           <td colspan="2">
             <span>
-              <input class="align-middle" type="checkbox" id="memberlevelCheckbox1" value="전체" checked>
+              <input class="align-middle" type="checkbox" id="memberLevelListAll">
               <label class="align-middle mb-0">전체</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox1" value="level1">
+              <input class="align-middle ml-2" type="checkbox" name="memberLevelList" value="1">
               <label class="align-middle mb-0">Lv.1</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox2" value="level2">
+              <input class="align-middle ml-2" type="checkbox" name="memberLevelList" value="2">
               <label class="align-middle mb-0">Lv.2</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox3" value="level3">
+              <input class="align-middle ml-2" type="checkbox" name="memberLevelList" value="3">
               <label class="align-middle mb-0">Lv.3</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox4" value="level4">
+              <input class="align-middle ml-2" type="checkbox" name="memberLevelList" value=4>
               <label class="align-middle mb-0">Lv.4</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox5" value="level5">
+              <input class="align-middle ml-2" type="checkbox" name="memberLevelList" value="5">
               <label class="align-middle mb-0">Lv.5</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="memberlevelCheckbox6" value="level6">
+              <input class="align-middle ml-2" type="checkbox" name="memberLevelList" value="6">
               <label class="align-middle mb-0">Lv.6</label>
             </span>
           </td>
         </tr>
         <tr>
           <td colspan="3" style="text-align: right">
-            <input type="button" class="btn btn-primary" value="검색" />
+            <input type="button" class="btn btn-primary" onclick="javascript:goSearch()"value="검색" />
           </td>
         </tr>
       </table>
     </div>
-
-    <br />
-    <h4 class="pb-2"><b>회원 목록</b></h4>
-    <div class="pl-1 pb-2">
-          <button class="btn btn-outline-danger btn-sm">선택 삭제</button>
-        </div>
-    <table class="table table-bordered table-sm">
-      <thead class="align-middle text-center">
-        <tr>
-          <th scope="col">체크박스</th>
-          <th scope="col">가입일자</th>
-          <th scope="col">ID</th>
-          <th scope="col">이름</th>
-          <th scope="col">이메일</th>
-          <th scope="col">전화번호</th>
-          <th scope="col">생년월일</th>
-          <th scope="col">주소</th>
-          <th scope="col">등급</th>
-          <th scope="col">포인트</th>
-          <th scope="col">회원상태</th>
-          <th scope="col">관련 내역 보기</th>
-        </tr>
-      </thead>
-      <tbody class="align-middle text-center">
-        <tr th:each="member : ${memberList}">
-          <td class="align-middle"><input type="checkbox" class="align-middle"></td>
-          <td class="align-middle">[[${#dates.format(member.regDate, 'yyyy-MM-dd')}]]</td>
-          <td class="align-middle">[[${member.memberId}]]</td>
-          <td class="align-middle">[[${member.name}]]</td>
-          <td class="align-middle">[[${member.email}]]</td>
-          <td class="align-middle">[[${member.tel}]]</td>
-          <td class="align-middle">[[${#dates.format(member.birthday, 'yyyy-MM-dd')}]]</td>
-          <td class="align-middle">[[${member.address1}]] [[${member.address2}]]</td>
-          <td class="align-middle">[[${member.memberLevel}]]</td>
-          <td class="align-middle">[[${member.point}]]</td>
-          <td class="align-middle">
-            <th:block th:switch="${member.status}">
-              <th:block th:case="'0'">탈퇴회원</th:block>
-              <th:block th:case="'1'">일반회원</th:block>
-              <th:block th:case="'2'">휴면회원</th:block>
-            </th:block>
-          </td>
-          <td class="align-middle">
-            <a th:href="@{'/member/memberOrder/' + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">주문</a>
-            <a th:href="@{'/member/memberCoupon/' + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">쿠폰</a>
-            <a th:href="@{'/member/memberPoint/'  + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">포인트</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
     
-    <!-- Pagination -->
-    <nav  th:if="${pager.totalRows} > 0">
-      <ul class="pagination d-flex justify-content-center">
-        <li class="page-item">
-          <a class="page-link" th:href="@{/member/memberList(pageNo=1)}" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">First</span>
-          </a>
-        </li>
-        <li class="page-item" th:if="${pager.groupNo>1}">
-          <a class="page-link"  th:href="@{memberList(pageNo=${pager.startPageNo-1})}"  aria-label="Previous">
-            <span aria-hidden="true">이전</span>
-            <span class="sr-only">이전</span>
-          </a>
-        </li>
-        <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
-          <li class="page-item"><a class="page-link" th:href="@{memberList(pageNo=${i})}">[[${i}]]</a></li>
-        </th:block>
-        <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
-          <a class="page-link" th:href="@{memberList(pageNo=${pager.endPageNo+1})}" aria-label="Previous">
-            <span aria-hidden="true">다음</span>
-            <span class="sr-only">다음</span>
-          </a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" th:href="@{memberList(pageNo=${pager.totalPageNo})}" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Last</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <br />
+    
+    
+    <h4 class="pb-2"><b>회원 목록</b></h4>
+      
+    <div id="memberTable">  
+      <table class="table table-bordered table-sm">
+        <thead class="align-middle text-center">
+          <tr>
+            <th scope="col">가입일자</th>
+            <th scope="col">ID</th>
+            <th scope="col">이름</th>
+            <th scope="col">이메일</th>
+            <th scope="col">전화번호</th>
+            <th scope="col">생년월일</th>
+            <th scope="col">주소</th>
+            <th scope="col">등급</th>
+            <th scope="col">포인트</th>
+            <th scope="col">회원상태</th>
+            <th scope="col">관련 내역 보기</th>
+          </tr>
+        </thead>
+        <tbody class="align-middle text-center">
+          <tr th:each="member : ${memberList}">
+            <td class="align-middle">[[${#dates.format(member.regDate, 'yyyy-MM-dd')}]]</td>
+            <td class="align-middle">[[${member.memberId}]]</td>
+            <td class="align-middle">[[${member.name}]]</td>
+            <td class="align-middle">[[${member.email}]]</td>
+            <td class="align-middle">[[${member.tel}]]</td>
+            <td class="align-middle">[[${#dates.format(member.birthday, 'yyyy-MM-dd')}]]</td>
+            <td class="align-middle">[[${member.address1}]] [[${member.address2}]]</td>
+            <td class="align-middle">[[${member.memberLevel}]]</td>
+            <td class="align-middle">[[${member.point}]]</td>
+            <td class="align-middle">
+              <th:block th:switch="${member.status}">
+                <th:block th:case="'0'">탈퇴회원</th:block>
+                <th:block th:case="'1'">일반회원</th:block>
+                <th:block th:case="'2'">휴면회원</th:block>
+              </th:block>
+            </td>
+            <td class="align-middle">
+              <a th:href="@{'/member/memberOrder/' + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">주문</a>
+              <a th:href="@{'/member/memberCoupon/' + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">쿠폰</a>
+              <a th:href="@{'/member/memberPoint/'  + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">포인트</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <!-- Pagination -->
+      <nav  th:if="${pager.totalRows} > 0">
+        <ul class="pagination d-flex justify-content-center">
+          <li class="page-item">
+            <a class="page-link" th:href="@{/member/memberList(pageNo=1)}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">First</span>
+            </a>
+          </li>
+          <li class="page-item" th:if="${pager.groupNo>1}">
+            <a class="page-link"  th:href="@{memberList(pageNo=${pager.startPageNo-1})}"  aria-label="Previous">
+              <span aria-hidden="true">이전</span>
+              <span class="sr-only">이전</span>
+            </a>
+          </li>
+          <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
+            <li class="page-item"><a class="page-link" th:href="@{memberList(pageNo=${i})}">[[${i}]]</a></li>
+          </th:block>
+          <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
+            <a class="page-link" th:href="@{memberList(pageNo=${pager.endPageNo+1})}" aria-label="Previous">
+              <span aria-hidden="true">다음</span>
+              <span class="sr-only">다음</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:href="@{memberList(pageNo=${pager.totalPageNo})}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Last</span>
+            </a>
+          </li>
+        </ul>
+      </nav>  
+    </div>
     
   </th:block>
 </th:block>

@@ -1,17 +1,23 @@
 package com.mycompany.BackOffice.Controller;
 
+import java.util.ArrayList;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.mycompany.BackOffice.dto.member.PagerAndMember;
 import com.mycompany.BackOffice.dto.member.PagerAndMemberCoupon;
 import com.mycompany.BackOffice.dto.member.PagerAndPoint;
+import com.mycompany.BackOffice.dto.member.SearchTypeMember;
 import com.mycompany.BackOffice.dto.order.PagerAndOrderInfo;
 
 import lombok.extern.log4j.Log4j2;
@@ -27,13 +33,16 @@ public class MemberController {
 									.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 									.build();
 	
-	@RequestMapping("/memberList")
-	public String memberList(@RequestParam(defaultValue="1") int pageNo, Model model) {
-		log.info("Run MemberList");
+	@RequestMapping("/firstMemberList")
+	public String firstMemberList(@RequestParam(defaultValue="1") int pageNo, Model model) {
+		log.info("Run FirstMemberList");
+
+		SearchTypeMember searchTypeMember = new SearchTypeMember();
 		
 		PagerAndMember data = webClient
-				.get()
-			    .uri("/member")
+				.post()
+			    .uri("/member/" + "?pageNo=" + pageNo)
+			    .body(BodyInserters.fromValue(searchTypeMember))
 			    .retrieve()
 			    .bodyToMono(PagerAndMember.class)
 			    .block();
@@ -42,6 +51,34 @@ public class MemberController {
 		model.addAttribute("memberList", data.getMember());
 		
 		return "member/memberList";
+	}
+	
+	@PostMapping("/memberList")
+	public String memberList(@RequestParam(defaultValue="1") int pageNo, @RequestBody(required=false) SearchTypeMember searchTypeMember, Model model) {
+		log.info("Run MemberList");
+		
+		if(searchTypeMember.getSearchMemberId() == null) {
+			searchTypeMember.setSearchMemberId("none");
+		} 
+		if(searchTypeMember.getSearchName() == null) {
+			searchTypeMember.setSearchName("none");
+		}
+		if (searchTypeMember.getMemberLevelList() == null) {
+			searchTypeMember.setMemberLevelList(new ArrayList<String>());
+		}
+
+		PagerAndMember data = webClient
+				.post()
+			    .uri("/member/" + "?pageNo=" + pageNo)
+			    .body(BodyInserters.fromValue(searchTypeMember))
+			    .retrieve()
+			    .bodyToMono(PagerAndMember.class)
+			    .block();
+		
+		model.addAttribute("pager", data.getPager());
+		model.addAttribute("memberList", data.getMember());
+		
+		return "member/memberListFragment";
 	}
 
 	@RequestMapping("/memberCoupon/{memberId}")
