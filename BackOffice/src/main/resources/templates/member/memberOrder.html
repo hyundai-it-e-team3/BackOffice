@@ -26,7 +26,7 @@
       <tbody class="text-center">
         <tr th:each="orderInfo : ${orderList}">
           <td>[[${#dates.format(orderInfo.orderDate, 'yyyy-MM-dd')}]]</td>
-          <td><a  th:href="@{/order/orderDetail(oid=${orderInfo.orderId})}">[[${orderInfo.orderId}]]</a></td>
+          <td><a th:href="@{/order/orderDetail(oid=${orderInfo.orderId})}">[[${orderInfo.orderId}]]</a></td>
           <td>[[${#numbers.formatInteger(orderInfo.totalPrice, 3, 'COMMA')}]]</td>
           <td>[[${orderInfo.payType}]]</td>
           <td>[[${orderInfo.orderState}]]</td>
