@@ -6,30 +6,66 @@
     <th:block th:fragment="content">
     
       <h4 class="pb-2">
-        <b>회원 - 포인트내역</b>
+        <b>[[${name}]]([[${memberId}]]) 님의 포인트내역</b>
       </h4>
       <table class="table table-bordered table-sm">
       <thead class="text-center">
         <tr>
-          <th scope="col">회원 ID</th>
-          <th scope="col">회원 이름</th>
-          <th scope="col">사용 일자</th>
-          <th scope="col">금액</th>
-          <th scope="col">내용</th>
-          <th scope="col">적립/차감/만료/환불</th>
+          <th scope="col">번호</th>
+          <th scope="col">일자</th>
+          <th scope="col">관련주문번호</th>
+          <th scope="col">포인트</th>
+          <th scope="col">적립/사용/소멸</th>
         </tr>
       </thead>
       <tbody class="text-center">
-        <tr>
-          <td>user</td>
-          <td>홍길동</td>
-          <td>2021-11-15</td>
-          <td>2000</td>
-          <td>상품 구입</td>
-          <td>차감</td>
+        <tr th:each="point : ${pointList}">
+          <td>[[${point.pointSeq}]]</td>
+          <td>[[${#dates.format(point.regDate, 'yyyy-MM-dd')}]]</td>
+          <td><a th:href="@{/order/orderDetail(oid=${point.orderId})}">[[${point.orderId}]]</a></td>
+          <th:block th:if="${point.point}  > 99 or ${point.point} < -99">
+            <td>[[${#numbers.formatInteger(point.point, 3, 'COMMA')}]]</td>
+          </th:block>
+          <th:block th:unless="${point.point}  > 99 or ${point.point} < -99">
+            <td>[[${point.point}]]</td>
+          </th:block>
+          <td>[[${point.type}]]</td>
         </tr>
       </tbody>
     </table>
+    
+    <!-- Pagination -->
+    <nav th:if="${pager.totalRows} > 0">
+      <ul class="pagination d-flex justify-content-center">
+        <li class="page-item">
+          <a class="page-link" th:href="@{'/member/memberPoint/' + ${memberId}(name=${name})}"  aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">First</span>
+          </a>
+        </li>
+        <li class="page-item" th:if="${pager.groupNo>1}">
+          <a class="page-link"  th:href="@{'/member/memberPoint/' + ${memberId}(name=${name}, pageNo=${pager.startPageNo-1})}"  aria-label="Previous">
+            <span aria-hidden="true">이전</span>
+            <span class="sr-only">이전</span>
+          </a>
+        </li>
+        <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
+          <li class="page-item"><a class="page-link" th:href="@{'/member/memberPoint/' + ${memberId}(name=${name}, pageNo=${i})}">[[${i}]]</a></li>
+        </th:block>
+        <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
+          <a class="page-link" th:href="@{'/member/memberPoint/' + ${memberId}(name=${name}, pageNo=${pager.endPageNo+1})}" aria-label="Previous">
+            <span aria-hidden="true">다음</span>
+            <span class="sr-only">다음</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" th:href="@{'/member/memberPoint/' + ${memberId}(name=${name}, pageNo=${pager.totalPageNo})}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Last</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
       
     </th:block>
   </th:block>

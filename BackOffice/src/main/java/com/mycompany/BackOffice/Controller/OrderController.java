@@ -45,4 +45,12 @@ public class OrderController {
 		orderService.updateOdState(orderDetail);
 		return "redirect:/order/orderDetail?oid="+orderDetail.getOrderId();
 	}
+	
+	@RequestMapping("/orderSearch")
+	public String orderSearch(@RequestParam(defaultValue="1") int pageNo, Model model) {
+		PagerAndOrderInfo data = orderService.getOrderInfoList(pageNo);
+		model.addAttribute("orderList", data.getOrderInfos());
+		model.addAttribute("pager", data.getPager());
+		return "order/orderList";
+	}
 }

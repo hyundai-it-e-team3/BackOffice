@@ -34,7 +34,6 @@ public class ProductController {
 	public String productList(Model model) {
 		log.info("실행");
 		List<CategoryDTO> categoryList = productService.getCategory();
-		log.info(categoryList.toString());
 		model.addAttribute("categoryList", categoryList);
 		return "/product/productList";
 	}
@@ -53,6 +52,7 @@ public class ProductController {
 		List<BrandCategoryDTO> brandList = productService.getBrand();
 		log.info(brandList.toString());
 		model.addAttribute("brandList", brandList);
+
 		return "/product/register";
 	}
 	@RequestMapping("/detail")
@@ -63,9 +63,7 @@ public class ProductController {
 	@RequestMapping("/detailModal")
 	public String productDetailModal(@RequestParam String productId, Model model) {
 		log.info("실행");
-		log.info(productId);
 		ProductDTO productDTO = productService.getProduct(productId);
-		log.info(productDTO.toString());
 		model.addAttribute("product", productDTO);
 		return "/product/detailModal";
 	}

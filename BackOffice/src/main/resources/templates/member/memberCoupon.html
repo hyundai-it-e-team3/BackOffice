@@ -6,38 +6,84 @@
     <th:block th:fragment="content">
     
       <h4 class="pb-2">
-        <b>회원 - 쿠폰내역</b>
+        <b>[[${name}]]([[${memberId}]]) 님의 쿠폰내역</b>
       </h4>
+      
       <table class="table table-bordered table-sm">
       <thead>
         <tr class="text-center">
-          <th scope="col">회원 ID</th>
-          <th scope="col">회원 이름</th>
           <th scope="col">쿠폰번호</th>
           <th scope="col">쿠폰명</th>
           <th scope="col">유형</th>
           <th scope="col">금액/할인율</th>
           <th scope="col">발행 일자</th>
-          <th scope="col">사용 일자</th>
           <th scope="col">만료 일자</th>
           <th scope="col">사용 여부</th>
         </tr>
       </thead>
-      <tbody>
-        <tr class="text-center">
-          <td>user</td>
-          <td>홍길동</td>
-          <td>2143123</td>
-          <td>신규 가입 할인 쿠폰</td>
-          <td>할인율</td>
-          <td>10%</td>
-          <td>2021-11-11</td>
-          <td>x</td>
-          <td>2022-01-11</td>
-          <td>x</td>
+      <tbody class="text-center">
+        <tr th:each="coupon : ${couponList}">
+          <td>[[${coupon.couponId}]]</td>
+          <td>[[${coupon.name}]]</td>
+          <td>
+            <th:block th:switch="${coupon.type}">
+              <th:block th:case="'1'">금액 할인</th:block>
+              <th:block th:case="'2'">% 할인</th:block>
+            </th:block>
+          </td>
+          <td>
+            <th:block th:if="${coupon.amount > 99}">
+              [[${#numbers.formatInteger(coupon.amount, 3, 'COMMA')}]]
+            </th:block>
+            <th:block th:unless="${coupon.amount > 99}">
+              [[${coupon.amount}]]
+            </th:block>
+          </td>
+          <td>[[${#dates.format(coupon.regDate, 'yyyy-MM-dd')}]]</td>
+          <td>[[${#dates.format(coupon.expDate, 'yyyy-MM-dd')}]]</td>
+          <td>
+            <th:block th:switch="${coupon.status}">
+              <th:block th:case="'1'">사용 전</th:block>
+              <th:block th:case="'2'">사용 완료</th:block>
+              <th:block th:case="'3'">기만 만료</th:block>
+            </th:block>
+          </td>
         </tr>
       </tbody>
     </table>
+    
+    <!-- Pagination -->
+    <nav th:if="${pager.totalRows} > 0">
+      <ul class="pagination d-flex justify-content-center">
+        <li class="page-item">
+          <a class="page-link" th:href="@{'/member/memberCoupon/' + ${memberId}(name=${name})}"  aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">First</span>
+          </a>
+        </li>
+        <li class="page-item" th:if="${pager.groupNo>1}">
+          <a class="page-link"  th:href="@{'/member/memberCoupon/' + ${memberId}(name=${name}, pageNo=${pager.startPageNo-1})}"  aria-label="Previous">
+            <span aria-hidden="true">이전</span>
+            <span class="sr-only">이전</span>
+          </a>
+        </li>
+        <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
+          <li class="page-item"><a class="page-link" th:href="@{'/member/memberCoupon/' + ${memberId}(name=${name}, pageNo=${i})}">[[${i}]]</a></li>
+        </th:block>
+        <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
+          <a class="page-link" th:href="@{'/member/memberCoupon/' + ${memberId}(name=${name}, pageNo=${pager.endPageNo+1})}" aria-label="Previous">
+            <span aria-hidden="true">다음</span>
+            <span class="sr-only">다음</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" th:href="@{'/member/memberCoupon/' + ${memberId}(name=${name}, pageNo=${pager.totalPageNo})}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Last</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
       
     </th:block>
   </th:block>
