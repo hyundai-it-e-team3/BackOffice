@@ -1,15 +1,22 @@
 package com.mycompany.BackOffice.Controller;
 
-import java.util.List;
+import java.util.List;import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mycompany.BackOffice.dto.BrandCategoryDTO;
+import com.mycompany.BackOffice.dto.BrandDTO;
 import com.mycompany.BackOffice.dto.CategoryDTO;
+import com.mycompany.BackOffice.dto.ColorDTO;
 import com.mycompany.BackOffice.dto.ProductDTO;
 import com.mycompany.BackOffice.service.ProductService;
 
@@ -31,13 +38,21 @@ public class ProductController {
 		model.addAttribute("categoryList", categoryList);
 		return "/product/productList";
 	}
-
+	
+	
+	@PostMapping("/regist")
+	@ResponseBody
+	public Map<String,String> productRegist(@RequestBody ProductDTO productDTO) {
+		Map<String,String> map= productService.regProduct(productDTO);
+		return map;
+	}
+	
 	@RequestMapping("/register")
 	public String productRegister(Model model) {
 		log.info("실행");
-		List<CategoryDTO> categoryList = productService.getCategory();
-		log.info(categoryList.toString());
-		model.addAttribute("categoryList", categoryList);
+		List<BrandCategoryDTO> brandList = productService.getBrand();
+		log.info(brandList.toString());
+		model.addAttribute("brandList", brandList);
 		return "/product/register";
 	}
 	@RequestMapping("/detail")

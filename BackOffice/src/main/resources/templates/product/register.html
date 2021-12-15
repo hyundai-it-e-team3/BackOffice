@@ -2,8 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
+  
     <script th:inline="javascript">
+		
+    
+    	let imgTempList = ["","","",""];
+    	
+		function putFile(file,index){
+		  const albumBucketName = 'kosahyundaiitnebucket'; // S3의 버킷 이름
+		  const region = 'ap-northeast-2'; // 서울
+		  const accessKeyId = 'AKIATKUPNKYFUXJBJBYD'; // IAM에서 생성한 사용자의 accessKeyId
+		  const secretAccessKey = '6g+Zy8dEw45lvmkcCtEB1qUz2NWy+VCZlfpmPC06'; // IAM에서 생성한 사용자의 secretAccessKey
+		  
+		  AWS.config.update({
+		    region,
+		    accessKeyId,
+		    secretAccessKey
+		  }); 
+		  
+		  const upload = new AWS.S3.ManagedUpload({
+		    params: {
+		      Bucket: albumBucketName,
+		      Key: file.name,
+		      Body: file,
+		      ACL: "public-read"
+		    }
+		  });
+		  
+		  const promise = upload.promise();
 
+		  promise.then(
+		    function(data) {
+		      imgTempList[index] = data.Location;
+		      console.log(imgTempList);
+		      return console.log("Successfully uploaded photo.");
+		    },
+		    function(err) {
+		      return console.log("There was an error uploading your photo: ", err.message);
+		    }
+		  );
+		};
 
       function selectDropDownInput(event,id){
         inputBox = document.querySelector(id);
@@ -14,11 +52,18 @@
       let mainIndex = 0;
       let middleIndex = 0;
       let subIndex = 0;
+      let brandIndex = 0;
+      let productId = "";
+      let detailList = [];
+      let product = "";
+      let dIndex = 0;
+      let sIndex = 0;
+      let CategoryId = "";
+      
       function selectDropDownBtn(event,id,index){
         inputBox = document.querySelector(id);
-        console.log([[${categoryList}]][index]);
         mainIndex = index;
-        let categoryList = [[${categoryList}]][mainIndex].categoryList;
+        let categoryList = [[${brandList}]][brandIndex].brandCategoryTempList[mainIndex].categoryList;
         console.log(categoryList);
         $('#middleGbn').html("");
         $('#subGbn').html("");
@@ -30,10 +75,223 @@
         inputBox.innerHTML = inputText;
       }
       
+      
+      function registProduct(event){
+    	  let text = event.target.innerHTML;
+    	  if(text=="상품 등록"){
+    		  $("#idInput").attr("disabled", true); 
+    		  $("#nameInput").attr("disabled", true); 
+    		  $("#contentInput").attr("disabled", true); 
+    		  $("#priceInput").attr("disabled", true); 
+    		  $("#brandGbn").attr("disabled", true); 
+    		  $("#stockGbn1").attr("disabled", true); 
+    		  $("#stockGbn2").attr("disabled", true); 
+    		  $("#stockGbn3").attr("disabled", true); 
+    		  $("#productProgressStatusRadio1").attr("disabled", true); 
+    		  $("#productProgressStatusRadio2").attr("disabled", true); 
+    		  productId = $("#idInput").val();
+    		  
+    		  
+    		  let status = $('input[name="productProgressStatusRadio"]:checked').val();
+    		  product = {
+    			productId :  $("#idInput").val(),
+    			name : $("#nameInput").val(),
+    			content : $("#contentInput").val(),
+    			price : $("#priceInput").val(),
+    			brandName : $("#brandGbn").html(),
+    			categoryId,
+    			status
+    		  }
+    		 
+    		  
+    		  
+    		  event.target.innerHTML = "상품 수정";
+    	  }else{
+    		  $("#idInput").attr("disabled", false); 
+    		  $("#nameInput").attr("disabled", false); 
+    		  $("#contentInput").attr("disabled", false); 
+    		  $("#priceInput").attr("disabled", false); 
+    		  $("#brandGbn").attr("disabled", false); 
+    		  $("#stockGbn1").attr("disabled", false); 
+    		  $("#stockGbn2").attr("disabled", false); 
+    		  $("#stockGbn3").attr("disabled", false); 
+    		  $("#productProgressStatusRadio1").attr("disabled", false); 
+    		  $("#productProgressStatusRadio2").attr("disabled", false); 
+    		  event.target.innerHTML = "상품 등록";
+    	  }
+      }
+      
+      function regProductDetail(){
+    	  
+    	  const input1 = document.getElementById('img1Input');
+    	  putFile(input1.files[0],0);
+    	  
+    	  const input2 = document.getElementById('img2Input');
+    	  putFile(input2.files[0],1);
+    	  
+    	  const input3 = document.getElementById('img3Input');
+    	  putFile(input3.files[0],2);
+    	  
+    	  const input4 = document.getElementById('colorChipInput');
+    	  putFile(input4.files[0],3);
+    	  
+    	  
+    	  setTimeout(function() {
+        	  let detail = {
+            		  productId,
+            		  "productDetailId":productId+"_"+$("#colorCodeInput").val(),
+            		  "colorCode":$("#colorCodeInput").val(),
+            		  "imgList":[
+            			  {img:imgTempList[0],orderNum:1,productDetailId:productId+"_"+$("#colorCodeInput").val()},
+            			  {img:imgTempList[1],orderNum:2,productDetailId:productId+"_"+$("#colorCodeInput").val()},
+            			  {img:imgTempList[2],orderNum:3,productDetailId:productId+"_"+$("#colorCodeInput").val()}
+            			],
+            		  "colorChip":imgTempList[3],
+            		  "withProduct":$("#withProductInput").val(),
+            		  "stockList": []
+            	  }
+            	  detailList.push(detail);
+            	  console.log(detailList);
+            	  
+                  $('#detailDiv').html("");
+                  for(let i = 0; i < detailList.length; i++){
+                	var $temp = $(`<a class="mr-4" onclick="showDetail(${i})">${productId}_${detailList[i].colorCode}</a>`);
+                  	$('#detailDiv').append($temp);
+                  }
+
+                  $("#colorCodeInput").val("");
+        		  $("#img1Input").val("");
+        		  $("#img2Input").val("");
+        		  $("#img3Input").val("");
+        		  $("#colorChipInput").val("");
+        		  $("#withProductInput").val("");   		  
+    	  }, 1500);
+      }
+      
+      function regSize(){
+    	  let size = {
+    		"psize":$('#sizeCodeInput').val(),
+    		"amount":$('#amountInput').val(),
+    	  }
+    	  detailList[dIndex].stockList.push(size);
+    	  console.log(detailList[dIndex].stockList);
+    	  
+    	  
+    	  let stockList = detailList[dIndex].stockList;
+    	  
+          $('#sizeDiv').html("");
+          for(let i = 0; i < stockList.length; i++){
+        	var $temp = $(`<a class="mr-4" onclick="showSize(${i})">${productId}_${detailList[dIndex].colorCode}_${stockList[i].psize}</a>`);
+          	$('#sizeDiv').append($temp);
+          }  
+	      $('#sizeCodeInput').val("");
+	  	  $('#amountInput').val("");
+      }
+      
+      function updateProductDetail(){
+    	  $("#colorCodeInput").attr("disabled", false); 
+		  $("#img1Input").attr("disabled", false); 
+		  $("#img2Input").attr("disabled", false); 
+		  $("#img3Input").attr("disabled", false); 
+		  $("#colorChipInput").attr("disabled", false); 
+		  $("#withProductInput").attr("disabled", false);
+		  
+		  $("#img1Img").addClass('d-none');
+		  $("#img2Img").addClass('d-none');
+		  $("#img3Img").addClass('d-none');
+		  $("#colorChipImg").addClass('d-none');
+		  
+		  $("#img1Input").removeClass('d-none');
+		  $("#img2Input").removeClass('d-none');
+		  $("#img3Input").removeClass('d-none');
+		  $("#colorChipInput").removeClass('d-none');
+		  
+		  $("#detailConfirmBtn").removeClass('d-none');
+		  $("#detailCancelBtn").removeClass('d-none');
+    	  $("#detailUpdateBtn").addClass('d-none');
+    	  $("#detailDelBtn").addClass('d-none');
+   
+		  
+      }
+      
+      function updateSize(){
+    	  $("#sizeCodeInput").attr("disabled", false); 
+		  $("#amountInput").attr("disabled", false); 
+		  
+    	  
+		  $("#sizeConfirmBtn").removeClass('d-none');
+		  $("#sizeCancelBtn").removeClass('d-none');
+    	  $("#sizeUpdateBtn").addClass('d-none');
+    	  $("#sizeDelBtn").addClass('d-none');
+		  
+      }
+      
+      function showDetail(index){
+    	  dIndex = index;
+    	  $("#colorCodeInput").val(detailList[index].colorCode);
+    	  $("#img1Img").attr("src", detailList[index].imgList[0].img); 
+		  $("#img2Img").attr("src", detailList[index].imgList[1].img); 
+		  $("#img3Img").attr("src", detailList[index].imgList[2].img); 
+		  $("#colorChipImg").attr("src", detailList[index].colorChip); 
+		  $("#withProductInput").val(detailList[index].withProduct);
+		  
+		  $("#img1Img").removeClass('d-none');
+		  $("#img2Img").removeClass('d-none');
+		  $("#img3Img").removeClass('d-none');
+		  $("#colorChipImg").removeClass('d-none');
+		  
+		  $("#img1Input").addClass('d-none');
+		  $("#img2Input").addClass('d-none');
+		  $("#img3Input").addClass('d-none');
+		  $("#colorChipInput").addClass('d-none');
+		  
+		  $("#colorCodeInput").attr("disabled", true); 
+		  $("#img1Input").attr("disabled", true); 
+		  $("#img2Input").attr("disabled", true); 
+		  $("#img3Input").attr("disabled", true); 
+		  $("#colorChipInput").attr("disabled", true); 
+		  $("#withProductInput").attr("disabled", true); 
+		  
+		  
+		  $("#detailConfirmBtn").addClass('d-none');
+		  $("#detailCancelBtn").addClass('d-none');
+		  $("#detailRegBtn").addClass('d-none');
+    	  $("#detailUpdateBtn").removeClass('d-none');
+    	  $("#detailDelBtn").removeClass('d-none');
+
+    	  let stockList = detailList[index].stockList;
+          $('#sizeDiv').html("");
+          for(let i = 0; i < stockList.length; i++){
+        	var $temp = $(`<a class="mr-4" href="#" onclick="showSize(${i})">${productId}_${detailList[index].colorCode}_${stockList[i].psize}</a>`);
+          	$('#sizeDiv').append($temp);
+          }  
+          
+          $("#sizeCodeInput").attr("disabled", true); 
+		  $("#amountInput").attr("disabled", true); 
+      }
+      
+      function showSize(index){
+    	sIndex = index;
+    	$("#sizeCodeInput").val(detailList[dIndex].stockList[index].psize);
+    	$("#amountInput").val(detailList[dIndex].stockList[index].amount);
+    	
+    	
+	  	  $("#sizeCodeInput").attr("disabled", true); 
+		  $("#amountInput").attr("disabled", true); 
+		  
+		  $("#sizeConfirmBtn").addClass('d-none');
+		  $("#sizeCancelBtn").addClass('d-none');
+		  $("#sizeRegBtn").addClass('d-none');
+    	  $("#sizeUpdateBtn").removeClass('d-none');
+    	  $("#sizeDelBtn").removeClass('d-none');
+      }
+      
+
+      
       function selectDropDownBtnGbn2(event,id,index){
           inputBox = document.querySelector(id);
           middleIndex = index;
-          let categoryList = [[${categoryList}]][mainIndex].categoryList[middleIndex].categoryList;
+          let categoryList = [[${brandList}]][brandIndex].brandCategoryTempList[mainIndex].categoryList[middleIndex].categoryList;
           console.log(categoryList);
           $('#subGbn').html("");
           for(let i = 0; i < categoryList.length; i++){
@@ -46,14 +304,230 @@
       function selectDropDownBtnGbn3(event,id,index){
           inputBox = document.querySelector(id);
           subIndex = index;
-          let category = [[${categoryList}]][mainIndex].categoryList[middleIndex].categoryList[subIndex];
+          categoryId =  [[${brandList}]][brandIndex].brandCategoryTempList[mainIndex].categoryList[middleIndex].categoryList[subIndex].categoryId;
+          console.log(categoryId);
+          let category = [[${brandList}]][brandIndex].brandCategoryTempList[mainIndex].categoryList[middleIndex].categoryList[subIndex];
           console.log(category);
           inputText = event.target.innerHTML;
           inputBox.innerHTML = inputText;
         }
+
+      function selectBrand(event,id,index){
+    	  console.log(index);
+    	  brandIndex = index;
+    	  let categoryList = [[${brandList}]][brandIndex].brandCategoryTempList;
+          console.log(categoryList);
+          $('#mainGbn').html("");
+          for(let i = 0; i < categoryList.length; i++){
+        	var $temp = $(`<a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1',${i})">${categoryList[i].name}</a>`);
+          	$('#mainGbn').append($temp);
+          }
+    	  
+          inputBox = document.querySelector(id);
+          inputText = [[${brandList}]][brandIndex].brandName;
+          inputBox.innerHTML = inputText;
+        }
+      
+      
+      function cancelProductDetail(){
+    	  showDetail(dIndex);
+      }
+      
+      function cancelSize(){
+    	  showSize(sIndex);
+      }
+      
+      
+      function confirmProductDetail(){
+    	  detailList[dIndex].colorCode = $("#colorCodeInput").val();
+    	  detailList[dIndex].imgList =[
+			  {img:$("#img1Input").val(),orderNum:1,productDetailId:productId+"_"+$("#colorCodeInput").val()},
+			  {img:$("#img2Input").val(),orderNum:2,productDetailId:productId+"_"+$("#colorCodeInput").val()},
+			  {img:$("#img3Input").val(),orderNum:3,productDetailId:productId+"_"+$("#colorCodeInput").val()}
+			];
+    	  detailList[dIndex].colorChip= $("#colorChipInput").val();
+    	  detailList[dIndex].withProduct = $("#withProductInput").val();
+    	  showDetail(dIndex);
+    	  
+    	  
+          $('#detailDiv').html("");
+          for(let i = 0; i < detailList.length; i++){
+        	var $temp = $(`<a class="mr-4" onclick="showDetail(${i})">${detailList[dIndex].productDetailId}</a>`);
+          	$('#detailDiv').append($temp);
+          }
+      }
+      
+      function confirmSize(){
+    	  detailList[dIndex].stockList[sIndex].psize = $("#sizeCodeInput").val();
+    	  detailList[dIndex].stockList[sIndex].amount = $("#amountInput").val();
+    	  showSize(sIndex);
+    	  
+    	  let stockList = detailList[dIndex].stockList;
+    	  
+          $('#sizeDiv').html("");
+          for(let i = 0; i < stockList.length; i++){
+        	var $temp = $(`<a class="mr-4" onclick="showSize(${i})">${detailList[dIndex].productDetailId}_${stockList[i].psize}</a>`);
+          	$('#sizeDiv').append($temp);
+          }  
+      }
+      
+      
+      function deleteProductDetail(){
+    	  detailList.splice(dIndex, 1);
+    	  
+    	  
+          $('#detailDiv').html("");
+          for(let i = 0; i < detailList.length; i++){
+        	var $temp = $(`<a class="mr-4" onclick="showDetail(${i})">${productId}_${detailList[i].colorCode}</a>`);
+          	$('#detailDiv').append($temp);
+          }
+
+          $("#colorCodeInput").val("");
+		  $("#img1Input").val("");
+		  $("#img2Input").val("");
+		  $("#img3Input").val("");
+		  $("#colorChipInput").val("");
+		  $("#withProductInput").val("");
+		  
+		  $("#detailUpdateBtn").addClass('d-none');
+		  $("#detailDelBtn").addClass('d-none');
+		  $("#detailRegBtn").removeClass('d-none');		
+		  
+		  
+		  $("#colorCodeInput").attr("disabled", false); 
+		  $("#img1Input").attr("disabled", false); 
+		  $("#img2Input").attr("disabled", false); 
+		  $("#img3Input").attr("disabled", false); 
+		  $("#colorChipInput").attr("disabled", false); 
+		  $("#withProductInput").attr("disabled", false); 
+		  
+		  
+		  $("#img1Img").addClass('d-none');
+		  $("#img2Img").addClass('d-none');
+		  $("#img3Img").addClass('d-none');
+		  $("#colorChipImg").addClass('d-none');
+		  
+		  $("#img1Input").removeClass('d-none');
+		  $("#img2Input").removeClass('d-none');
+		  $("#img3Input").removeClass('d-none');
+		  $("#colorChipInput").removeClass('d-none');
+		  
+		  
+          $('#sizeDiv').html("");
+
+          
+          $('#sizeCodeInput').val("");
+	  	  $('#amountInput').val("");
+	  	  
+	  	  $("#sizeCodeInput").attr("disabled", false); 
+		  $("#amountInput").attr("disabled", false); 
+		  
+		  $("#sizeUpdateBtn").addClass('d-none');
+		  $("#sizeDelBtn").addClass('d-none');
+		  $("#sizeRegBtn").removeClass('d-none');
+		  $("#sizeCancelBtn").addClass('d-none');
+		  $("#sizeConfirmBtn").addClass('d-none');
+      }
+      
+      function deleteSize(){
+    	  detailList[dIndex].stockList.splice(sIndex, 1);
+    	  
+    	  
+          $('#sizeDiv').html("");
+
+          $('#sizeCodeInput').val("");
+	  	  $('#amountInput').val("");
+		  
+		  $("#sizeUpdateBtn").addClass('d-none');
+		  $("#sizeDelBtn").addClass('d-none');
+		  $("#sizeRegBtn").removeClass('d-none');		
+		  
+		  
+		  
+		  $("#sizeCodeInput").attr("disabled", false); 
+		  $("#amountInput").attr("disabled", false); 
+      }
+      
+      
+      function sizeAdd(){
+    	  $('#sizeCodeInput').val("");
+	  	  $('#amountInput').val("");
+	  	  
+	  	  
+	  	  $("#sizeCodeInput").attr("disabled", false); 
+		  $("#amountInput").attr("disabled", false); 
+		  
+		  
+    	  $("#sizeConfirmBtn").addClass('d-none');
+		  $("#sizeCancelBtn").addClass('d-none');
+		  $("#sizeRegBtn").removeClass('d-none');
+    	  $("#sizeUpdateBtn").addClass('d-none');
+    	  $("#sizeDelBtn").addClass('d-none');
+    	  
+      }
+      
+      function productAdd(){
+    	  $("#colorCodeInput").val("");
+		  $("#img1Input").val("");
+		  $("#img2Input").val("");
+		  $("#img3Input").val("");
+		  $("#colorChipInput").val("");
+		  $("#withProductInput").val("");
+		  
+		  
+		  $("#colorCodeInput").attr("disabled", false); 
+		  $("#img1Input").attr("disabled", false); 
+		  $("#img2Input").attr("disabled", false); 
+		  $("#img3Input").attr("disabled", false); 
+		  $("#colorChipInput").attr("disabled", false); 
+		  $("#withProductInput").attr("disabled", false); 
+		  
+		  $("#detailConfirmBtn").addClass('d-none');
+		  $("#detailCancelBtn").addClass('d-none');
+		  $("#detailRegBtn").removeClass('d-none');
+    	  $("#detailUpdateBtn").addClass('d-none');
+    	  $("#detailDelBtn").addClass('d-none');
+    	  
+    	  $("#img1Img").addClass('d-none');
+		  $("#img2Img").addClass('d-none');
+		  $("#img3Img").addClass('d-none');
+		  $("#colorChipImg").addClass('d-none');
+		  
+		  $("#img1Input").removeClass('d-none');
+		  $("#img2Input").removeClass('d-none');
+		  $("#img3Input").removeClass('d-none');
+		  $("#colorChipInput").removeClass('d-none');
+      }
+      
+      function goReg(){
+    	  console.log(detailList);
+    	  product.thumbnail = detailList[0].imgList[0].img;
+    	  product.productDetailList = detailList;
+    	  console.log(product);
+ 
+    	  $.ajax({
+  	        url:"http://localhost:8082/product/regist",
+  	      	contentType: 'application/json',
+  	        type:"POST",
+  	      	dataType:"json",	
+  	        data:JSON.stringify(product),
+  	        success: function(response){
+  	        	console.log(response);
+  	        },
+  	        error: function(xhr, status, error) {
+  	            alert(error);
+  	        }  
+  	    });
+      }
+      
       $(function(){
-    	let categoryList = [[${categoryList}]];
-		console.log(categoryList);
+    	  let categoryList = [[${brandList}]][0].brandCategoryTempList;
+          console.log(categoryList);
+          $('#mainGbn').html("");
+          for(let i = 0; i < categoryList.length; i++){
+        	var $temp = $(`<a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1',${i})">${categoryList[i].name}</a>`);
+          	$('#mainGbn').append($temp);
+          }
 		//let categoryList = [[${categoryList}]];
 		console.log("-------");
       }); 
@@ -68,20 +542,33 @@
         <tr>
           <th class="align-middle">상품 코드</th>
           <td>
-            <input type="text" class="form-control">
+            <input type="text" id="idInput" class="form-control">
           </td>
         </tr>
         <tr>
           <th class="align-middle">상품 명</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input type="text" id="nameInput" class="form-control"></td>
         </tr>
         <tr>
           <th class="align-middle">상품 상세 문구</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input type="text" id="contentInput" class="form-control"></td>
         </tr>
         <tr>
           <th class="align-middle">상품 가격</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input type="text" id="priceInput" class="form-control"></td>
+        </tr>
+        <tr>
+          <th class="align-middle">브랜드</th>
+          <td>
+	          <div class="input-group-prepend ">
+	          	<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="brandGbn" data-toggle="dropdown" aria-expanded="false">
+	            	[[${brandList[0].brandName}]]
+	            </button>
+	            <div class="dropdown-menu" >
+	            	<a th:each="brand, status: ${brandList}" class="dropdown-item" th:onclick="javascript:selectBrand(event,'#brandGbn',[[${status.index}]])">[[${brand.brandName}]]</a>
+	            </div>
+	          </div>
+          </td>
         </tr>
         <tr>
           <th class="align-middle">카테고리</th>
@@ -91,8 +578,8 @@
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="stockGbn1" data-toggle="dropdown" aria-expanded="false">
                   대분류
                 </button>
-                <div class="dropdown-menu" >
-                  <a th:each="category, status: ${categoryList}" class="dropdown-item" th:onclick="javascript:selectDropDownBtn(event,'#stockGbn1',[[${status.index}]])">[[${category.name}]]</a>
+                <div class="dropdown-menu" id="mainGbn">
+                
                 </div>
               </div>
               <div class="input-group-prepend">
@@ -113,39 +600,33 @@
           </td>
         </tr>
         <tr>
-          <th class="align-middle">브랜드</th>
-          <td><input type="text" class="form-control"></td>
-        </tr>
-        <tr>
           <tr>
           <th scope="row" class="align-middle">진행 여부</th>
           <td colspan="2">
             <span>
-              <input class="align-middle" type="radio" id="productProgressStatusRadio1" name="productProgressStatusRadio" value="inProgress">
-              <label class="align-middle mb-0">진행 중</label>
+              <input class="align-middle" type="radio" id="productProgressStatusRadio1" name="productProgressStatusRadio" value="1">
+              <label class="align-middle mb-0">진열</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="radio" id="productProgressStatusRadio2" name="productProgressStatusRadio" value="notInProgress"> 
-              <label class="align-middle mb-0">진행 안함</label>
+              <input class="align-middle ml-2" type="radio" id="productProgressStatusRadio2" name="productProgressStatusRadio" value="0"> 
+              <label class="align-middle mb-0">진열 안함</label>
             </span>
           </td>
         </tr>
         <tr>
           <td colspan="3">
-            <button class="btn btn-success btn-sm">-</button>
-            <button class="btn btn-success btn-sm">+</button>
-            <button class="btn btn-primary float-right">상품 등록</button>
+            <a class="btn btn-primary float-right" onclick="registProduct(event)">상품 등록</a>
           </td>
         </tr>
       </table>
     </div>
 
     <div>
-      <h4 class="mt-4"><b>상품 상세 정보</b></h4>
-
-      <div class="my-2">
-        <a class="mr-4" href="#">CM2B0KJC210W_BK</a>
-        <a class="mr-4" href="#">CM2B0KJC210W_OW</a>
+      <div class="d-flex justify-content-between mt-4">
+      		<h4><b>상품 상세 정보</b></h4>
+            <button class="btn btn-success btn-sm" onclick="productAdd()">+</button>
+	  </div>
+      <div class="my-2" id="detailDiv">
       </div>
       
       <table class="table p-0 m-0" style="width: 100%;">
@@ -155,45 +636,47 @@
         </colgroup>
         <tr>
           <th class="align-middle">칼라 코드</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input type="text" id="colorCodeInput" class="form-control" disabled></td>
         </tr>
         <tr>
           <th class="align-middle">상품 상세 이미지 URL1</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input class="form-control" type="file" id="img1Input" disabled><img id="img1Img" width="100px" src="" class="d-none"/></td>
         </tr>
         <tr>
           <th class="align-middle">상품 상세 이미지 URL2</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input class="form-control" type="file" id="img2Input" disabled><img id="img2Img" width="100px" src="" class="d-none"/></td>
         </tr>
         <tr>
           <th class="align-middle">상품 상세 이미지 URL3</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input class="form-control" type="file" id="img3Input" disabled><img id="img3Img" width="100px" src="" class="d-none"/></td>
         </tr>
         <tr>
           <th class="align-middle">칼라칩 이미지 URL</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input class="form-control" type="file" id="colorChipInput" disabled><img id="colorChipImg" width="50px" src="" class="d-none"/></td>
         </tr>
         <tr>
           <th class="align-middle">함께 코디한 상품 코드</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input type="text" id="withProductInput" class="form-control" disabled></td>
         </tr>
         <tr>
           <td colspan="3">
-            <button class="btn btn-success btn-sm">-</button>
-            <button class="btn btn-success btn-sm">+</button>
-            <button class="btn btn-primary float-right">상품 상세 등록</button>
+            <a class="btn btn-primary float-right" id="detailRegBtn" onclick="regProductDetail()">상품 상세 등록</a>
+            <a class="btn btn-danger float-right d-none" id="detailDelBtn" onclick="deleteProductDetail()">삭제</a>
+            <a class="btn btn-success float-right d-none mr-2" id="detailUpdateBtn" onclick="updateProductDetail()">수정</a>
+            <a class="btn btn-danger float-right d-none" id="detailCancelBtn" onclick="cancelProductDetail()">취소</a>
+            <a class="btn btn-success float-right d-none mr-2" id="detailConfirmBtn" onclick="confirmProductDetail()">확인</a>
           </td>
         </tr>
       </table>
     </div>
 
     <div>
-      <h4 class="mt-4"><b>상품 사이즈 정보</b></h4>
+      <div class="d-flex justify-content-between mt-4">
+      		<h4><b>상품 사이즈  정보</b></h4>
+            <button class="btn btn-success btn-sm" onclick="sizeAdd()">+</button>
+	  </div>
       
-      <div class="my-2">
-        <a class="mr-4" href="#">CM2B0KJC210W_OW_L</a>
-        <a class="mr-4" href="#">CM2B0KJC210W_OW_M</a>
-        <a class="mr-4" href="#">CM2B0KJC210W_OW_S</a>
+      <div class="my-2" id="sizeDiv">
       </div>
       
       <table class="table p-0 m-0" style="width: 100%;">
@@ -203,15 +686,19 @@
         </colgroup>
         <tr>
           <th class="align-middle">사이즈 코드</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input type="text" id="sizeCodeInput"  class="form-control" disabled></td>
         </tr>
         <tr>
           <th class="align-middle">재고량</th>
-          <td><input type="text" class="form-control"></td>
+          <td><input type="text" id="amountInput"  class="form-control" disabled></td>
         </tr>
         <tr>
           <td colspan="3">
-            <button class="btn btn-primary float-right">상품 상세 사이즈 등록</button>
+            <a class="btn btn-primary float-right" id="sizeRegBtn" onclick="regSize()">상품 상세 사이즈 등록</a>
+			<a class="btn btn-danger float-right d-none" id="sizeDelBtn" onclick="deleteSize()">삭제</a>
+            <a class="btn btn-success float-right d-none mr-2" id="sizeUpdateBtn" onclick="updateSize()">수정</a>
+            <a class="btn btn-danger float-right d-none" id="sizeCancelBtn" onclick="cancelSize()">취소</a>
+            <a class="btn btn-success float-right d-none mr-2" id="sizeConfirmBtn" onclick="confirmSize()">확인</a>
           </td>
         </tr>
       </table>
@@ -219,8 +706,7 @@
     
     <hr />
     <div class="text-right">
-      <a class="btn btn-success" th:href="@{/product/list}">상품 최종 등록</a>
+      <a class="btn btn-success" onclick="goReg()">상품 최종 등록</a>
     </div>
-
 </th:block>
 </html>
