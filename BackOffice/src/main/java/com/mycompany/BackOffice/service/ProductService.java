@@ -11,13 +11,18 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.mycompany.BackOffice.dto.BrandCategoryDTO;
+import com.mycompany.BackOffice.dto.BrandDTO;
 import com.mycompany.BackOffice.dto.CategoryDTO;
+import com.mycompany.BackOffice.dto.ColorDTO;
 import com.mycompany.BackOffice.dto.ProductDTO;
 import com.mycompany.BackOffice.dto.ProductSearchDTO;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @Service
+@Slf4j
 public class ProductService {
 	
 	private WebClient client = WebClient
@@ -36,6 +41,27 @@ public class ProductService {
 		return response.block();
 	}
 	
+	public List<BrandCategoryDTO> getBrand() {
+		Mono<List<BrandCategoryDTO>> response = client
+									.get()
+									.uri("/category/brand")
+									.retrieve()
+									.bodyToMono(new ParameterizedTypeReference<List<BrandCategoryDTO>>() {});
+		
+		return response.block();
+	}
+	
+	
+	public Map<String,String> regProduct(ProductDTO productDTO){
+        return client.post()         // POST method
+                .uri("/product/regist")    // baseUrl 이후 uri
+                .bodyValue(productDTO)     // set body value
+                .retrieve()                 // client message 전송
+                .bodyToMono(Map.class)  // body type : EmpInfo
+                .block();                   // await
+        
+	}
+
 	public ProductDTO getProduct(String productId) {
 		Mono<ProductDTO> response = client
 							.get()
