@@ -10,7 +10,6 @@
   	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
  	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
  	
- 	
 	<table style="width :100%;">
 		<colgroup>
 			<col style="width: 33%"/>
@@ -22,27 +21,29 @@
 				<div class="container">
 					<h4>분기별 그래프</h4>
 			      <div>
-			        <canvas id="myChart"></canvas>
+			        <canvas id="quaterChart"></canvas>
 			      </div>
 			    </div>
+			    
+   				<script th:inline="javascript">
+				    let qlabels = [[${quater.labels}]];
+				    
+				    var quaterLabels = [];
+				    for(let i=0; i<qlabels.length; i++) {
+				    	quaterLabels.push(String(qlabels[i]));
+				    }
+		    	</script>
+			    
 			    <script>
-				    var ctx = document.getElementById("myChart").getContext("2d");
-				    var myChart = new Chart(ctx, {
+				    var ctx = document.getElementById("quaterChart").getContext("2d");
+				    var quaterChart = new Chart(ctx, {
 				      type: "line",
 				      data: {
-				        labels: [
-				          "19년 4분기",
-				          "20년 1분기",
-				          "20년 2분기",
-				          "20년 3분기",
-				          "20년 4분기",
-				          "21년 1분기",
-				          "21년 2분기",
-				        ],
+				        labels: quaterLabels,
 				        datasets: [
 				          {
 				            label: "매출액",
-				            data: [2, 2, 5, 5, 2, 1, 10],
+				            data: [[${quater.data}]],
 				            backgroundColor: "rgba(0,150,136,0.5)",
 				          },
 				        ],
@@ -53,16 +54,16 @@
 			<td style="vertical-align:middle">
 				<!-- 전분기 대비 판매 상승률 -->
 				<div class="card" style="text-align:center; vertical-align:middle; height:100%">
-					<h4>전분기 매출 상승률</h4>
-					<h1>+ 13 %</h1> 
+					<h4>작년 동분기 대비 매출 상승률</h4>
+					<h1>[[${quater.lastYear}]]%</h1> 
 				</div>
 				<div class="card mt-2" style="text-align:center; vertical-align:middle; height:100%">
-					<h4>전월 매출 상승률</h4>
-					<h1>+ 4 %</h1> 
+					<h4>전 분기 대비 상승률</h4>
+					<h1>[[${quater.lastQuater}]]%</h1> 
 				</div>
 				<div class="card mt-2" style="text-align:center; vertical-align:middle; height:100%">
-					<h4>저번주 매출 상승률</h4>
-					<h1>+ 2 %</h1> 
+					<h4>이번 분기 매출</h4>
+					<h1>[[${quater.data[7]}]]억원</h1> 
 				</div>
 			</td>
 		</tr>
@@ -77,22 +78,31 @@
 				</div>
 				
 				
+				<script th:inline="javascript">
+				    let dlabels = [[${daily.labels}]];
+				    
+				    var dailyLabels = [];
+				    for(let i=0; i<dlabels.length; i++) {
+				    	dailyLabels.push(String(dlabels[i]));
+				    }
+		    	</script>
+				
+				
 				<script>
 				  var ctx = document.getElementById('weekChart').getContext('2d');
 			        var chart = new Chart(ctx, {
 			            // type : 'bar' = 막대차트를 의미합니다.
 			            type: 'bar', // 
 			            data: {
-			                labels: ['9/4','10/1','10/2','10/3', '10/4', '11/1', '11/2', '11/3'],
+			                labels: dailyLabels,
 			                datasets: [{
 			                    label: '주간 매출액',
 			                    backgroundColor: 'rgb(255, 99, 132)',
 			                    borderColor: 'rgb(255, 99, 132)',
-			                    data: [2 ,4,7,8, 5,9,2,1]
+			                    data: [[${daily.data}]]
 			                }]
 			            },
 			        });
-				
 				</script>
 				
 			</td>
@@ -104,14 +114,24 @@
 			  
 			    <div id="brand-chart"></div>
 			  
+		      <script th:inline="javascript">
+				    let labels = [[${brand.labels}]];
+				    let data = [[${brand.data}]];
+				    
+				    var brandData = [];
+				    var temp;
+				    for(let i=0; i<labels.length; i++) {
+				    	temp = [];
+				    	temp.push(String(labels[i]));
+				    	temp.push(data[i]);
+				    	brandData.push(temp);
+				    }
+		    	</script>
+		    	
 			    <script>
 			      var brandChart = bb.generate({
 			        data: {
-			          columns: [
-			            ["A", 2],
-			            ["B", 4],
-			            ["C", 3],
-			          ],
+			          columns: brandData,
 			          type: "donut",
 			          onclick: function (d, i) {
 			            console.log("onclick", d, i);
@@ -140,13 +160,13 @@
 				<canvas id="memberChart"></canvas>
 				</div>
 				
-				<script>
+				<script th:inline="javascript">
 				  var memberChart = document.getElementById('memberChart').getContext('2d');
 			        var chart = new Chart(memberChart, {
 			            // type : 'bar' = 막대차트를 의미합니다.
 			            type: 'bar', // 
 			            data: {
-			          labels: ['20대','30대','40대'], // 큰 분류(하단 데이터 이름)
+			          labels: ['10대', '20대', '30대', '40대', '50대', '60대이상'], // 큰 분류(하단 데이터 이름)
 			                datasets: [
 			                  {
 			                    label: '여성', //작은 분류
@@ -154,7 +174,7 @@
 			                      'red',
 			                    ],
 			                    borderColor: 'rgb(255, 99, 132)',
-			                    data: [3 ,12, 5,]
+			                    data: [[${member.womenList}]]
 			                },
 			                  {
 			                    label: '남성', //작은 분류
@@ -162,7 +182,7 @@
 			                      'blue',
 			                    ],
 			                    borderColor: 'rgb(255, 99, 132)',
-			                    data: [1 ,8, 5,]
+			                    data: [[${member.menList}]]
 			                },
 			                  {
 			                    label: '전체', //작은 분류
@@ -170,7 +190,7 @@
 			                      'green',
 			                    ],
 			                    borderColor: 'rgb(255, 99, 132)',
-			                    data: [4 ,20, 10,]
+			                    data: [[${member.totalList}]]
 			                },
 			                  
 			                
