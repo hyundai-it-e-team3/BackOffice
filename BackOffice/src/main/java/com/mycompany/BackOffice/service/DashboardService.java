@@ -1,6 +1,7 @@
 package com.mycompany.BackOffice.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -23,39 +24,39 @@ public class DashboardService {
 	
 
 	
-	public List<SaleDashboard> getQurterSales() {
-		Mono<List<SaleDashboard>> response = client
+	public Map<String, Object> getQurterSales() {
+		Mono<Map<String, Object>> response = client
 							.get()
 							.uri("/dashboard/quater")
 							.retrieve()
-							.bodyToMono(new ParameterizedTypeReference<List<SaleDashboard>>() {});
+							.bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
 		return response.block();
 	}
 	
-	public List<SaleDashboard> getDailySales() {
-		Mono<List<SaleDashboard>> response = client
+	public Map<String, Object> getDailySales() {
+		Mono<Map<String, Object>> response = client
 							.get()
 							.uri("/dashboard/daily")
 							.retrieve()
-							.bodyToMono(new ParameterizedTypeReference<List<SaleDashboard>>() {});
+							.bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
 		return response.block();
 	}
 	
-	public List<SaleDashboard> getBrandSales() {
-		Mono<List<SaleDashboard>> response = client
+	public Map<String, Object> getBrandSales() {
+		Mono<Map<String, Object>> response = client
 							.get()
 							.uri("/dashboard/brand")
 							.retrieve()
-							.bodyToMono(new ParameterizedTypeReference<List<SaleDashboard>>() {});
+							.bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
 		return response.block();
 	}
 	
-	public List<MemberDashboard> getMemberInfo() {
-		Mono<List<MemberDashboard>> response = client
+	public Map<String, Object> getMemberInfo() {
+		Mono<Map<String, Object>> response = client
 							.get()
-							.uri("/dashboard/brand")
+							.uri("/dashboard/member")
 							.retrieve()
-							.bodyToMono(new ParameterizedTypeReference<List<MemberDashboard>>() {});
+							.bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
 		return response.block();
 	}
 	
