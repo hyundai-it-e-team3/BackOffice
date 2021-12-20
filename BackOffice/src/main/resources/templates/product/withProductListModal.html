@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<script th:inline="javascript">
+	    function goSearch(pageNo){
+	  	  console.log($("#productDetailModalInput").val());
+	  	  $.ajax({
+	  	        url:"http://localhost:8082/product/withProductList",
+	  	        type:"GET",
+	  	        data:{
+	  	        	productDetailId:$("#productDetailModalInput").val(),
+	  	        	pageNo
+	  	        },
+	  	        success: function(fragment){
+	  	        	console.log(fragment);
+	  	        	console.log("success");
+	  	        	$("#withProductTable").replaceWith(fragment);
+	  	        },
+	  	        error: function(xhr, status, error) {
+	  	            alert(error);
+	  	        }  
+	  	    });
+	    }
+	    $(function(){
+	    	
+	    	console.log($("#withProductInput").val());
+	    	$("#productDetailModalInput").val([[${productDetailId}]]);
+		  	  $.ajax({
+		  	        url:"http://localhost:8082/product/withProductList",
+		  	        type:"GET",
+		  	        data:{
+		  	        	productDetailId:$("#withProductInput").val(),
+		  	        	pageNo:1
+		  	        },
+		  	        success: function(fragment){
+		  	        	console.log(fragment);
+		  	        	console.log("success");
+		  	        	$("#withProductTable").replaceWith(fragment);
+		  	        },
+		  	        error: function(xhr, status, error) {
+		  	            alert(error);
+		  	        }  
+		  	    });
+	    }); 
+	</script>
+	
+      <table class="table p-0 m-0" style="width: 100%;">
+        <colgroup>
+          <col style="width: 15%" />
+          <col style="width: 85%" />
+        </colgroup>
+        <tr>
+          <th class="align-middle">상품 상세 코드</th>
+          <td>
+            <div class="input-group mt-1">
+              <div class="input-group-prepend">
+              	<input type="text" id="productDetailModalInput" class="form-control"/>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="text-right">
+            <a class="btn btn-primary" value="검색" onclick="javascript:goSearch(1)"/>검색</a>
+          </td>
+        </tr>
+      </table>
+    <div id="withProductTable">
+	    
+    </div>
+</html>

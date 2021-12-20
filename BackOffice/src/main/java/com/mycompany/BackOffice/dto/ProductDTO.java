@@ -3,6 +3,8 @@ package com.mycompany.BackOffice.dto;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -13,6 +15,7 @@ public class ProductDTO {
 	private String content;
 	private int hitCount;
 	private int status;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date regDate;
 	private String brandName;
 	private String thumbnail;
