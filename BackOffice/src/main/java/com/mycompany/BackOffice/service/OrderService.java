@@ -52,7 +52,7 @@ public class OrderService {
 		map.add("orderId", orderDetail.getOrderId());
 		map.add("productDetailId", orderDetail.getProductDetailId());
 		map.add("psize", orderDetail.getPsize());
-		map.add("state", orderDetail.getState());
+		map.add("stateCode", orderDetail.getStateCode());
 		log.info(map.toString());
 		Mono<Void> response = client
 			.post()
