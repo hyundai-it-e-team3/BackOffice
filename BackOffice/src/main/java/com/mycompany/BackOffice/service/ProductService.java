@@ -14,7 +14,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.mycompany.BackOffice.dto.BrandCategoryDTO;
 import com.mycompany.BackOffice.dto.BrandDTO;
 import com.mycompany.BackOffice.dto.CategoryDTO;
-import com.mycompany.BackOffice.dto.ColorDTO;
 import com.mycompany.BackOffice.dto.ProductDTO;
 import com.mycompany.BackOffice.dto.ProductSearchDTO;
 
@@ -69,6 +68,41 @@ public class ProductService {
 							.retrieve()
 							.bodyToMono(ProductDTO.class);
 		return response.block();
+	}
+
+	public Map<String,Object> getProductList(ProductSearchDTO productSearchDTO) {
+		// TODO Auto-generated method stub
+        return client.post()         // POST method
+                .uri("/product/productList")    // baseUrl 이후 uri
+                .bodyValue(productSearchDTO)     // set body value
+                .retrieve()                 // client message 전송
+                .bodyToMono(Map.class)  // body type : EmpInfo
+                .block();   
+	}
+
+	public Map<String, Object> getProductDetailList(Map<String, String> map) {
+        return client.post()         // POST method
+                .uri("/product/stockList")    // baseUrl 이후 uri
+                .bodyValue(map)     // set body value
+                .retrieve()                 // client message 전송
+                .bodyToMono(Map.class)  // body type : EmpInfo
+                .block();  
+	}
+
+	public Map<String, Object> withProductList(String productDetailId,String pageNo) {
+        return client.get()         // POST method
+                .uri("/product/withProductList?productDetailId="+productDetailId+"&pageNo="+pageNo)    // baseUrl 이후 uri
+                .retrieve()                 // client message 전송
+                .bodyToMono(Map.class)  // body type : EmpInfo
+                .block(); 
+	}
+
+	public List<String> getAllSize() {
+		return client.get()         // POST method
+                .uri("/product/sizeList")    // baseUrl 이후 uri
+                .retrieve()                 // client message 전송
+                .bodyToMono(new ParameterizedTypeReference<List<String> >() {})  // body type : EmpInfo
+                .block(); 
 	}
 
 }

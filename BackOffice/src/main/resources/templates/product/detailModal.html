@@ -15,6 +15,12 @@
 	      showSlides(slideIndex = n);
 	    }
 	
+	    function changeModal(productId){
+	    	   console.log(productId);
+	    	   productId = productId.substring(0,productId.length-3);
+	    	   $('#detailModal .modal-content').load(`./detailModal?productId=${productId}`);
+	    	   //$('#detailModal').modal();
+	    }
 	    function showSlides(n) {
 	      console.log(n);
 	      var i;
@@ -33,6 +39,14 @@
 	      dots[slideIndex-1].className += " active";
 	      captionText.innerHTML = dots[slideIndex-1].alt;
 	    }
+	    
+	    $(document).ready(function() {
+	        $('.wrap').on( 'keyup', 'textarea', function (e){
+	          $(this).css('height', 'auto' );
+	          $(this).height( this.scrollHeight );
+	        });
+	        $('.wrap').find( 'textarea' ).keyup();
+	      });
 	</script>
 	<div class="d-flex justify-content-center m-4">
 		<div class="p-2" style="width:900px">
@@ -72,12 +86,19 @@
 		          <td><input type="text" class="form-control" th:value="${product.productId}"></td>
 		        </tr>
 		        <tr class="align-middle">
+		          <th class="text-center ">상품 대표 이미지</th>
+		          <td>
+		          	<img class="mb-2" th:src="${product.thumbnail}" width="100px">
+		          	<input type="text" class="form-control" style="font-size:8px"  th:value="${product.thumbnail}">
+		          </td>
+		        </tr>
+		        <tr class="align-middle">
 		          <th class="text-center">상품 명</th>
 		          <td><input type="text" class="form-control" th:value="${product.name}"></td>
 		        </tr>
 		        <tr class="align-middler">
 		          <th class="text-center">상품 상세 문구</th>
-		          <td><textarea class="form-control" th:value="${product.content}" th:text="${product.content}"></textarea>
+		          <td><textarea class="form-control" th:value="${product.content}" style="font-size:12px; height:100px" th:text="${product.content}"></textarea>
 		          </td>
 		        </tr>
 		        <tr class="align-middle ">
@@ -122,30 +143,34 @@
 		        <tr class="align-middle">
 		          <th>상품 상세 이미지 URL1</th>
 		          <td>
-		            [[${productDetail.imgList[0].img}]]
+		            <img th:src="${productDetail.imgList[0].img}" width="100px">
+		            <input class="form-control mt-2" style="font-size:8px" type="text" th:value="${productDetail.imgList[0].img}">
 		          </td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th>상품 상세 이미지 URL2</th>
 		          <td>
-		          	[[${productDetail.imgList[1].img}]]
+		          	<img th:src="${productDetail.imgList[1].img}" width="100px">
+		          	<input class="form-control mt-2" style="font-size:8px" type="text" th:value="${productDetail.imgList[1].img}">
 		          </td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th>상품 상세 이미지 URL3</th>
 		          <td>
-		            [[${productDetail.imgList[2].img}]]
+		            <img th:src="${productDetail.imgList[2].img}" width="100px">
+		            <input class="form-control mt-2" style="font-size:8px" type="text" th:value="${productDetail.imgList[2].img}">
 		          </td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th>칼라칩 코드 이미지 URL</th>
 		          <td>
-		            [[${productDetail.colorChip}]]
+		            <img th:src="${productDetail.colorChip}" width="50px">
+		            <input class="form-control mt-2" style="font-size:8px" type="text" th:value="${productDetail.colorChip}">
 		          </td>
 		        </tr>
 		        <tr class="align-middle">
 		          <th>함께 코디한 상품 코드</th>
-		          <td>[[${productDetail.withProduct}]]</td>
+		          <td><a class="text-warning" th:onclick="changeModal([[${productDetail.withProduct}]])" >[[${productDetail.withProduct}]]</a></td>
 		        </tr>
 		      </table>
 		    </div>

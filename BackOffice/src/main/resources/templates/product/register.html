@@ -8,8 +8,15 @@
     
     	let imgTempList = ["","","",""];
     	
-		function putFile(file,index){
-		  const albumBucketName = 'kosahyundaiitnebucket'; // S3의 버킷 이름
+		function putFile(file,index1,index2,productId,productDetailId,flag){
+		 let albumBucketName = ""; 
+		 if(flag==0)
+		  	albumBucketName = `kosahyundaiitnebucket/${productId}/${productDetailId}`; // S3의 버킷 이름
+		 else if(flag==1)
+			albumBucketName = `kosahyundaiitnebucket/${productId}/colorChip`; // S3의 버킷 이름
+		 else
+			albumBucketName = `kosahyundaiitnebucket/${productId}/thumbnail`;
+		
 		  const region = 'ap-northeast-2'; // 서울
 		  const accessKeyId = 'AKIATKUPNKYFUXJBJBYD'; // IAM에서 생성한 사용자의 accessKeyId
 		  const secretAccessKey = '6g+Zy8dEw45lvmkcCtEB1qUz2NWy+VCZlfpmPC06'; // IAM에서 생성한 사용자의 secretAccessKey
@@ -33,8 +40,12 @@
 
 		  promise.then(
 		    function(data) {
-		      imgTempList[index] = data.Location;
-		      console.log(imgTempList);
+		      if(flag==0)
+		      	detailList[index1].imgList[index2].img = data.Location;
+		      else if(flag==1)
+		    	detailList[index1].colorChip = data.Location;
+		      else
+		    	product.thumbnail = data.Location;
 		      return console.log("Successfully uploaded photo.");
 		    },
 		    function(err) {
@@ -47,6 +58,13 @@
         inputBox = document.querySelector(id);
         inputText = event.target.innerHTML;
         inputBox.value = inputText;
+      }
+      
+      
+      
+      function selectSizeCode(event,id){
+          let inputText = event.target.innerHTML;
+          $(id).html(inputText);
       }
       
       let mainIndex = 0;
@@ -89,9 +107,11 @@
     		  $("#stockGbn3").attr("disabled", true); 
     		  $("#productProgressStatusRadio1").attr("disabled", true); 
     		  $("#productProgressStatusRadio2").attr("disabled", true); 
+    		  $("#mainImgInput").attr("disabled", true); 
     		  productId = $("#idInput").val();
     		  
-    		  
+    		  const input1 = document.getElementById('mainImgInput').files[0];
+    		  console.log(input1);
     		  let status = $('input[name="productProgressStatusRadio"]:checked').val();
     		  product = {
     			productId :  $("#idInput").val(),
@@ -100,6 +120,7 @@
     			price : $("#priceInput").val(),
     			brandName : $("#brandGbn").html(),
     			categoryId,
+    			thumbnail:{file:input1,src:window.URL.createObjectURL(input1)},
     			status
     		  }
     		 
@@ -117,36 +138,45 @@
     		  $("#stockGbn3").attr("disabled", false); 
     		  $("#productProgressStatusRadio1").attr("disabled", false); 
     		  $("#productProgressStatusRadio2").attr("disabled", false); 
+    		  $("#mainImgInput").attr("disabled", false); 
     		  event.target.innerHTML = "상품 등록";
     	  }
       }
       
       function regProductDetail(){
     	  
+    	  
+    	  
     	  const input1 = document.getElementById('img1Input');
-    	  putFile(input1.files[0],0);
+    	  var objectURL1 = window.URL.createObjectURL(input1.files[0]);
+    	  //console.log(input1.files[0],objectURL);
+    	  //putFile(input1.files[0],0);
     	  
     	  const input2 = document.getElementById('img2Input');
-    	  putFile(input2.files[0],1);
+    	  var objectURL2 = window.URL.createObjectURL(input2.files[0]);
+    	  //console.log(input2.files[0],objectURL);
+    	  //putFile(input2.files[0],1);
     	  
     	  const input3 = document.getElementById('img3Input');
-    	  putFile(input3.files[0],2);
+    	  //putFile(input3.files[0],2);
+    	  var objectURL3 = window.URL.createObjectURL(input3.files[0]);
+    	  //console.log(inpu3.files[0],objectURL);
     	  
     	  const input4 = document.getElementById('colorChipInput');
-    	  putFile(input4.files[0],3);
+    	  //putFile(input4.files[0],3);
+    	  var objectURL4 = window.URL.createObjectURL(input4.files[0]);
+    	  //console.log(input4.files[0],objectURL);
     	  
-    	  
-    	  setTimeout(function() {
         	  let detail = {
             		  productId,
             		  "productDetailId":productId+"_"+$("#colorCodeInput").val(),
             		  "colorCode":$("#colorCodeInput").val(),
             		  "imgList":[
-            			  {img:imgTempList[0],orderNum:1,productDetailId:productId+"_"+$("#colorCodeInput").val()},
-            			  {img:imgTempList[1],orderNum:2,productDetailId:productId+"_"+$("#colorCodeInput").val()},
-            			  {img:imgTempList[2],orderNum:3,productDetailId:productId+"_"+$("#colorCodeInput").val()}
+            			  {imgFile:input1.files[0],img:objectURL1,orderNum:1,productDetailId:productId+"_"+$("#colorCodeInput").val()},
+            			  {imgFile:input2.files[0],img:objectURL2,orderNum:2,productDetailId:productId+"_"+$("#colorCodeInput").val()},
+            			  {imgFile:input3.files[0],img:objectURL3,orderNum:3,productDetailId:productId+"_"+$("#colorCodeInput").val()}
             			],
-            		  "colorChip":imgTempList[3],
+            		  "colorChip":{file:input4.files[0],src:objectURL4},
             		  "withProduct":$("#withProductInput").val(),
             		  "stockList": []
             	  }
@@ -164,13 +194,29 @@
         		  $("#img2Input").val("");
         		  $("#img3Input").val("");
         		  $("#colorChipInput").val("");
-        		  $("#withProductInput").val("");   		  
-    	  }, 1500);
+        		  $("#withProductInput").val("");  
+        		  
+        		  $("#img1Img").addClass('d-none');
+        		  $("#img2Img").addClass('d-none');
+        		  $("#img3Img").addClass('d-none');
+        		  $("#colorChipImg").addClass('d-none');
+    	  
+      }
+      
+      function imgChange(event,inputId,imgId){
+    	  const input = document.getElementById(inputId);
+    	  var objectURL = window.URL.createObjectURL(input.files[0]);
+    	  
+    	  
+    	  console.log(objectURL);
+    	  
+    	  $(imgId).attr("src", objectURL); 
+    	  $(imgId).removeClass('d-none');
       }
       
       function regSize(){
     	  let size = {
-    		"psize":$('#sizeCodeInput').val(),
+    		"psize":$('#sizeCodeInput').html(),
     		"amount":$('#amountInput').val(),
     	  }
     	  detailList[dIndex].stockList.push(size);
@@ -196,10 +242,7 @@
 		  $("#colorChipInput").attr("disabled", false); 
 		  $("#withProductInput").attr("disabled", false);
 		  
-		  $("#img1Img").addClass('d-none');
-		  $("#img2Img").addClass('d-none');
-		  $("#img3Img").addClass('d-none');
-		  $("#colorChipImg").addClass('d-none');
+		  
 		  
 		  $("#img1Input").removeClass('d-none');
 		  $("#img2Input").removeClass('d-none');
@@ -232,7 +275,7 @@
     	  $("#img1Img").attr("src", detailList[index].imgList[0].img); 
 		  $("#img2Img").attr("src", detailList[index].imgList[1].img); 
 		  $("#img3Img").attr("src", detailList[index].imgList[2].img); 
-		  $("#colorChipImg").attr("src", detailList[index].colorChip); 
+		  $("#colorChipImg").attr("src", detailList[index].colorChip.src); 
 		  $("#withProductInput").val(detailList[index].withProduct);
 		  
 		  $("#img1Img").removeClass('d-none');
@@ -339,13 +382,38 @@
       
       
       function confirmProductDetail(){
+    	  
+    	  const input1 = document.getElementById('img1Input').files[0];
+    	  const input2 = document.getElementById('img2Input').files[0];
+    	  const input3 = document.getElementById('img3Input').files[0];
+    	  const input4 = document.getElementById('colorChipInput').files[0];
+    	  
+		  if(input1!=undefined){
+			  detailList[dIndex].imgList[0].imgFile = input1;
+			  detailList[dIndex].imgList[0].img = window.URL.createObjectURL(input1);
+			  
+		  }
+		  if(input2!=undefined){
+			  detailList[dIndex].imgList[1].imgFile = input2;
+			  detailList[dIndex].imgList[1].img = window.URL.createObjectURL(input2);
+		  }
+		  if(input3!=undefined){
+			  detailList[dIndex].imgList[2].imgFile = input3;
+			  detailList[dIndex].imgList[2].img = window.URL.createObjectURL(input3);
+		  }
+		  
+		  if(input4!=undefined){
+			  detailList[dIndex].colorChip.File = input4;
+			  detailList[dIndex].colorChip.src = window.URL.createObjectURL(input4);
+		  }
+    	  
+		  detailList[dIndex].imgList[0].productDetailId = productId+"_"+$("#colorCodeInput").val();
+		  detailList[dIndex].imgList[1].productDetailId = productId+"_"+$("#colorCodeInput").val();
+		  detailList[dIndex].imgList[2].productDetailId = productId+"_"+$("#colorCodeInput").val();
+    	  
+    	  console.log(detailList[dIndex].imgList);
+    	  
     	  detailList[dIndex].colorCode = $("#colorCodeInput").val();
-    	  detailList[dIndex].imgList =[
-			  {img:$("#img1Input").val(),orderNum:1,productDetailId:productId+"_"+$("#colorCodeInput").val()},
-			  {img:$("#img2Input").val(),orderNum:2,productDetailId:productId+"_"+$("#colorCodeInput").val()},
-			  {img:$("#img3Input").val(),orderNum:3,productDetailId:productId+"_"+$("#colorCodeInput").val()}
-			];
-    	  detailList[dIndex].colorChip= $("#colorChipInput").val();
     	  detailList[dIndex].withProduct = $("#withProductInput").val();
     	  showDetail(dIndex);
     	  
@@ -501,33 +569,72 @@
       
       function goReg(){
     	  console.log(detailList);
-    	  product.thumbnail = detailList[0].imgList[0].img;
     	  product.productDetailList = detailList;
-    	  console.log(product);
- 
-    	  $.ajax({
-  	        url:"http://localhost:8082/product/regist",
-  	      	contentType: 'application/json',
-  	        type:"POST",
-  	      	dataType:"json",	
-  	        data:JSON.stringify(product),
-  	        success: function(response){
-  	        	console.log(response);
-  	        },
-  	        error: function(xhr, status, error) {
-  	            alert(error);
-  	        }  
-  	    });
+    	  
+    	  console.log(product.thumbnail.file);
+    	  putFile(product.thumbnail.file,0,0,product.productId,"",2);
+    	  
+    	  for(let i = 0; i < detailList.length;i++){
+    		  for(let j = 0; j<3;j++){
+    			  putFile(detailList[i].imgList[j].imgFile,i,j,product.productId,detailList[i].productDetailId,0);
+    		  }
+    		  putFile(detailList[i].colorChip.file,i,0,product.productId,detailList[i].productDetailId,1);
+    	  }
+    	  
+    	 
+    	  for(let i = 0; i < detailList.length;i++){
+    		  for(let j = 0; j<3;j++){
+    			  detailList[i].imgList[j].imgFile = "";
+    		  }
+    	  }
+ 		
+    	  setTimeout(function() {
+    	   	  $.ajax({
+    	  	        url:"http://localhost:8082/product/regist",
+    	  	      	contentType: 'application/json',
+    	  	        type:"POST",
+    	  	      	dataType:"json",	
+    	  	        data:JSON.stringify(product),
+    	  	        success: function(response){
+    	  	        	console.log(response);
+    	  	        },
+    	  	        error: function(xhr, status, error) {
+    	  	            alert(error);
+    	  	        }  
+    	  	    })
+    	 },2000);
       }
       
+      
+      
+	    function fnModuleInfo(){
+	    	   let productDetailId = $("#withProductInput").val();
+	    	   console.log(productDetailId);
+	    	   $('#detailModal .modal-content').load(`./withProductModal?productDetailId=${productDetailId}`);
+	    	   $('#detailModal').modal();
+	    }
+      
+	    function selectWithProduct(productDetailId){
+	    	$("#withProductInput").val(productDetailId);
+	    	$('#detailModal').modal("hide");
+	    }
+	    
+	    
       $(function(){
     	  let categoryList = [[${brandList}]][0].brandCategoryTempList;
+    	  let sizeList =  [[${sizeList}]];
           console.log(categoryList);
           $('#mainGbn').html("");
           for(let i = 0; i < categoryList.length; i++){
         	var $temp = $(`<a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#stockGbn1',${i})">${categoryList[i].name}</a>`);
           	$('#mainGbn').append($temp);
           }
+          
+          $('#sizeGbn').html("");
+          for(let i = 0; i < sizeList.length; i++){
+          	var $temp = $(`<a class="dropdown-item" onclick="javascript:selectSizeCode(event,'#sizeCodeInput')">${sizeList[i]}</a>`);
+            	$('#sizeGbn').append($temp);
+           }
 		//let categoryList = [[${categoryList}]];
 		console.log("-------");
       }); 
@@ -600,7 +707,10 @@
           </td>
         </tr>
         <tr>
-          <tr>
+          <th class="align-middle">상품 대표 이미지</th>
+          <td><img id="mainImg" width="100px" src="" class="d-none mb-2"/><input class="form-control" type="file"  onchange="imgChange(event,'mainImgInput','#mainImg')" id="mainImgInput"></td>
+        </tr>
+        <tr>
           <th scope="row" class="align-middle">진행 여부</th>
           <td colspan="2">
             <span>
@@ -639,24 +749,30 @@
           <td><input type="text" id="colorCodeInput" class="form-control" disabled></td>
         </tr>
         <tr>
-          <th class="align-middle">상품 상세 이미지 URL1</th>
-          <td><input class="form-control" type="file" id="img1Input" disabled><img id="img1Img" width="100px" src="" class="d-none"/></td>
+          <th class="align-middle">상품 상세 이미지1</th>
+          <td><img id="img1Img" width="100px" src="" class="d-none mb-2"/><input class="form-control" type="file"  onchange="imgChange(event,'img1Input','#img1Img')" id="img1Input" disabled ></td>
         </tr>
         <tr>
-          <th class="align-middle">상품 상세 이미지 URL2</th>
-          <td><input class="form-control" type="file" id="img2Input" disabled><img id="img2Img" width="100px" src="" class="d-none"/></td>
+          <th class="align-middle">상품 상세 이미지2</th>
+          <td><img id="img2Img" width="100px" src="" class="d-none mb-2"/><input class="form-control" type="file"  onchange="imgChange(event,'img2Input','#img2Img')" id="img2Input" disabled></td>
         </tr>
         <tr>
-          <th class="align-middle">상품 상세 이미지 URL3</th>
-          <td><input class="form-control" type="file" id="img3Input" disabled><img id="img3Img" width="100px" src="" class="d-none"/></td>
+          <th class="align-middle">상품 상세 이미지3</th>
+          <td><img id="img3Img" width="100px" src="" class="d-none mb-2"/><input class="form-control" type="file" onchange="imgChange(event,'img3Input','#img3Img')" id="img3Input" disabled></td>
         </tr>
         <tr>
-          <th class="align-middle">칼라칩 이미지 URL</th>
-          <td><input class="form-control" type="file" id="colorChipInput" disabled><img id="colorChipImg" width="50px" src="" class="d-none"/></td>
+          <th class="align-middle">칼라칩 이미지</th>
+          <td><img id="colorChipImg" width="50px" src="" class="d-none mb-2"/><input class="form-control" type="file" onchange="imgChange(event,'colorChipInput','#colorChipImg')" id="colorChipInput" disabled></td>
         </tr>
         <tr>
           <th class="align-middle">함께 코디한 상품 코드</th>
-          <td><input type="text" id="withProductInput" class="form-control" disabled></td>
+          <td>
+			<div class="input-group">
+			  <input type="search" class="form-control rounded mr-2" placeholder="Search" aria-label="Search"
+			  aria-describedby="search-addon" id="withProductInput" disabled/>
+			  <button type="button" class="btn btn-outline-primary" onclick="fnModuleInfo()">search</button>
+			</div>
+          </td>
         </tr>
         <tr>
           <td colspan="3">
@@ -686,7 +802,14 @@
         </colgroup>
         <tr>
           <th class="align-middle">사이즈 코드</th>
-          <td><input type="text" id="sizeCodeInput"  class="form-control" disabled></td>
+          <td>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sizeCodeInput" data-toggle="dropdown" aria-expanded="false">
+               분류
+            </button>
+            <div class="dropdown-menu" id="sizeGbn">
+                
+          	</div>
+          </td>
         </tr>
         <tr>
           <th class="align-middle">재고량</th>
@@ -708,5 +831,11 @@
     <div class="text-right">
       <a class="btn btn-success" onclick="goReg()">상품 최종 등록</a>
     </div>
+  	<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	    </div>
+	  </div>
+	</div>
 </th:block>
 </html>
