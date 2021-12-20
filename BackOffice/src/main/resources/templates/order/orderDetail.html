@@ -120,7 +120,7 @@
 		      		<input type="hidden" id="hidden-oid" name="orderId"/>
 		      		<input type="hidden" id="hidden-pdid" name="productDetailId"/>
 		      		<input type="hidden" id="hidden-psize" name="psize"/>
-		      		<input type="hidden" id="hidden-state" name="state"/>
+		      		<input type="hidden" id="hidden-state" name="stateCode"/>
 			        <button type="button" class="btn btn-primary" onclick="changeState(1)">출고대기</button>
 			        <button type="button" class="btn btn-primary" onclick="changeState(2)">배송준비</button>
 			        <button type="button" class="btn btn-primary" onclick="changeState(3)">배송중</button>
@@ -148,9 +148,9 @@
 	            $("#hidden-psize").val(psize);
 	            console.log(OdInfo);
 	        };
-	        function changeState(state) {
-	        	console.log(state)
-	        	$("#hidden-state").val(state);
+	        function changeState(stateCode) {
+	        	console.log(stateCode)
+	        	$("#hidden-state").val(stateCode);
 	        	$('#delivery-form').submit();
 	        }
       	</script>

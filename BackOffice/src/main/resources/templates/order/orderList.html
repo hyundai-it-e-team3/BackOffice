@@ -195,12 +195,12 @@
 	      </thead>
 	      <tbody class="text-center">
 	        <tr th:each="orderInfo : ${orderList}">
-	          <td>[[${orderInfo.orderDate}]]</td>
+	          <td>[[${#dates.format(orderInfo.orderDate, 'yyyy-MM-dd')}]]</td>
 	          <td><a  th:href="@{orderDetail(oid=${orderInfo.orderId})}">[[${orderInfo.orderId}]]</a></td>
 	          <td>[[${orderInfo.memberId}]]</td>
 	          <td>[[${orderInfo.totalPrice}]]</td>
 	          <td>[[${orderInfo.payType}]]</td>
-	          <td>[[${orderInfo.orderState}]]</td>
+	          <td>[[${orderInfo.state}]]</td>
 	          <td>[[${orderInfo.totalProduct}]]</td>
 	          <td>[[${orderInfo.state1}]]</td>
 	          <td>[[${orderInfo.state2}]]</td>
