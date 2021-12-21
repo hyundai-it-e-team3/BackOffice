@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+      <div id="couponTable">
+        <table class="table table-bordered table-sm">
+          <thead class="align-middle text-center">
+            <tr>
+              <th scope="col">체크박스</th>
+              <th scope="col">쿠폰번호</th>
+              <th scope="col">쿠폰명</th>
+              <th scope="col">내용</th>
+              <th scope="col">유형</th>
+              <th scope="col">할인금액/할인율</th>
+              <th scope="col">발급 수량</th>
+              <th scope="col">재고</th>
+              <th scope="col">만료 유형</th>
+              <th scope="col">만료 일자</th>
+              <th scope="col">진행여부</th>
+              <th scope="col">관련 이벤트</th>
+              <th scope="col">수정</th>
+            </tr>
+          </thead>
+          <tbody class="align-middle text-center">
+            <tr th:each="coupon : ${couponList}">
+              <td><input type="checkbox" class="align-middle" name="checkList" th:value="${coupon.couponId}"></td>
+              <td>[[${coupon.couponId}]]</td>
+              <td>[[${coupon.name}]]</td>
+              <td>[[${coupon.content}]]</td>
+              <td>[[${coupon.type}]]</td>
+              <td>[[${coupon.amount}]]</td>
+              <td>[[${coupon.issuance}]]</td>
+              <td>[[${coupon.stock}]]</td>
+              <td>[[${coupon.expDateType}]]</td>
+              <td>[[${coupon.expDate}]]</td>
+              <td>[[${coupon.status}]]</td>
+              <td>[[${coupon.eventSeq}]]</td>
+              <td class="align-middle">
+                <a th:href="'/promotion/editCouponForm/' + ${coupon.couponId}" class="btn btn-success btn-sm">수정</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <nav  th:if="${pager.totalRows} > 0">
+          <ul class="pagination d-flex justify-content-center">
+            <li class="page-item">
+              <a class="page-link" th:onclick="javascript:goPage(1)" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">First</span>
+              </a>
+            </li>
+            <li class="page-item" th:if="${pager.groupNo>1}">
+              <a class="page-link" th:onclick="javascript:goPage([[${pager.startPageNo-1}]])" aria-label="Previous">
+                <span aria-hidden="true">이전</span>
+                <span class="sr-only">이전</span>
+              </a>
+            </li>
+            <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
+              <li class="page-item"><a class="page-link" th:onclick="javascript:goPage([[${i}]])">[[${i}]]</a></li>
+            </th:block>
+            <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
+              <a class="page-link" th:onclick="javascript:goPage([[${pager.endPageNo+1}]])" aria-label="Previous">
+                <span aria-hidden="true">다음</span>
+                <span class="sr-only">다음</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" th:onclick="javascript:goPage([[${pager.totalPageNo}]])" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Last</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+  
+</html>

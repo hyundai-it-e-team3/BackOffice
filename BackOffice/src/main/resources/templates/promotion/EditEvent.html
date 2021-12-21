@@ -6,131 +6,162 @@
     <th:block th:fragment="content">
     
       <h4><b>이벤트 수정</b></h4>
-      <table class="table">
-        <tr>
-          <th scope="row" class="align-middle" style="width:15%;">이벤트명</th>
-          <td colspan="2">
-            <input type="text" class="form-control">
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">이벤트 유형</th>
-          <td colspan="2">
-            <span>
-              <input type="radio" id="evnetTypeRadio1" class="align-middle" name="evnetTypeRadio" value="coupon"
-                     th:onclick="javascript:setDisplay()">
-              <label class="mb-0 align-middle">쿠폰</label>
-            </span>
-            <span>
-              <input type="radio" id="evnetTypeRadio2" class="ml-2 align-middle" name="evnetTypeRadio" value="discountOfProduct"
-                     th:onclick="javascript:setDisplay()"> 
-              <label class="mb-0 align-middle">상품 할인</label>
-            </span>
-          </td>
-        </tr>
-        <tr id="rateOfDiscount" style="display:none;">
-          <th scope="row" class="mb-0 align-middle" style="width:13%;">할인율</th>
-          <td colspan="2">
-            <input type="text" class="form-control">
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">진행 여부</th>
-          <td colspan="2">
-            <span>
-              <input class="align-middle" type="radio" id="eventProgressStatusRadio1" name="eventProgressStatusCRadio" value="inProgress">
-              <label class="align-middle mb-0">진행 중</label>
-            </span>
-            <span>
-              <input class="align-middle ml-2" type="radio" id="eventProgressStatusRadio2" name="eventProgressStatusCRadio" value="notInProgress"> 
-              <label class="align-middle mb-0">진행 안함</label>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">기간</th>
-          <td>
-            <input type="date" class="form-control" name="date" required="required">
-          </td>
-          <td>
-            <input type="date" class="form-control" name="date" required="required">
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3">
-            <button class="btn btn-info btn-sm float-right">수정</button>
-          </td>
-        </tr>
-      </table>
       
-      <script th:inline="javascript">
-      	function setDisplay(){
-    	    if($('input:radio[id=evnetTypeRadio1]').is(':checked')){
-    	    	console.log("show 실행")
-    	    	$('#rateOfDiscount').hide();
-    	    	$('#registerWithCoupon').show();
-    	    }else{
-    	    	console.log("hide 실행")
-    	        $('#registerWithCoupon').hide();
-    	    	$('#rateOfDiscount').show()
-    	    }
-    	}
-      </script>
-      
-      <br />
-      <div id="registerWithCoupon" style="display:none; width:800px;">
-        <h5 class="pb-2"><b>쿠폰 등록</b></h5>
+      <form id="eventEditForm">
         <table class="table">
           <tr>
-            <td colspan="3" class="pl-1 pt-2 pb-2 align-middle">
-              <button class="btn btn-secondary bnt-sm float-right">쿠폰 불러오기</button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="align-middle" style="width:20%;">쿠폰번호</th>
+            <th scope="row" class="align-middle" style="width:15%;">이벤트코드</th>
             <td colspan="2">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" th:value="${event.eventSeq}" disabled>
+              <input type="hidden" class="form-control" name="eventSeq" th:value="${event.eventSeq}">
             </td>
           </tr>
           <tr>
-            <th scope="row" class="align-middle">쿠폰명</th>
+            <th scope="row" class="align-middle" style="width:15%;">이벤트명</th>
             <td colspan="2">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" name="name" th:value="${event.name}">
             </td>
           </tr>
           <tr>
-            <th scope="row" class="align-middle">만료 일자</th>
+            <th scope="row" class="align-middle" style="width:15%;">첨부 이미지</th>
+            <td colspan="2">
+              <div class="mb-3">
+                <input type="file" id="file-input" name="image">
+              </div>  
+              <div id="imagePreview">
+        	      <img id="img" style="max-width:600px;"/>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle" style="width:15%;">내용</th>
+            <td colspan="2">
+              <textarea class="form-control" name="content">[[${event.content}]]</textarea>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">이벤트 유형</th>
+            <td colspan="2">
+              <input type="text" class="form-control" th:value="${event.eventType}" disabled>
+              <input type="hidden" class="form-control" name="eventType" th:value="${event.eventType}">
+            </td>
+          </tr>
+          <tr>  
+            <th scope="row" class="align-middle">기간</th>
             <td>
-              <input type="date" class="form-control" name="date" required="required">
+              <input type="date" class="form-control" name="startDate">
+            </td>
+            <td>
+              <input type="date" class="form-control" name="expDate">
             </td>
           </tr>
           <tr>
-            <th scope="row" class="align-middle">쿠폰 유형</th>
+            <th scope="row" class="align-middle">진행 여부</th>
             <td colspan="2">
               <span>
-                <input type="radio" class="align-middle" id="couponTypeRadio1" name="couponTypeRadio" value="discountPrice">
-                <label class="align-middle mb-0">할인</label>
+                <input class="align-middle" type="radio" id="status1" name="status" value="1">
+                <label class="align-middle mb-0">진행 중</label>
               </span>
               <span>
-                <input type="radio" class="align-middle ml-2" id="couponTypeRadio2" name="couponTypeRadio" value="earnPoint "> 
-                <label class="align-middle mb-0">포인트 적립</label>
+                <input class="align-middle ml-2" type="radio" id="status0" name="status" value="0"> 
+                <label class="align-middle mb-0">진행 안함</label>
               </span>
             </td>
           </tr>
           <tr>
-            <th scope="row" class="align-middle">할인금액/할인율</th>
-            <td colspan="2">
-              <input type="text" class="form-control">
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="align-middle">발급수량</th>
-            <td colspan="2">
-              <input type="text" class="form-control">
+            <td colspan="3">
+              <button class="btn btn-primary float-right" type="button" onclick="editEvent()">수정</button>
             </td>
           </tr>
         </table>
+      </form>
+      
+      <div class="modal" id="editEventSuccessModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            
+            <div class="modal-header">
+              <h4><b>이벤트 수정</b></h4>
+            </div>
+            <div class="modal-body">
+              <p>이벤트를 성공적으로 수정했습니다.</p>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-primary" onclick="goEventList()">이벤트 목록으로 돌아가기</button>
+            </div>
+              
+          </div>
+        </div>
       </div>
+      
+      <script th:inline="javascript">
+        let sel_file;
+        
+        $(document).ready(function() {
+          $('#file-input').on("change", handleImgFileSelect);
+        });
+        
+        function handleImgFileSelect(e) {
+          let files = e.target.files;
+          let filesArr = Array.prototype.slice.call(files);
+          
+          filesArr.forEach(function(f) {
+            if(!f.type.match("image.*")) {
+              alert("이미지만 첨부 가능합니다.");
+              return;
+            }
+            
+            sel_file = f;
+            
+            let reader = new FileReader();
+            reader.onload = function(e) {
+              $('#img').attr("src", e.target.result);
+            }
+            
+            reader.readAsDataURL(f);
+          });
+        }
+        
+        function editEvent() {
+        	let eventEditForm = $('#eventEditForm').serialize();
+        	
+        	$.ajax({
+        		type:"POST",
+        		url:"/promotion/editEvent",
+    			data: eventEditForm,
+    			dataType: "json",
+    			success: function(data) {
+    				if(data.result == 'success') {
+    					$('#editEventSuccessModal').modal('show');
+    				}
+    			},
+    			error: function(error) {
+    				console.log(error);
+    			}
+        	});
+        }
+        
+        function goEventList() {
+        	location.href='/promotion/firstEventList';
+        }
+        
+        /* 진행 여부 체크 */
+      	let status = [[${event.status}]];
+      	if(status == '0') {
+      		document.getElementById('status0').checked = true;
+      	} else {
+      		document.getElementById('status1').checked = true;
+      	}
+      	
+      	/* 기간 날짜 입력 */
+      	let startDate = [[${event.startDate}]];
+      	let expDate = [[${event.expDate}]];
+      	startDate = moment(startDate).format("YYYY-MM-DD");
+      	expDate = moment(expDate).format("YYYY-MM-DD");
+      	
+      	$('input[name=startDate]').val(startDate);
+      	$('input[name=expDate]').val(expDate);
+      </script>
       
     </th:block>
   </th:block>

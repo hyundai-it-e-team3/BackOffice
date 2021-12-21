@@ -6,70 +6,137 @@
     <th:block th:fragment="content">
     
       <h4 class="pb-2"><b>쿠폰 등록</b></h4>
-      <table class="table">
-        <tr>
-          <th scope="row" class="align-middle" style="width:15%;">쿠폰번호</th>
-          <td colspan="2">
-            <input type="text" class="form-control">
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">쿠폰명</th>
-          <td colspan="2">
-            <input type="text" class="form-control">
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">만료 일자</th>
-          <td>
-            <input type="date" class="form-control" name="date" required="required">
-          </td>
-        </tr>
-        <tr>
+      
+      <form id="couponForm">
+        <table class="table">
+          <tr>
+            <th scope="row" class="align-middle" style="width:15%;">쿠폰번호</th>
+            <td colspan="2">
+              <input type="text" class="form-control" name="couponId">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">쿠폰명</th>
+            <td colspan="2">
+              <input type="text" class="form-control" name="name">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">쿠폰 내용</th>
+            <td colspan="2">
+              <textarea class="form-control" name="content"></textarea>
+            </td>
+          </tr>
+          <tr>
             <th scope="row" class="align-middle">쿠폰 유형</th>
             <td colspan="2">
               <span>
-                <input type="radio" class="align-middle" id="couponTypeRadio1" name="couponTypeRadio" value="discountPrice">
-                <label class="align-middle mb-0">할인</label>
+                <input type="radio" class="align-middle" name="type" value="1">
+                <label class="align-middle mb-0">금액 할인</label>
               </span>
               <span>
-                <input type="radio" class="align-middle ml-2" id="couponTypeRadio2" name="couponTypeRadio" value="earnPoint "> 
-                <label class="align-middle mb-0">포인트 적립</label>
+                <input type="radio" class="align-middle ml-2" name="type" value="2"> 
+                <label class="align-middle mb-0">% 할인</label>
               </span>
             </td>
           </tr>
-        <tr>
-          <th scope="row" class="align-middle">할인금액/할인율</th>
-          <td colspan="2">
-            <input type="text" class="form-control">
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">발급 수량</th>
-          <td colspan="2">
-            <input type="text" class="form-control">
-          </td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">진행 여부</th>
-          <td colspan="2">
-            <span>
-              <input class="align-middle" type="radio" id="couponProgressStatusRadio1" name="couponProgressStatusRadio" value="inProgress">
-              <label class="align-middle mb-0">진행 중</label>
-            </span>
-            <span>
-              <input class="align-middle ml-2" type="radio" id="couponProgressStatusRadio2" name="couponProgressStatusRadio1" value="notInProgress"> 
-              <label class="align-middle mb-0">진행 안함</label>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3">
-            <button class="btn btn-primary float-right">등록</button>
-          </td>
-        </tr>
-      </table>
+          <tr>
+            <th scope="row" class="align-middle">할인금액/할인율</th>
+            <td colspan="2">
+              <input type="text" class="form-control" name="amount">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">발급 수량</th>
+            <td colspan="2">
+              <input type="text" class="form-control" name="issuance">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">만료 유형</th>
+            <td colspan="2">
+              <span>
+                <input type="radio" class="align-middle" name="expDateType" value="1">
+                <label class="align-middle mb-0">만료일 설정</label>
+              </span>
+              <span>
+                <input type="radio" class="align-middle ml-2" name="expDateType" value="2">
+                <label class="align-middle mb-0">만료기간 설정</label>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">만료 일자</th>
+            <td>
+              <input type="text" class="form-control" name="expDate">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-middle">진행 여부</th>
+            <td colspan="2">
+              <span>
+                <input class="align-middle" type="radio" name="status" value="1">
+                <label class="align-middle mb-0">진행 중</label>
+              </span>
+              <span>
+                <input class="align-middle ml-2" type="radio" name="status" value="0"> 
+                <label class="align-middle mb-0">진행 안함</label>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <button class="btn btn-primary float-right" type="button" onclick="registerWithCoupon()">등록</button>
+            </td>
+          </tr>
+        </table>
+      </form>
       
+      <div class="modal" id="registerWithCouponSuccessModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            
+            <div class="modal-header">
+              <h4><b>쿠폰 등록</b></h4>
+            </div>
+            <div class="modal-body">
+              <p>쿠폰이 성공적으로 등록되었습니다.</p>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-primary" onclick="goCouponList()">쿠폰 목록으로 돌아가기</button>
+            </div>
+              
+          </div>
+        </div>
+      </div>
+      
+      <script th:inline="javascript">
+        function registerWithCoupon() {
+        	let couponForm = $('#couponForm').serialize();
+        	
+        	$.ajax({
+        		type:"POST",
+        		url:"/promotion/registerWithCoupon",
+    			data: couponForm,
+    			dataType: "json",
+    			success: function(data) {
+    				if(data.result == 'success') {
+    					$('#registerWithCouponSuccessModal').modal('show');
+    				} else {
+    					alert("중복된 쿠폰번호입니다.");
+    				}
+    			},
+    			error: function(error) {
+    				console.log(error);
+    			}
+        	});
+        }
+        
+        function goCouponList() {
+        	location.href='/promotion/firstCouponList';
+        }
+      </script>
+
     </th:block>
   </th:block>
   

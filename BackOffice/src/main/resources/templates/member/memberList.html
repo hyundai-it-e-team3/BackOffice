@@ -5,6 +5,7 @@
   <th:block th:fragment="content">
     <script th:inline="javascript">
     	let searchType;
+    	
   		function selectDropDownBtn(event,id){
     		inputBox = document.querySelector(id);
     		searchType = event.target.innerHTML;
@@ -32,7 +33,9 @@
   		});
   		
   		function goSearch() {
-			let searchTypeMember = {
+  			console.log("goSearch() 실행");
+  			
+  			searchTypeMember = {
 	    		searchMemberId: "",
 	    		searchName: "",
 	    		memberLevelList: []
@@ -51,7 +54,6 @@
         			searchTypeMember.memberLevelList.push(this.value);
     	    	}
         	);
-    		console.log(searchTypeMember);
     
     		$.ajax({
     			type: "POST",
@@ -61,13 +63,44 @@
     			dataType: "html",
     			success: function(fragment) {
     				$("#memberTable").replaceWith(fragment);
-    				console.log(fragment);
     			},
     			error: function(error) {
     				console.log(error);
     			}
     		});
 		}
+  		
+    	function goPage(pageNo) {
+    		console.log("goPage() 실행");
+    		
+      		let searchKeyword = $("#searchKeyword").val();
+      
+      		if(searchType ===  "주문자 ID") {
+      			searchTypeMember.searchMemberId = searchKeyword;
+      		} else if (searchType === "회원명") {
+      			searchTypeMember.searchName = searchKeyword;
+      		}
+      		
+      		$("input:checkbox[name='memberLevelList']:checked").each(
+          		function() {
+          			searchTypeMember.memberLevelList.push(this.value);
+      	    	}
+          	);
+      		
+      		$.ajax({
+    			type: "POST",
+    			url: "/member/memberList" + "?pageNo=" + pageNo,
+    			contentType: 'application/json',
+    			data: JSON.stringify(searchTypeMember),
+    			dataType: "html",
+    			success: function(fragment) {
+    				$("#memberTable").replaceWith(fragment);
+    			},
+    			error: function(error) {
+    				console.log(error);
+    			}
+    		});
+    	}
     </script>
     
     <div>
@@ -131,7 +164,7 @@
         </tr>
         <tr>
           <td colspan="3" style="text-align: right">
-            <input type="button" class="btn btn-primary" onclick="javascript:goSearch()"value="검색" />
+            <input type="button" class="btn btn-primary" onclick="javascript:goSearch()" value="검색" />
           </td>
         </tr>
       </table>
@@ -169,7 +202,12 @@
             <td class="align-middle">[[${#dates.format(member.birthday, 'yyyy-MM-dd')}]]</td>
             <td class="align-middle">[[${member.address1}]] [[${member.address2}]]</td>
             <td class="align-middle">[[${member.memberLevel}]]</td>
-            <td class="align-middle">[[${member.point}]]</td>
+            <th:block th:if="${member.point}  > 99 or ${member.point} < -99">
+              <td>[[${#numbers.formatInteger(member.point, 3, 'COMMA')}]]</td>
+            </th:block>
+            <th:block th:unless="${member.point}  > 99 or ${member.point} < -99">
+              <td>[[${member.point}]]</td>
+            </th:block>
             <td class="align-middle">
               <th:block th:switch="${member.status}">
                 <th:block th:case="'0'">탈퇴회원</th:block>
@@ -190,28 +228,32 @@
       <nav  th:if="${pager.totalRows} > 0">
         <ul class="pagination d-flex justify-content-center">
           <li class="page-item">
-            <a class="page-link" th:href="@{/member/memberList(pageNo=1)}" aria-label="Previous">
+            <a class="page-link" th:href="@{/member/firstMemberList(pageNo=1)}" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">First</span>
             </a>
           </li>
+          
           <li class="page-item" th:if="${pager.groupNo>1}">
-            <a class="page-link"  th:href="@{memberList(pageNo=${pager.startPageNo-1})}"  aria-label="Previous">
+            <a class="page-link"  th:href="@{firstMemberList(pageNo=${pager.startPageNo-1})}"  aria-label="Previous">
               <span aria-hidden="true">이전</span>
               <span class="sr-only">이전</span>
             </a>
           </li>
+          
           <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
-            <li class="page-item"><a class="page-link" th:href="@{memberList(pageNo=${i})}">[[${i}]]</a></li>
+            <li class="page-item"><a class="page-link" th:href="@{firstMemberList(pageNo=${i})}">[[${i}]]</a></li>
           </th:block>
+          
           <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
-            <a class="page-link" th:href="@{memberList(pageNo=${pager.endPageNo+1})}" aria-label="Previous">
+            <a class="page-link" th:href="@{firstMemberList(pageNo=${pager.endPageNo+1})}" aria-label="Previous">
               <span aria-hidden="true">다음</span>
               <span class="sr-only">다음</span>
             </a>
           </li>
+          
           <li class="page-item">
-            <a class="page-link" th:href="@{memberList(pageNo=${pager.totalPageNo})}" aria-label="Next">
+            <a class="page-link" th:href="@{firstMemberList(pageNo=${pager.totalPageNo})}" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Last</span>
             </a>

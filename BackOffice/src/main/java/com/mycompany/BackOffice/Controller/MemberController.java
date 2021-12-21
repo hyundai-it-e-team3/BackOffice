@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +37,9 @@ public class MemberController {
 		log.info("Run FirstMemberList");
 
 		SearchTypeMember searchTypeMember = new SearchTypeMember();
+		searchTypeMember.setSearchMemberId("none");
+		searchTypeMember.setSearchName("none");
+		searchTypeMember.setMemberLevelList(new ArrayList<String>());
 		
 		PagerAndMember data = webClient
 				.post()
@@ -53,23 +55,23 @@ public class MemberController {
 		return "member/memberList";
 	}
 	
-	@PostMapping("/memberList")
-	public String memberList(@RequestParam(defaultValue="1") int pageNo, @RequestBody(required=false) SearchTypeMember searchTypeMember, Model model) {
+	@RequestMapping("/memberList")
+	public String memberList(@RequestParam(defaultValue="1") int pageNo, 
+							 @RequestBody(required=false) SearchTypeMember searchTypeMember,
+							 Model model) {
 		log.info("Run MemberList");
 		
-		if(searchTypeMember.getSearchMemberId() == null) {
+		
+		if(searchTypeMember.getSearchMemberId().equals("")) {
 			searchTypeMember.setSearchMemberId("none");
 		} 
-		if(searchTypeMember.getSearchName() == null) {
+		if(searchTypeMember.getSearchName().equals("")) {
 			searchTypeMember.setSearchName("none");
-		}
-		if (searchTypeMember.getMemberLevelList() == null) {
-			searchTypeMember.setMemberLevelList(new ArrayList<String>());
 		}
 
 		PagerAndMember data = webClient
 				.post()
-			    .uri("/member/" + "?pageNo=" + pageNo)
+			    .uri("/member" + "?pageNo=" + pageNo)
 			    .body(BodyInserters.fromValue(searchTypeMember))
 			    .retrieve()
 			    .bodyToMono(PagerAndMember.class)

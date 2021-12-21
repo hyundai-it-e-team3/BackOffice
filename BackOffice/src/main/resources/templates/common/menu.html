@@ -36,16 +36,16 @@
     <!-- 프로모션 관리-->
     <div th:if="${#httpServletRequest.requestURI.indexOf('/promotion') != -1}"> 
       <ul class="pl-0 mb-2">
-        <a class="text-white" th:href="@{/promotion/eventList}">이벤트 목록</a>  
+        <a class="text-white" th:href="@{/promotion/firstEventList}">이벤트 목록</a>  
       </ul>
       <ul class="pl-0 mb-2">
-        <a class="text-white" th:href="@{/promotion/registerWithEvent}">이벤트 등록</a>
+        <a class="text-white" th:href="@{/promotion/registerWithEventForm}">이벤트 등록</a>
       </ul>
       <ul class="pl-0 mb-2">
-        <a class="text-white" th:href="@{/promotion/couponList}">쿠폰 목록</a>  
+        <a class="text-white" th:href="@{/promotion/firstCouponList}">쿠폰 목록</a>  
       </ul>
       <ul class="pl-0 mb-2">
-        <a class="text-white" th:href="@{/promotion/registerWithCoupon}">쿠폰 등록</a>  
+        <a class="text-white" th:href="@{/promotion/registerWithCouponForm}">쿠폰 등록</a>  
       </ul>
     </div>
         
