@@ -4,6 +4,105 @@
 
   <th:block th:replace="~{common/layout::setContent(~{this::content})}">
     <th:block th:fragment="content">
+      <script th:inline="javascript">
+        function goSearch() {
+          console.log("goSearch() 실행");
+          
+          let searchTypeEvent = {
+      		  searchName: "",
+      		  searchStartDate: "",
+      		  searchLastDate:  "",
+      		  searchType: '',
+      		  searchStatus: ''
+          };
+          
+          searchTypeEvent.searchName = $('input[name=searchName]').val();
+          searchTypeEvent.searchStartDate = $('input[name=searchStartDate]').val();
+          searchTypeEvent.searchLastDate = $('input[name=searchLastDate]').val();
+          searchTypeEvent.searchType = $('input:radio[name=searchType]:checked').val();
+          searchTypeEvent.searchStatus = $('input:radio[name=searchStatus]:checked').val();
+          
+          console.log(searchTypeEvent);
+        
+          $.ajax({
+            type: "POST",
+            url: "/promotion/eventList",
+            contentType: 'application/json',
+            data: JSON.stringify(searchTypeEvent),
+            dataType: "html",
+            success: function(fragment) {
+              $("#eventTable").replaceWith(fragment);
+            },
+            error: function(error) {
+              console.log(error);
+            }
+          });
+        }
+        
+        function goPage(pageNo) {
+          console.log("goPage() 실행");
+          
+          let searchTypeEvent = {
+      		  searchName: "",
+      		  searchStartDate: "",
+      		  searchLastDate:  "",
+      		  searchType: '',
+      		  searchStatus: ''
+          };
+          
+          searchTypeEvent.searchName = $('input[name=searchName]').val();
+          searchTypeEvent.searchStartDate = $('input[name=searchStartDate]').val();
+          searchTypeEvent.searchLastDate = $('input[name=searchLastDate]').val();
+          searchTypeEvent.searchType = $('input:radio[name=searchType]:checked').val();
+          searchTypeEvent.searchStatus = $('input:radio[name=searchStatus]:checked').val();
+          
+          $.ajax({
+            type: "POST",
+            url: "/promotion/eventList" + "?pageNo=" + pageNo,
+            contentType: 'application/json',
+            data: JSON.stringify(searchTypeEvent),
+            dataType: "html",
+            success: function(fragment) {
+              $("#eventTable").replaceWith(fragment);
+            },
+            error: function(error) {
+              console.log(error);
+            }
+          });
+        }
+        
+        function deleteCheckeEvent() {
+        	let eventSeq = [];
+        	
+        	$("input:checkbox[name='checkList']:checked").each(
+          		function() {
+          			eventSeq.push(this.value);
+      	    	}
+          	);
+        	
+        	$.ajax({
+    			type: "POST",
+    			url: "/promotion/event/delete",
+    			contentType: 'application/json',
+    			data: JSON.stringify(eventSeq),
+    			dataType: "json",
+    			success: function(data) {
+    				if(data.result == 'success') {
+    					$('#deleteEventSuccessModal').modal('show');
+    				} else {
+    					alert("삭제 실패했습니다.");
+    				}
+    			},
+    			error: function(error) {
+    				console.log(error);
+    			}
+    		});
+        }
+        
+        function goCouponList() {
+        	location.href='/promotion/firstEventList';
+        }
+      </script>
     
       <div>
       <h4><b>이벤트 검색</b></h4>
@@ -16,28 +115,30 @@
         <tr>
           <th class="align-middle">검색</th>
           <td colspan="2">
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" name="searchName">
           </td>
         </tr>
         <tr>
           <th class="align-middle">기간</th>
           <td>
-            <input type="date" class="form-control" name="regDate" required="required"></td>
+            <input type="date" class="form-control" name="searchStartDate"></td>
           <td>
-            <input type="date" class="form-control" name="expDate" required="required"></td>
+            <input type="date" class="form-control" name="searchLastDate"></td>
         </tr>
         <tr>
           <th scope="row" class="align-middle">이벤트 유형</th>
           <td colspan="2">
             <span>
-              <input type="radio" class="align-middle" id="evnetTypeRadio1" name="evnetTypeRadio" value="coupon"
-                     th:onclick="javascript:setDisplay()">
+              <input type="radio" class="align-middle" name="searchType" value="1">
               <label class="mb-0 align-middle">쿠폰</label>
             </span>
             <span>
-              <input type="radio" class="align-middle ml-2" id="evnetTypeRadio2" name="evnetTypeRadio" value="discountOfProduct"
-                     th:onclick="javascript:setDisplay()"> 
-              <label class="mb-0 align-middle">상품 할인</label>
+              <input type="radio" class="align-middle ml-2" name="searchType" value="2"> 
+              <label class="mb-0 align-middle">상품할인</label>
+            </span>
+            <span>
+              <input type="radio" class="align-middle ml-2" name="searchType" value="3"> 
+              <label class="mb-0 align-middle">포인트적립</label>
             </span>
           </td>
         </tr>
@@ -45,56 +146,129 @@
           <th scope="row" class="align-middle">진행 여부</th>
           <td colspan="2">
             <span>
-              <input class="align-middle" type="radio" id="eventProgressStatusRadio1" name="eventProgressStatusCRadio" value="inProgress">
+              <input class="align-middle" type="radio" name="searchStatus" value="1">
               <label class="align-middle mb-0">진행 중</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="radio" id="eventProgressStatusRadio2" name="eventProgressStatusCRadio" value="notInProgress"> 
+              <input class="align-middle ml-2" type="radio" name="searchStatus" value="0"> 
               <label class="align-middle mb-0">진행 안함</label>
             </span>
           </td>
         </tr>
         <tr>
           <td colspan="3">
-            <input type="button" class="btn btn-primary float-right" value="검색" />
+            <input type="button" class="btn btn-primary float-right" onclick="javascript:goSearch()" value="검색" />
           </td>
         </tr>
       </table>
     </div>
 
     <br />
-    <h4 class="pb-2">
-      <b>이벤트 목록</b>
-    </h4>
+    
+    <h4 class="pb-2"><b>이벤트 목록</b></h4>
+    
     <div class="pl-1 pb-2">
-        <button class="btn btn-outline-danger btn-sm">선택 삭제</button>
+      <button class="btn btn-outline-danger btn-sm" type="button" onclick="deleteCheckeEvent()">선택 삭제</button>
+    </div>
+    
+    <div id="eventTable">
+      <table class="table table-bordered table-sm">
+        <thead class="align-middle text-center">
+          <tr>
+            <th scope="col">체크박스</th>
+            <th scope="col">등록 일자</th>
+            <th scope="col">이벤트코드</th>
+            <th scope="col">이벤트명</th>
+            <th scope="col">유형</th>
+            <th scope="col">내용</th> 
+            <th scope="col">시작 일자</th>
+            <th scope="col">종료 일자</th>
+            <th scope="col">상태</th>
+            <th scope="col">관련 쿠폰</th>
+            <th scope="col">수정</th>
+          </tr>
+        </thead>
+        <tbody class="align-middle text-center">
+          <tr th:each="event : ${eventList}">
+            <td><input type="checkbox" class="align-middle" name="checkList" th:value="${event.eventSeq}"></td>
+            <td>[[${#dates.format(event.regDate, 'yyyy-MM-dd')}]]</td>
+            <td>[[${event.eventSeq}]]</td>
+            <td>[[${event.name}]]</td>
+            <td th:switch="${event.eventType}">
+              <th:block th:case="'1'">쿠폰</th:block>
+              <th:block th:case="'2'">상품할인</th:block>
+              <th:block th:case="'3'">포인트적립</th:block>
+            </td>
+            <td>[[${event.content}]]</td>
+            <td>[[${#dates.format(event.startDate, 'yyyy-MM-dd')}]]</td>
+            <td>[[${#dates.format(event.expDate, 'yyyy-MM-dd')}]]</td>
+            <td th:switch="${event.status}">
+              <th:block th:case="'1'">진행 중</th:block>
+              <th:block th:case="'0'">종료</th:block>
+            </td>
+            <td>[[${event.couponId}]]</td>
+            <td>
+              <a th:href="@{'/promotion/editEventForm/' + ${event.eventSeq}}" class="btn btn-success btn-sm">수정</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <!-- Pagination -->
+      <nav  th:if="${pager.totalRows} > 0">
+        <ul class="pagination d-flex justify-content-center">
+          <li class="page-item">
+            <a class="page-link" th:href="@{/promotion/firstEventList(pageNo=1)}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">First</span>
+            </a>
+          </li>
+          
+          <li class="page-item" th:if="${pager.groupNo>1}">
+            <a class="page-link"  th:href="@{firstEventList(pageNo=${pager.startPageNo-1})}"  aria-label="Previous">
+              <span aria-hidden="true">이전</span>
+              <span class="sr-only">이전</span>
+            </a>
+          </li>
+          
+          <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
+            <li class="page-item"><a class="page-link" th:href="@{firstEventList(pageNo=${i})}">[[${i}]]</a></li>
+          </th:block>
+          
+          <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
+            <a class="page-link" th:href="@{firstEventList(pageNo=${pager.endPageNo+1})}" aria-label="Previous">
+              <span aria-hidden="true">다음</span>
+              <span class="sr-only">다음</span>
+            </a>
+          </li>
+          
+          <li class="page-item">
+            <a class="page-link" th:href="@{firstEventList(pageNo=${pager.totalPageNo})}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Last</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    
+    <div class="modal" id="deleteEventSuccessModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+            <h4><b>이벤트 삭제</b></h4>
+          </div>
+          <div class="modal-body">
+            <p>이벤트가 성공적으로 삭제되었습니다.</p>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-primary" onclick="goCouponList()">이벤트 목록으로 돌아가기</button>
+          </div>
+            
+        </div>
       </div>
-    <table class="table table-bordered table-sm">
-      <thead class="align-middle text-center">
-        <tr>
-          <th scope="col">체크박스</th>
-          <th scope="col">등록 일자</th>
-          <th scope="col">이벤트명</th>
-          <th scope="col">유형</th>
-          <th scope="col">시작 일자</th>
-          <th scope="col">종료 일자</th>
-          <th scope="col">수정</th>
-        </tr>
-      </thead>
-      <tbody class="align-middle text-center">
-        <tr>
-          <td><input type="checkbox" class="align-middle"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>
-            <a href="/promotion/editEvent" class="btn btn-success btn-sm">수정</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    </div>
       
     </th:block>
   </th:block>

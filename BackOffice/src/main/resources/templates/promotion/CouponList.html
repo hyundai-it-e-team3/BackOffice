@@ -4,7 +4,92 @@
 
   <th:block th:replace="~{common/layout::setContent(~{this::content})}">
     <th:block th:fragment="content">
-    
+      <script th:inline="javascript">
+        function goSearch() {
+        	console.log("goSearch() 실행");
+        	
+  			let searchTypeCoupon = {
+				searchName: "",
+				searchStatus: ""
+  		    };
+  			
+    		searchTypeCoupon.searchName = $('input[name=searchName]').val();
+    		searchTypeCoupon.searchStatus = $('input[name=searchStatus]:checked').val();
+			
+    		$.ajax({
+    			type: "POST",
+    			url: "/promotion/couponList",
+    			contentType: 'application/json',
+    			data: JSON.stringify(searchTypeCoupon),
+    			dataType: "html",
+    			success: function(fragment) {
+    				$("#couponTable").replaceWith(fragment);
+    			},
+    			error: function(error) {
+    				console.log(error);
+    			}
+    		});
+  		}
+        
+        function goPage(pageNo) {
+        	console.log("goPage() 실행");
+        	
+  			let searchTypeCoupon = {
+				searchName: "",
+				searchStatus: ""
+  		    };
+  			
+    		searchTypeCoupon.searchName = $('input[name=searchName]').val();
+    		searchTypeCoupon.searchStatus = $('input[name=searchStatus]:checked').val();
+			
+    		$.ajax({
+    			type: "POST",
+    			url: "/promotion/couponList" + "?pageNo=" + pageNo,
+    			contentType: 'application/json',
+    			data: JSON.stringify(searchTypeCoupon),
+    			dataType: "html",
+    			success: function(fragment) {
+    				$("#couponTable").replaceWith(fragment);
+    			},
+    			error: function(error) {
+    				console.log(error);
+    			}
+    		});
+  		}
+        
+        function deleteCheckedCoupon() {
+        	let couponId = [];
+        	
+        	$("input:checkbox[name='checkList']:checked").each(
+          		function() {
+          			couponId.push(this.value);
+      	    	}
+          	);
+        	
+        	$.ajax({
+    			type: "POST",
+    			url: "/promotion/coupon/delete",
+    			contentType: 'application/json',
+    			data: JSON.stringify(couponId),
+    			dataType: "json",
+    			success: function(data) {
+    				if(data.result == 'success') {
+    					$('#deleteCouponSuccessModal').modal('show');
+    				} else {
+    					alert("삭제 실패했습니다.");
+    				}
+    			},
+    			error: function(error) {
+    				console.log(error);
+    			}
+    		});
+        }
+        
+        function goCouponList() {
+        	location.href='/promotion/firstCouponList';
+        }
+  	  </script>
+     
       <div>
         <h4><b>쿠폰 검색</b></h4>
         <table class="table p-0 m-0" style="width: 100%;">
@@ -16,48 +101,25 @@
           <tr>
             <th class="align-middle">검색</th>
             <td colspan="2">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" name="searchName">
             </td>
           </tr>
           <tr>
-            <th class="align-middle">기간</th>
-            <td>
-              <input type="date" class="form-control" name="regDate" required="required">
-            </td>
-            <td>
-              <input type="date" class="form-control" name="expDate" required="required">
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="align-middle">쿠폰 유형</th>
-            <td colspan="2">
-              <span>
-                <input type="radio" class="align-middle" id="couponTypeRadio1" name="couponTypeRadio" value="discountPrice">
-                <label class="align-middle mb-0">할인</label>
-              </span>
-              <span>
-                <input type="radio" class="align-middle ml-2" id="couponTypeRadio2" name="couponTypeRadio" value="earnPoint "> 
-                <label class="align-middle mb-0">포인트 적립</label>
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <tr>
             <th scope="row" class="align-middle">진행 여부</th>
             <td colspan="2">
               <span>
-                <input class="align-middle" type="radio" id="couponProgressStatusRadio1" name="couponProgressStatusRadio" value="inProgress">
+                <input class="align-middle" type="radio" name="searchStatus" value="1">
                 <label class="align-middle mb-0">진행 중</label>
               </span>
               <span>
-                <input class="align-middle ml-2" type="radio" id="couponProgressStatusRadio2" name="couponProgressStatusRadio1" value="notInProgress"> 
+                <input class="align-middle ml-2" type="radio" name="searchStatus" value="0"> 
                 <label class="align-middle mb-0">진행 안함</label>
               </span>
             </td>
           </tr>
           <tr>
             <td colspan="3">
-              <input type="button" class="btn btn-primary float-right" value="검색" />
+              <input type="button" class="btn btn-primary float-right" onclick="javascript:goSearch()" value="검색" />
             </td>
           </tr>
         </table>
@@ -65,44 +127,136 @@
   
       <br />
       
-      <h4 class="pb-2">
-        <b>쿠폰 목록</b>
-      </h4>
+      <h4 class="pb-2"><b>쿠폰 목록</b></h4>
+      
       <div class="pl-1 pb-2">
-        <button class="btn btn-outline-danger btn-sm">선택 삭제</button>
+        <button class="btn btn-outline-danger btn-sm" type="button" onclick="deleteCheckedCoupon()">선택 삭제</button>
       </div>
-      <table class="table table-bordered table-sm">
-        <thead class="align-middle text-center">
-          <tr>
-            <th scope="col">체크박스</th>
-            <th scope="col">쿠폰번호</th>
-            <th scope="col">쿠폰명</th>
-            <th scope="col">유형</th>
-            <th scope="col">만료 일자</th>
-            <th scope="col">할인금액/할인율</th>
-            <th scope="col">발급 수량</th>
-            <th scope="col">재고</th>
-            <th scope="col">진행여부</th>
-            <th scope="col">수정</th>
-          </tr>
-        </thead>
-        <tbody class="align-middle text-center">
-          <tr>
-            <td><input type="checkbox" class="align-middle"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="align-middle">
-              <a href="/promotion/editCoupon" class="btn btn-success btn-sm">수정</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      
+      <div id="couponTable">
+        <table class="table table-bordered table-sm">
+          <thead class="align-middle text-center">
+            <tr>
+              <th scope="col">체크박스</th>
+              <th scope="col">쿠폰번호</th>
+              <th scope="col">쿠폰명</th>
+              <th scope="col">내용</th>
+              <th scope="col">할인 유형</th>
+              <th scope="col">할인금액/할인율</th>
+              <th scope="col">발급 수량</th>
+              <th scope="col">재고</th>
+              <th scope="col">만료 유형</th>
+              <th scope="col">만료 일자</th>
+              <th scope="col">진행여부</th>
+              <th scope="col">관련 이벤트</th>
+              <th scope="col">수정</th>
+            </tr>
+          </thead>
+          <tbody class="align-middle text-center">
+            <tr th:each="coupon : ${couponList}">
+              <td><input type="checkbox" class="align-middle" name="checkList" th:value="${coupon.couponId}"></td>
+              <td>[[${coupon.couponId}]]</td>
+              <td>[[${coupon.name}]]</td>
+              <td>[[${coupon.content}]]</td>
+              <td th:switch="${coupon.type}">
+                <th:block th:case="'1'">금액</th:block>
+                <th:block th:case="'2'">%</th:block>
+              </td>
+              <th:block th:if="${coupon.amount}  > 99 or ${coupon.amount} < -99">
+                <td>[[${#numbers.formatInteger(coupon.amount, 3, 'COMMA')}]]</td>
+              </th:block>
+              <th:block th:unless="${coupon.amount}  > 99 or ${coupon.amount} < -99">
+                <td>[[${coupon.amount}]]%</td>
+              </th:block>
+              <th:block th:if="${coupon.issuance}  > 99 or ${coupon.issuance} < -99">
+                <td>[[${#numbers.formatInteger(coupon.issuance, 3, 'COMMA')}]]</td>
+              </th:block>
+              <th:block th:unless="${coupon.issuance}  > 99 or ${coupon.issuance} < -99">
+                <td>[[${coupon.issuance}]]</td>
+              </th:block>
+              <th:block th:if="${coupon.stock}  > 99 or ${coupon.stock} < -99">
+                <td>[[${#numbers.formatInteger(coupon.stock, 3, 'COMMA')}]]</td>
+              </th:block>
+              <th:block th:unless="${coupon.stock}  > 99 or ${coupon.stock} < -99">
+                <td>[[${coupon.stock}]]</td>
+              </th:block>
+              <td th:switch="${coupon.expDateType}">
+                <th:block th:case="'1'">만료일</th:block>
+                <th:block th:case="'2'">만료기간</th:block>
+              </td>
+              <td>[[${coupon.expDate}]]</td>
+              <td th:switch="${coupon.status}">
+                <th:block th:case="'1'">진행 중</th:block>
+                <th:block th:case="'0'">종료</th:block>
+              </td>
+              <th:block th:if="${coupon.eventSeq} == 0">
+                <td></td>
+              </th:block>
+              <th:block th:unless="${coupon.eventSeq} == 0">
+                <td>[[${coupon.eventSeq}]]</td>
+              </th:block>
+              <td class="align-middle">
+                <a th:href="'/promotion/editCouponForm/' + ${coupon.couponId}" class="btn btn-success btn-sm">수정</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <nav  th:if="${pager.totalRows} > 0">
+          <ul class="pagination d-flex justify-content-center">
+            <li class="page-item">
+              <a class="page-link" th:href="@{/promotion/firstCouponList(pageNo=1)}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">First</span>
+              </a>
+            </li>
+            
+            <li class="page-item" th:if="${pager.groupNo>1}">
+              <a class="page-link"  th:href="@{firstCouponList(pageNo=${pager.startPageNo-1})}"  aria-label="Previous">
+                <span aria-hidden="true">이전</span>
+                <span class="sr-only">이전</span>
+              </a>
+            </li>
+            
+            <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
+              <li class="page-item"><a class="page-link" th:href="@{firstCouponList(pageNo=${i})}">[[${i}]]</a></li>
+            </th:block>
+            
+            <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
+              <a class="page-link" th:href="@{firstCouponList(pageNo=${pager.endPageNo+1})}" aria-label="Previous">
+                <span aria-hidden="true">다음</span>
+                <span class="sr-only">다음</span>
+              </a>
+            </li>
+            
+            <li class="page-item">
+              <a class="page-link" th:href="@{firstCouponList(pageNo=${pager.totalPageNo})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Last</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      
+      <div class="modal" id="deleteCouponSuccessModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            
+            <div class="modal-header">
+              <h4><b>쿠폰 삭제</b></h4>
+            </div>
+            <div class="modal-body">
+              <p>쿠폰이 성공적으로 삭제되었습니다.</p>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-primary" onclick="goCouponList()">쿠폰 목록으로 돌아가기</button>
+            </div>
+              
+          </div>
+        </div>
+      </div>
       
     </th:block>
   </th:block>

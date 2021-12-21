@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <div id="eventTable">
+      <table class="table table-bordered table-sm">
+        <thead class="align-middle text-center">
+          <tr>
+            <th scope="col">체크박스</th>
+            <th scope="col">등록 일자</th>
+            <th scope="col">이벤트코드</th>
+            <th scope="col">이벤트명</th>
+            <th scope="col">유형</th>
+            <th scope="col">내용</th> 
+            <th scope="col">시작 일자</th>
+            <th scope="col">종료 일자</th>
+            <th scope="col">상태</th>
+            <th scope="col">관련 쿠폰</th>
+            <th scope="col">수정</th>
+          </tr>
+        </thead>
+        <tbody class="align-middle text-center">
+          <tr th:each="event : ${eventList}">
+            <td><input type="checkbox" class="align-middle"></td>
+            <td>[[${#dates.format(event.regDate, 'yyyy-MM-dd')}]]</td>
+            <td>[[${event.eventSeq}]]</td>
+            <td>[[${event.name}]]</td>
+            <td th:switch="${event.eventType}">
+              <th:block th:case="'1'">쿠폰</th:block>
+              <th:block th:case="'2'">상품할인</th:block>
+              <th:block th:case="'3'">포인트적립</th:block>
+            </td>
+            <td>[[${event.content}]]</td>
+            <td>[[${#dates.format(event.startDate, 'yyyy-MM-dd')}]]</td>
+            <td>[[${#dates.format(event.expDate, 'yyyy-MM-dd')}]]</td>
+            <td th:switch="${event.status}">
+              <th:block th:case="'1'">진행 중</th:block>
+              <th:block th:case="'0'">종료</th:block>
+            </td>
+            <td>[[${event.couponId}]]</td>
+            <td>
+              <a th:href="@{'/promotion/editEventForm/' + ${event.eventSeq}}" class="btn btn-success btn-sm">수정</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <!-- Pagination -->
+      <nav  th:if="${pager.totalRows} > 0">
+        <ul class="pagination d-flex justify-content-center">
+          <li class="page-item">
+            <a class="page-link" th:onclick="javascript:goPage(1)" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">First</span>
+            </a>
+          </li>
+          <li class="page-item" th:if="${pager.groupNo>1}">
+            <a class="page-link" th:onclick="javascript:goPage([[${pager.startPageNo-1}]])" aria-label="Previous">
+              <span aria-hidden="true">이전</span>
+              <span class="sr-only">이전</span>
+            </a>
+          </li>
+          <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
+            <li class="page-item"><a class="page-link" th:onclick="javascript:goPage([[${i}]])">[[${i}]]</a></li>
+          </th:block>
+          <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
+            <a class="page-link" th:onclick="javascript:goPage([[${pager.endPageNo+1}]])" aria-label="Previous">
+              <span aria-hidden="true">다음</span>
+              <span class="sr-only">다음</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:onclick="javascript:goPage([[${pager.totalPageNo}]])" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Last</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  
+</html>
