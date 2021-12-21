@@ -8,24 +8,28 @@
     <div style="text-align: center; margin-top: 80px;">
       <img th:src="@{/images/hyundai_logo.png}" width="300px" class="mb-3" />
     
-    <div class="mx-auto text-center m-2 col-5">
-      <table class="table">
-        <tr>
-          <th scope="row" class="align-middle">아이디</th>
-          <td><input type="text" class="form-control"></td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-middle">비밀번호</th>
-          <td><input type="password" class="form-control"></td>
-        </tr>
-        <tr>
-          <td colspan="2" style="text-align: right">
-            <input type="button" class="btn btn-success" value="로그인" />
-          </td>
-        </tr>
-      </table>
+      <div class="mx-auto text-center m-2 col-5">
+        <form method="post" th:action="@{/login}">
+          <table class="table">
+            <tr>
+              <th scope="row" class="align-middle">아이디</th>
+              <td><input type="text" class="form-control" name="memberId"></td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">비밀번호</th>
+              <td><input type="password" class="form-control" name="password"></td>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align: right">
+                <button class="btn btn-success">로그인</button>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
     </div>
-    </div>
+    
   </th:block>
+</th:block>
   
 </html>

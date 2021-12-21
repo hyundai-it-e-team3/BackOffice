@@ -70,8 +70,11 @@
       <li class="nav-item"> 
         <a class="nav-link" th:href="@{/design/layoutSetting}">디자인 관리</a>
       </li>
-      <li class="nav-item d-flex align-items-center">
-        <a class="btn btn-outline-success mr-4" th:href="@{/}" style="position: absolute; right: 0px;">로그인</a>
+      <li class="nav-item d-flex align-items-center" sec:authorize="!isAuthenticated()">
+        <a th:href="@{/}" class="btn btn-outline-success mr-4" style="position: absolute; right: 0px;">로그인</a>
+      </li>
+      <li class="nav-item d-flex align-items-center" sec:authorize="isAuthenticated()">
+        <a th:href="@{/logout}" class="btn btn-success mr-4" style="position: absolute; right: 0px;">로그아웃</a>
       </li>
     </ul>
 

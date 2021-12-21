@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <th:block th:replace="~{common/layout::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+    
+      <div style="text-align: center; margin-top: 80px;">
+        <img th:src="@{/images/hyundai_logo.png}" width="300px" class="mb-3" />
+    
+        <div class="card mx-auto text-center" style="width:500px">
+          <div class="card-body">
+            <h4 class="card-title"><b>로그인 실패</b></h4>
+            <p class="card-text my-4">잘못된 정보입니다.</p>
+            <hr>
+            <a class="btn btn-success" th:href="@{/}">로그인 페이지로 이동</a>
+          </div>
+        </div>
+      </div>
+      
+    </th:block>
+  </th:block>
+  
+</html>
