@@ -1,6 +1,5 @@
 package com.mycompany.BackOffice.service;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.core.ParameterizedTypeReference;
@@ -13,7 +12,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.mycompany.BackOffice.dto.order.OrderDetail;
-import com.mycompany.BackOffice.dto.order.OrderInfo;
 import com.mycompany.BackOffice.dto.order.PagerAndOrderInfo;
 
 import lombok.extern.slf4j.Slf4j;
