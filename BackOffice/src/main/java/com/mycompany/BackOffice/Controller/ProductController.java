@@ -1,5 +1,8 @@
 package com.mycompany.BackOffice.Controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;import java.util.Map;
@@ -22,9 +25,14 @@ import com.mycompany.BackOffice.dto.BrandDTO;
 import com.mycompany.BackOffice.dto.CategoryDTO;
 import com.mycompany.BackOffice.dto.ProductDTO;
 import com.mycompany.BackOffice.dto.ProductDetailDTO;
+import com.mycompany.BackOffice.dto.ProductDetailRegDTO;
 import com.mycompany.BackOffice.dto.ProductImgDTO;
+import com.mycompany.BackOffice.dto.ProductImgRegDTO;
+import com.mycompany.BackOffice.dto.ProductRegDTO;
 import com.mycompany.BackOffice.service.ProductService;
+import com.mycompany.BackOffice.service.S3UploaderService;
 import com.mycompany.BackOffice.dto.ProductSearchDTO;
+import com.mycompany.BackOffice.dto.StockDTO;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -35,6 +43,9 @@ public class ProductController {
 	
 	@Resource 
 	private ProductService productService;
+	
+	@Resource
+	private S3UploaderService s3UploaderService;
 	
 	
 	@RequestMapping("/list")
@@ -93,9 +104,50 @@ public class ProductController {
 	
 	@PostMapping("/regist")
 	@ResponseBody
-	public Map<String,String> productRegist(@RequestBody ProductDTO productDTO) {
+	public Map<String,String> productRegist(ProductDTO productDTO) throws FileNotFoundException, IOException {
 		log.info(productDTO.toString());
-		Map<String,String> map= productService.regProduct(productDTO);
+		
+		ProductRegDTO proRegDTO = new ProductRegDTO();
+		proRegDTO.setProductId(productDTO.getProductId());
+		proRegDTO.setName(productDTO.getName());
+		proRegDTO.setPrice(productDTO.getPrice());
+		proRegDTO.setStatus(productDTO.getStatus());
+		proRegDTO.setBrandName(productDTO.getBrandName());
+		proRegDTO.setCategoryId(productDTO.getCategoryId());
+		proRegDTO.setContent(productDTO.getContent());
+		//proRegDTO.setCategoryName(productDTO.getCategoryName());
+		
+		proRegDTO.setThumbnail(s3UploaderService.upload(productDTO.getThumbnailFile(), productDTO.getProductId()+"/thumbnail")); 
+		
+		proRegDTO.setProductDetailList(new ArrayList<>());
+		List<ProductDetailRegDTO> regDetailList = new ArrayList<>();
+		for(ProductDetailDTO productDetailDTO: productDTO.getProductDetailList()) {
+			ProductDetailRegDTO detailRegDTO = new ProductDetailRegDTO();
+			detailRegDTO.setProductDetailId(productDetailDTO.getProductDetailId());
+			detailRegDTO.setWithProduct(productDetailDTO.getWithProduct());
+			detailRegDTO.setColorCode(productDetailDTO.getColorCode());
+			detailRegDTO.setProductId(proRegDTO.getProductId());
+			detailRegDTO.setImgList(new ArrayList<>());
+			detailRegDTO.setStockList(new ArrayList<>());
+			for(ProductImgDTO productImgDTO : productDetailDTO.getImgList()) {
+				ProductImgRegDTO imgRegDTO = new ProductImgRegDTO();
+				imgRegDTO.setImg(s3UploaderService.upload(productImgDTO.getImgFile(), productDTO.getProductId()+"/"+productDetailDTO.getProductDetailId()));
+				imgRegDTO.setProductDetailId(productImgDTO.getProductDetailId());
+				imgRegDTO.setOrderNum(productImgDTO.getOrderNum());
+				detailRegDTO.getImgList().add(imgRegDTO);
+			}
+			for(StockDTO stockDTO : productDetailDTO.getStockList()) {
+				StockDTO stock = new StockDTO();
+				stock.setAmount(stockDTO.getAmount());
+				stock.setPsize(stockDTO.getPsize());
+				stock.setProductDetailId(detailRegDTO.getProductDetailId());
+				detailRegDTO.getStockList().add(stock);
+			}
+			detailRegDTO.setColorChip(s3UploaderService.upload(productDetailDTO.getColorChipFile(), productDTO.getProductId()+"/"+productDetailDTO.getProductDetailId()+"/colorChip"));
+			proRegDTO.getProductDetailList().add(detailRegDTO);
+		}
+		log.info(proRegDTO.toString());
+		Map<String,String> map = productService.regProduct(proRegDTO);
 		return map;
 	}
 	
@@ -143,6 +195,45 @@ public class ProductController {
 		model.addAttribute("productDetailId", productDetailId);
 		return "/product/withProductListModal";
 	}
+	
+	@RequestMapping("/brandProductList")
+	public String brandProductList(@RequestParam Map<String,String> map,Model model) {
+		
+		log.info("실행");
+		ProductSearchDTO productSearchDTO = new ProductSearchDTO();
+		productSearchDTO.setSearchType(map.get("searchType"));
+		productSearchDTO.setKeyWord(map.get("keyWord"));
+		productSearchDTO.setCategoryId(map.get("categoryId"));
+		productSearchDTO.setRegStart(map.get("regStart"));
+		productSearchDTO.setRegEnd(map.get("regEnd"));
+		productSearchDTO.setStatus(map.get("status"));
+		productSearchDTO.setSortId(map.get("sortId"));
+		productSearchDTO.setPageNo(map.get("pageNo"));
+		productSearchDTO.setMdStatus(Integer.parseInt(map.get("mdStatus")));
+		
+		Map<String,Object> resultMap = productService.getProductList(productSearchDTO);
+		log.info(resultMap.get("productList").toString());
+		log.info(resultMap.get("pager").toString());
+		
+		
+		
+		List<ProductDTO> productList = (List<ProductDTO>) resultMap.get("productList");
+		
+		
+		model.addAttribute("productList", productList);
+		model.addAttribute("pager", resultMap.get("pager"));
+		
+		return "/product/brandProductFragment";
+	}
+	
+	
+	@PostMapping("/changeStatus")
+	@ResponseBody
+	public String  changeStatus(@RequestBody List<String> productIdList) {
+		productService.changeStatus(productIdList);
+		return "success";
+	}
+	
 	@RequestMapping("/update")
 	public String productUpdate() {
 		log.info("실행");

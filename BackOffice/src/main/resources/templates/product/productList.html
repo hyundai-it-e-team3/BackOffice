@@ -11,6 +11,7 @@
 		    let categoryId = 'None';
 		    let status = 0;
 		    let sortId = 'category_id';
+		    let globalPageNo = "";
 		    
 
 		    function selectSort(event,id){
@@ -25,6 +26,8 @@
 					sortId =  'price desc';
 				}else if(inputText=='저가순'){
 					sortId =  'price';
+				}else if(inputText=='구매율순'){
+					sortId =  '(purchase_amount/hit_count) desc';
 				}else if(inputText=='상품코드순'){
 					sortId =  'product_id';
 				}else if(inputText=='상품이름순'){
@@ -151,6 +154,31 @@
 			    	        	console.log(fragment);
 			    	        	console.log("success");
 			    	        	$("#productTable").replaceWith(fragment);
+			    	        },
+			    	        error: function(xhr, status, error) {
+			    	            alert(error);
+			    	        }  
+			    	    });
+			      }
+			      
+			      
+			      function changeStatus(){
+			    	  let chkList = [];
+			    	  
+			    	  $("input:checkbox[name=statusCheck]:checked").each(function(i,val){
+			    		  chkList.push(val.value);
+			    	  });
+			    	  
+			    	  console.log(chkList);
+			    	  
+			    	  $.ajax({
+			    	        url:"http://localhost:8082/product/changeStatus",
+			    	        type:"POST",
+			    	        data:JSON.stringify(chkList),
+			    	        contentType : 'application/json; charset=UTF-8',
+			    	        success: function(result){
+			    	        	console.log(result);
+			    	        	goSearch(globalPageNo);
 			    	        },
 			    	        error: function(xhr, status, error) {
 			    	            alert(error);
@@ -355,12 +383,14 @@
     <div class="d-flex justify-content-between mb-2">
     	<h4>상품 목록</h4>
         <div class="input-group-prepend">
-        	<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortType" data-toggle="dropdown" aria-expanded="false">
+        	<a class="btn btn-primary btn-sm mr-2" onclick="changeStatus()">진열상태 변경</a>
+        	<button class="btn  btn-outline-secondary dropdown-toggle" type="button" id="sortType" data-toggle="dropdown" aria-expanded="false">
             	정렬
             </button>
             <div class="dropdown-menu">
             	<a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">등록순</a>
             	<a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">최신등록순</a>
+            	<a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">구매율순</a>
                 <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">고가순</a>
                 <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">저가순</a>
                 <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">상품코드순</a>

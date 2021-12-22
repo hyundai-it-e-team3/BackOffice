@@ -15,6 +15,7 @@ import com.mycompany.BackOffice.dto.BrandCategoryDTO;
 import com.mycompany.BackOffice.dto.BrandDTO;
 import com.mycompany.BackOffice.dto.CategoryDTO;
 import com.mycompany.BackOffice.dto.ProductDTO;
+import com.mycompany.BackOffice.dto.ProductRegDTO;
 import com.mycompany.BackOffice.dto.ProductSearchDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -51,10 +52,10 @@ public class ProductService {
 	}
 	
 	
-	public Map<String,String> regProduct(ProductDTO productDTO){
+	public Map<String,String> regProduct(ProductRegDTO productRegDTO){
         return client.post()         // POST method
                 .uri("/product/regist")    // baseUrl 이후 uri
-                .bodyValue(productDTO)     // set body value
+                .bodyValue(productRegDTO)     // set body value
                 .retrieve()                 // client message 전송
                 .bodyToMono(Map.class)  // body type : EmpInfo
                 .block();                   // await
@@ -103,6 +104,34 @@ public class ProductService {
                 .retrieve()                 // client message 전송
                 .bodyToMono(new ParameterizedTypeReference<List<String> >() {})  // body type : EmpInfo
                 .block(); 
+	}
+
+	public Map<String,String> regMdProduct(ProductDTO productDTO) {
+		return client.post()         // POST method
+                .uri("/product/regMdProduct")    // baseUrl 이후 uri
+                .bodyValue(productDTO)     // set body value
+                .retrieve()                 // client message 전송
+                .bodyToMono(Map.class)  // body type : EmpInfo
+                .block(); 
+	}
+	
+	public Map<String,String> delMdProduct(ProductDTO productDTO) {
+		return client.post()         // POST method
+                .uri("/product/delMdProduct")    // baseUrl 이후 uri
+                .bodyValue(productDTO)     // set body value
+                .retrieve()                 // client message 전송
+                .bodyToMono(Map.class)  // body type : EmpInfo
+                .block(); 
+	}
+
+	public Map changeStatus(List<String> productIdList) {
+		return client.post()         // POST method
+                .uri("/product/changeStatus")    // baseUrl 이후 uri
+                .bodyValue(productIdList)     // set body value
+                .retrieve()                 // client message 전송
+                .bodyToMono(Map.class)  // body type : EmpInfo
+                .block(); 
+		
 	}
 
 }
