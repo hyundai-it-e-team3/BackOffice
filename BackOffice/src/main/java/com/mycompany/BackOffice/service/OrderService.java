@@ -50,13 +50,25 @@ public class OrderService {
 		map.add("orderId", orderDetail.getOrderId());
 		map.add("productDetailId", orderDetail.getProductDetailId());
 		map.add("psize", orderDetail.getPsize());
-		map.add("stateCode", orderDetail.getStateCode());
+		map.add("stateCode", orderDetail.getStateCode()+"");
 		log.info(map.toString());
 		Mono<Void> response = client
 			.post()
 			.uri("/order/detail")
 			.body(BodyInserters.fromFormData(map))
 			.retrieve().bodyToMono(Void.class);
+		
+		response.block();
+	}
+	
+	
+	public void returnOrder(String orderId) {
+		log.info(orderId);
+		Mono<Map<String, Object>> response = client
+			.put()
+			.uri("/order/"+orderId)
+			.retrieve()							
+			.bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {});
 		
 		response.block();
 	}

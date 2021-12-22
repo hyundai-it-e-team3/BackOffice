@@ -128,7 +128,7 @@
             </span>
             <span>
               <input class="align-middle ml-2" type="checkbox" name="odState" id="orderProgressStatusCheckbox7" value="6">
-              <label class="align-middle mb-0">환불</label>
+              <label class="align-middle mb-0">반품</label>
             </span>
           </td>
         </tr>
@@ -158,6 +158,10 @@
             <span>
               <input class="align-middle ml-2" type="checkbox" name="oState" id="orderProgressStatusCheckbox6" value="주문취소">
               <label class="align-middle mb-0">주문 취소</label>
+            </span>
+                        <span>
+              <input class="align-middle ml-2" type="checkbox" name="oState" id="orderProgressStatusCheckbox7" value="CS처리중">
+              <label class="align-middle mb-0">CS 처리중</label>
             </span>
             
           </td>
@@ -190,7 +194,7 @@
 	          <th scope="col">배송중</th>
 	          <th scope="col">배송완료</th>
 	          <th scope="col">교환</th>
-	          <th scope="col">환불</th>
+	          <th scope="col">반품</th>
 	        </tr>
 	      </thead>
 	      <tbody class="text-center">
@@ -207,7 +211,7 @@
 	          <td>[[${orderInfo.state3}]]</td>
 	          <td>[[${orderInfo.state4}]]</td>
 	          <td>[[${orderInfo.state5}]]</td>
-	          <td>0</td>
+	          <td>[[${orderInfo.state6}]]</td>
 	        </tr>
 	      </tbody>
 	    </table>
