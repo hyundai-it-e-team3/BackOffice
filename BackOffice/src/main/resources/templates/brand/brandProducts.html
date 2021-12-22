@@ -2,28 +2,212 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
-    <script type="text/javascript">
+    <script th:inline="javascript">
+    
+			    let mainIndex = 0;
+			    let middleIndex = 0;
+			    let subIndex = 0;
+			    let brandIndex = 0;
+			    let searchType = 'None';
+			    let categoryId = 'None';
+			    let sortId = 'category_id';
+			    let globalPageNo = "";
+			    
 			  function selectDropDownInput(event,id){
 					inputBox = document.querySelector(id);
 					inputText = event.target.innerHTML;
 					console.log(inputText);
 					inputBox.value = inputText;
 			  }
-			  function selectDropDownBtn(event,id){
-					inputBox = document.querySelector(id);
+			  
+		      function selectDropDownBtn(event,id){
+			        inputBox = document.querySelector(id);
+			        inputText = event.target.innerHTML;
+			        inputBox.innerHTML = inputText;
+			        if(inputText=='상품명'){
+			        	searchType = 'name';
+			        }else if(inputText=='상품코드'){
+			        	searchType = 'product_id';
+			        }else{
+			        	searchType = 'brand_name';
+			        }
+			        
+			   }
+			    function selectSort(event,id){
+			    	inputBox = document.querySelector(id);
 					inputText = event.target.innerHTML;
+					console.log(inputText);
 					inputBox.innerHTML = inputText;
+					
+					if(inputText=='구매율 높은순'){
+						sortId =  '(purchase_amount/hit_count) desc';
+					}else if(inputText=='구매율 낮은순'){
+						sortId =  '(purchase_amount/hit_count)';
+					}else if(inputText=='등록순'){
+						sortId =  'reg_date';
+					}else if(inputText=='상품코드순'){
+						sortId =  'product_id';
+					}else if(inputText=='상품이름순'){
+						sortId =  'name';
+					}else if(inputText=='최신등록순'){
+						sortId =  'reg_date desc';
+					}
+					
+					console.log(inputBox);
+					
+					goSearch(1);
+					
+					console.log(inputBox);
+			    }
+			  function selectBrand(event,id,bindex){
+				  brandIndex = bindex;
+				  $(id).html([[${brandList}]][brandIndex].brandName);
+				  $("#brandInput").val([[${brandList}]][brandIndex].brandName);
+				  let categoryList = [[${brandList}]][brandIndex].brandCategoryTempList;
+		          console.log(categoryList);
+		          
+		          $('#mainGbn').html("");
+		          for(let i = 0; i < categoryList.length; i++){
+		        	var $temp = $(`<a class="dropdown-item" onclick="javascript:selectDropDownBtnGbn1(event,'#cateGbn1',${i})">${categoryList[i].name}</a>`);
+		          	$('#mainGbn').append($temp);
+		          }
 			  }
-			</script>
+			  
+		      function selectDropDownBtnGbn1(event,id,index){
+		          mainIndex = index;
+		          let categoryList = [[${brandList}]][brandIndex].brandCategoryTempList[mainIndex].categoryList;
+		          console.log(categoryList);
+		          $('#middleGbn').html("");
+		          $('#subGbn').html("");
+		          for(let i = 0; i < categoryList.length; i++){
+		          	var $temp = $(`<a class="dropdown-item" onclick="javascript:selectDropDownBtnGbn2(event,'#cateGbn2',${i})">${categoryList[i].name}</a>`);
+		              $('#middleGbn').append($temp);
+		          }
+		          inputText = event.target.innerHTML;
+		          $(id).html(inputText);
+		        }
+		      function selectDropDownBtnGbn2(event,id,index){
+		          middleIndex = index;
+		          let categoryList = [[${brandList}]][brandIndex].brandCategoryTempList[mainIndex].categoryList[middleIndex].categoryList;
+		          console.log(categoryList);
+		          $('#subGbn').html("");
+		          for(let i = 0; i < categoryList.length; i++){
+		        	var $temp = $(`<a class="dropdown-item" onclick="javascript:selectDropDownBtnGbn3(event,'#cateGbn3',${i})">${categoryList[i].name}</a>`);
+		          	$('#subGbn').append($temp);
+		          }
+		          inputText = event.target.innerHTML;
+		          $(id).html(inputText);
+		        }
+		      function selectDropDownBtnGbn3(event,id,index){
+		          subIndex = index;
+		          categoryId =  [[${brandList}]][brandIndex].brandCategoryTempList[mainIndex].categoryList[middleIndex].categoryList[subIndex].categoryId;
+		          console.log(categoryId);
+		          let category = [[${brandList}]][brandIndex].brandCategoryTempList[mainIndex].categoryList[middleIndex].categoryList[subIndex];
+		          console.log(category);
+		          inputText = event.target.innerHTML;
+		          $(id).html(inputText);
+		        }
+		      
+		      function goSearch(pageNo){
+		    	  if(!$('#inProgress').is(':checked')&&!$('#notInProgress').is(':checked')){
+		    		  status = 2;
+		    	  }else if($('#inProgress').is(':checked')&&!$('#notInProgress').is(':checked')){
+		    		  status = 1;
+		    	  }else if(!$('#inProgress').is(':checked')&&$('#notInProgress').is(':checked')){
+		    		  status = 0;
+		    	  }else{
+		    		  status = 2;
+		    	  }
+		    	  
+		    	  if(!$('#mdPickCheckbox1').is(':checked')&&!$('#mdPickCheckbox2').is(':checked')){
+		    		  mdStatus = 2;
+		    	  }else if($('#mdPickCheckbox1').is(':checked')&&!$('#mdPickCheckbox2').is(':checked')){
+		    		  mdStatus = 1;
+		    	  }else if(!$('#mdPickCheckbox1').is(':checked')&&$('#mdPickCheckbox2').is(':checked')){
+		    		  mdStatus = 0;
+		    	  }else{
+		    		  mdStatus = 2;
+		    	  }
+		    	  
+		    	  
+		    	  console.log(pageNo);
+		    	  let keyWord = $("#keyWord").val();
+		    	  let regStart = $("#regStart").val();
+		    	  let regEnd = $("#regEnd").val();
+		    	  let brandName = $("#brandInput").val();
+		    	  console.log(brandName);
+		    	  $.ajax({
+		    	        url:"http://localhost:8082/brand/brandProductList",
+		    	        type:"GET",
+		    	        data:{
+		    	        	searchType,
+		    	        	keyWord,
+		    	        	categoryId,
+		    	        	regStart,
+		    	        	regEnd,
+		    	        	status,
+		    	        	pageNo,
+		    	        	sortId,
+		    	        	mdStatus,
+		    	        	brandName
+		    	        },
+		    	        success: function(fragment){
+		    	        	console.log(fragment);
+		    	        	console.log("success");
+		    	        	$("#brandTable").replaceWith(fragment);
+		    	        },
+		    	        error: function(xhr, status, error) {
+		    	            alert(error);
+		    	        }  
+		    	    });
+		      }
+		      
+		      function regMdProduct(productId){
+		    	  brandName = $("#brandInput").val();
+		    	  $.ajax({
+		    	        url:"http://localhost:8082/brand/regMdProduct",
+		    	        contentType: 'application/json',
+		    	        type:"POST",
+		    	        data:JSON.stringify({
+		    	        	brandName,
+		    	        	productId
+		    	        }),
+		    	        success: function(){
+		    	        	console.log("success");
+		    	        	goSearch(globalPageNo);
+		    	        },
+		    	        error: function(xhr, status, error) {
+		    	            alert(error);
+		    	        }  
+		    	    });
+		      }
+		      function delMdProduct(productId){
+		    	  brandName = $("#brandInput").val();
+		    	  $.ajax({
+		    	        url:"http://localhost:8082/brand/delMdProduct",
+		    	        contentType: 'application/json',
+		    	        type:"POST",
+		    	        data:JSON.stringify({
+		    	        	brandName,
+		    	        	productId
+		    	        }),
+		    	        success: function(){
+		    	        	console.log("success");
+		    	        	goSearch(globalPageNo);
+		    	        },
+		    	        error: function(xhr, status, error) {
+		    	            alert(error);
+		    	        }  
+		    	    });
+		      }
+	</script>
 
     <h5><b>브랜드를 선택하세요</b></h5>
     <div class="input-group mt-3 mb-3">
       <div class="input-group-prepend">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">브랜드</button>
+        <button class="btn btn-outline-secondary dropdown-toggle" id="brandGbn" type="button" data-toggle="dropdown" aria-expanded="false">브랜드</button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">TIME HOMME</a>
-				  <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">SYSTEM HOMME</a>
-				  <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">the CASHMERE</a>
+          <a th:each="brand, status: ${brandList}" class="dropdown-item" th:onclick="javascript:selectBrand(event,'#brandGbn',[[${status.index}]])">[[${brand.brandName}]]</a>
         </div>
       </div>
       <input type="text" id="brandInput" class="form-control">
@@ -34,25 +218,25 @@
       <h4><b>상품 검색</b></h4>
       <table class="table" style="width: 100%;">
         <colgroup>
-          <col style="width: 10%" />
-          <col style="width: 45%" />
-          <col style="width: 45%" />
+          <col style="width: 20%" />
+          <col style="width: 40%" />
+          <col style="width: 40%" />
         </colgroup>
         <tr>
           <th class="align-middle">검색 분류</th>
           <td colspan="2">
             <div class="input-group mt-1">
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="searchType" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="productSearchType" data-toggle="dropdown" aria-expanded="false">
                   분류
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">상품코드</a>
-	              <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">상품명</a>
-	              <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#searchType')">브랜드명</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productSearchType')">상품코드</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productSearchType')">상품명</a>
+                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#productSearchType')">브랜드명</a>
                 </div>
               </div>
-              <input type="text" class="form-control">
+              <input type="text" id="keyWord"  class="form-control">
             </div>
           </td>
         </tr>
@@ -61,33 +245,24 @@
           <td colspan="2">
             <div class="input-group">
               <div class="input-group-prepend ">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="gbn1" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="cateGbn1" data-toggle="dropdown" aria-expanded="false">
                   대분류
                 </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn1')">여성</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn1')">남성</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn1')">아동</a>
+                <div class="dropdown-menu" id="mainGbn">
                 </div>
               </div>
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="gbn2" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="cateGbn2" data-toggle="dropdown" aria-expanded="false">
                   중분류
                 </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn2')">상의</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn2')">하의</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn2')">아우터</a>
+                <div class="dropdown-menu" id="middleGbn">
                 </div>
               </div>
               <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="gbn3" data-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="cateGbn3" data-toggle="dropdown" aria-expanded="false">
                   소분류
                 </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn3')">가디건</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn3')">블라우스</a>
-                  <a class="dropdown-item" onclick="javascript:selectDropDownBtn(event,'#gbn3')">셔츠</a>
+                <div class="dropdown-menu" id="subGbn">
                 </div>
               </div>
             </div>
@@ -96,71 +271,65 @@
         <tr>
           <th class="align-middle">상품등록일</th>
           <td>
-            <input type="date" class="form-control" name="date" required="required">
+            <input type="date" class="form-control" id="regStart" name="date" required="required">
           </td>
           <td>
-            <input type="date" class="form-control" name="date" required="required">
+            <input type="date" class="form-control" id="regEnd" name="date" required="required">
           </td>
         </tr>
         <tr>
-          <tr>
           <th scope="row" class="align-middle">진행 여부</th>
           <td colspan="2">
             <span>
-              <input class="align-middle" type="checkbox" id="productProgressStatusCheckbox1" value="inProgress">
+              <input class="align-middle" type="checkbox" id="inProgress" value="inProgress">
               <label class="align-middle mb-0">진행 중</label>
             </span>
             <span>
-              <input class="align-middle ml-2" type="checkbox" id="productProgressStatusCheckbox2" value="notInProgress"> 
+              <input class="align-middle ml-2" type="checkbox" id="notInProgress" value="notInProgress"> 
               <label class="align-middle mb-0">진행 안함</label>
             </span>
           </td>
         </tr>
         <tr>
+          <th scope="row" class="align-middle">MD's Pick 등록 여부</th>
+          <td colspan="2">
+            <span>
+              <input class="align-middle" type="checkbox" id="mdPickCheckbox1" value="mdPickInProgress">
+              <label class="align-middle mb-0">등록 중</label>
+            </span>
+            <span>
+              <input class="align-middle ml-2" type="checkbox" id="mdPickCheckbox2" value="mdPickinNotInProgress"> 
+              <label class="align-middle mb-0">등록 안함</label>
+            </span>
+          </td>
+        </tr>
+        <tr>
             <td colspan="3">
-              <input type="button" class="btn btn-primary float-right" value="검색" />
+              <a class="btn btn-primary float-right" onclick="goSearch(1)">검색</a>
             </td>
           </tr>
       </table>
     </div>
     
     <br/>
-    <h4>MD's Pick</h4>
-    <table class="table table-sm table-bordered">
-      <thead class="align-middle text-center">
-        <tr>
-          <th scope="col">등록 일자</th>
-          <th scope="col">상품코드</th>
-          <th scope="col">상품명</th>
-          <th scope="col">판매량</th>
-          <th scope="col">등록</th>
-        </tr>
-      </thead>
-      <tbody class="align-middle text-center">
-        <tr>
-          <td>2021-03-22</td>
-          <td>CM2B0KJC210W</td>
-          <td>벨티드 니트 가디건</td>
-          <td>123</td>
-          <td><button type="button" class="btn btn-sm btn-outline-danger">취소</button></td>
-        </tr>
-        <tr>
-          <td>2021.11.11</td>
-          <td>CM2B0KCD231WP1</td>
-          <td>캐시미어 블렌드 니트 가디건</td>
-          <td>20</td>
-          <td><button type="button" class="btn btn-sm btn-outline-danger">취소</button></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>CM2B0KOT209W</td>
-          <td>스티치 니트 재킷</td>
-          <td>30</td>
-          <td><button type="button" class="btn btn-sm btn-success">등록</button></td>
-        </tr>
-      </tbody>
-    </table>
-
+    <div class="d-flex justify-content-between mb-2">
+    	<h4>MD's Pick</h4>
+        <div class="input-group-prepend">
+        	<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortType" data-toggle="dropdown" aria-expanded="false">
+            	정렬
+            </button>
+            <div class="dropdown-menu">
+            	<a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">구매율 높은순</a>
+            	<a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">구매율 낮은순</a>
+            	<a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">등록순</a>
+            	<a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">최신등록순</a>
+                <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">상품코드순</a>
+                <a class="dropdown-item" onclick="javascript:selectSort(event,'#sortType')">상품이름순</a>
+            </div>
+        </div>
+    </div>
+    <div id="brandTable">
+    </div>
   </th:block>
 </th:block>
 </html>

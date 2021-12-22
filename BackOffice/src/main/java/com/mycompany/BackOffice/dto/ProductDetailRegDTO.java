@@ -7,16 +7,15 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Data;
 
 @Data
-public class ProductDetailDTO {
+public class ProductDetailRegDTO {
 	private String productDetailId;
 	private String withProduct;
 	private String colorCode;
 	private String colorChip;
-	private MultipartFile colorChipFile;
 	private String productId;
 	private String name;
 	private String brandName;
-	private List<ProductImgDTO> imgList;
-	private List<ProductImgDTO> withImgList;
+	private List<ProductImgRegDTO> imgList;
+	private List<ProductImgRegDTO> withImgList;
 	private List<StockDTO> stockList;
 }

@@ -120,11 +120,10 @@
     			price : $("#priceInput").val(),
     			brandName : $("#brandGbn").html(),
     			categoryId,
-    			thumbnail:{file:input1,src:window.URL.createObjectURL(input1)},
+    			thumbnailFile:input1,
+    			thumbnail:window.URL.createObjectURL(input1),
     			status
     		  }
-    		 
-    		  
     		  
     		  event.target.innerHTML = "상품 수정";
     	  }else{
@@ -176,7 +175,8 @@
             			  {imgFile:input2.files[0],img:objectURL2,orderNum:2,productDetailId:productId+"_"+$("#colorCodeInput").val()},
             			  {imgFile:input3.files[0],img:objectURL3,orderNum:3,productDetailId:productId+"_"+$("#colorCodeInput").val()}
             			],
-            		  "colorChip":{file:input4.files[0],src:objectURL4},
+            		  "colorChipFile":input4.files[0],
+        	  		  "colorChip": objectURL4,
             		  "withProduct":$("#withProductInput").val(),
             		  "stockList": []
             	  }
@@ -570,38 +570,55 @@
       function goReg(){
     	  console.log(detailList);
     	  product.productDetailList = detailList;
+    	  console.log(product.thumbnailFile);
     	  
-    	  console.log(product.thumbnail.file);
-    	  putFile(product.thumbnail.file,0,0,product.productId,"",2);
     	  
-    	  for(let i = 0; i < detailList.length;i++){
-    		  for(let j = 0; j<3;j++){
-    			  putFile(detailList[i].imgList[j].imgFile,i,j,product.productId,detailList[i].productDetailId,0);
+    	  
+    	  var formData = new FormData();
+    	  
+    	  for ( var key in product ) {
+    		  console.log(key);
+    		  console.log(product[key]);
+    		  if(key=="productDetailList"){
+    			  for(var key2 in product[key]){
+    				  console.log(product[key][key2]);
+    				  for(var key3 in product[key][key2]){
+    					  if(key3.includes('List')){
+    						  console.log(key3);
+    						  for(var key4 in product[key][key2][key3]){
+    							  for(var key5 in product[key][key2][key3][key4]){
+    								  formData.append(`productDetailList[${key2}].${key3}[${key4}].${key5}`, product.productDetailList[key2][key3][key4][key5]);  
+    							  }
+    						  }
+    					  }else{
+    						  formData.append(`productDetailList[${key2}].${key3}`, product.productDetailList[key2][key3]);
+    					  }
+    				  }
+    				  
+    			  }
+    		  }else{
+    			  formData.append(key, product[key]);
     		  }
-    		  putFile(detailList[i].colorChip.file,i,0,product.productId,detailList[i].productDetailId,1);
-    	  }
+    		  
+    		}
+
+    	  console.log(formData);
     	  
-    	 
-    	  for(let i = 0; i < detailList.length;i++){
-    		  for(let j = 0; j<3;j++){
-    			  detailList[i].imgList[j].imgFile = "";
-    		  }
-    	  }
- 		
+		
     	  setTimeout(function() {
-    	   	  $.ajax({
-    	  	        url:"http://localhost:8082/product/regist",
-    	  	      	contentType: 'application/json',
-    	  	        type:"POST",
-    	  	      	dataType:"json",	
-    	  	        data:JSON.stringify(product),
-    	  	        success: function(response){
-    	  	        	console.log(response);
-    	  	        },
-    	  	        error: function(xhr, status, error) {
-    	  	            alert(error);
-    	  	        }  
-    	  	    })
+	    	  $.ajax({
+	  	        url:"http://localhost:8082/product/regist",
+	  	      	type:"POST",
+	  	      	contentType:false,
+	  	      	processData : false,
+	  	        data:formData,
+	  	        success: function(response){
+	  	        	console.log(response);
+	  	        },
+	  	        error: function(xhr, status, error) {
+	  	            alert(error);
+	  	        }  
+	  	    });
     	 },2000);
       }
       

@@ -2,23 +2,48 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{common/layout::setContent(~{this::content})}">
   <th:block th:fragment="content">
-    <script type="text/javascript">
+    <script th:inline="javascript">
       function selectDropDownInput(event,id){
         inputBox = document.querySelector(id);
         inputText = event.target.innerHTML;
         console.log(inputText);
         inputBox.value = inputText;
       }
+      
+	  function selectBrand(event,id,bindex){
+		  brandIndex = bindex;
+		  $(id).html([[${brandList}]][brandIndex].brandName);
+		  console.log([[${brandList}]][brandIndex]);
+		  $("#brandInput").val([[${brandList}]][brandIndex].brandName);
+		  $("#brandNameTd").html([[${brandList}]][brandIndex].brandName);
+		  $("#brandContent").html([[${brandList}]][brandIndex].content);  
+		  $("#mainImg").attr("src",[[${brandList}]][brandIndex].mainImg);
+		  let categoryList = [[${brandList}]][brandIndex].brandCategoryTempList;
+		  console.log(categoryList);
+          $('#catagoryTable').html("");
+          for(let i = 0; i < categoryList.length; i++){
+        	for(let j = 0; j < categoryList[i].categoryList.length; j++){
+        		for(let k = 0; k < categoryList[i].categoryList[j].categoryList.length; k++){
+        			var $temp = $(
+                			`<tr>
+                	          <td><input type="checkbox" id="flexSwitchCheckChecked"></td>
+                	          <td>${categoryList[i].name}</td>
+                	          <td>${categoryList[i].categoryList[j].name}</td>
+                	          <td>${categoryList[i].categoryList[j].categoryList[k].name}</td>
+                	        </tr>`);
+                			$('#catagoryTable').append($temp);
+        		}
+        	}
+          }
+	  }
     </script>
 
     <h5><b>브랜드를 선택하세요</b></h5>
     <div class="input-group mt-3 mb-3">
       <div class="input-group-prepend">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">브랜드</button>
+        <button class="btn btn-outline-secondary dropdown-toggle" id="brandGbn" type="button" data-toggle="dropdown" aria-expanded="false">브랜드</button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">TIME HOMME</a>
-          <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">SYSTEM HOMME</a>
-          <a class="dropdown-item" onclick="javascript:selectDropDownInput(event,'#brandInput')">the CASHMERE</a>
+          <a th:each="brand, status: ${brandList}" class="dropdown-item" th:onclick="javascript:selectBrand(event,'#brandGbn',[[${status.index}]])">[[${brand.brandName}]]</a>
         </div>
       </div>
       <input type="text" id="brandInput" class="form-control">
@@ -30,7 +55,7 @@
       <table class="table">
         <tr>
           <th scope="row" class="w-25">브랜드명</th>
-          <td>TIME HOMME</td>
+          <td id="brandNameTd">TIME HOMME</td>
         </tr>
         <tr>
           <th scope="row">브랜드 카테고리</th>
@@ -71,7 +96,7 @@
           <td>
             <input type="file" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
             <span class="float-right">
-              <img src="/images/systemhomme.png" class="img-thumbnail rounded float-right w-25" alt="brandlogo">
+              <img id="mainImg" src="/images/systemhomme.png" class="img-thumbnail rounded float-right w-25" alt="brandlogo">
             </span>
           </td>
         </tr>
@@ -95,7 +120,7 @@
           <th scope="col">소분류</th>
         </tr>
       </thead>
-      <tbody class="align-middle text-center">
+      <tbody class="align-middle text-center" id="catagoryTable">
         <tr>
           <td><input type="checkbox" id="flexSwitchCheckChecked"></td>
           <td>남성</td>

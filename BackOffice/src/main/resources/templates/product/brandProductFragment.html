@@ -11,34 +11,35 @@
 		
 		.hiddentxt:hover ~ .hiddenimg {
 		  display: block;
-		  position: sticky;
-		  left:400px;
-		  top:100px;
-		  z-index: 2;
+		  position: absolute;
+		    z-index: 2
 		}
 	  </style>
-	  <script th:inline="javascript">
-      	$(function(){
-      		globalPageNo = [[${pager.pageNo}]];
-	      }); 
-	  </script>
-	  <div id="productTable">
+	 <script th:inline="javascript">
+	 
+	 	
+	      $(function(){
+	    	  globalPageNo = [[${pager.pageNo}]];
+		  }); 
+	 </script>
+	  <div id="brandTable">
 		<table class="table table-sm table-bordered">
 	      <thead class="align-middle text-center">
 	        <tr>
 	          <th scope="col"><input type="checkbox"></th>
+	          <th scope="col">등록 일자</th>
 	          <th scope="col">카테고리</th>
 	          <th scope="col">상품코드</th>
 	          <th scope="col">상품명</th>
-	          <th scope="col">진열 상태</th>
-	          <th scope="col">판매가</th>
-	          <th scope="col">상품 등록일</th>
+	          <th scope="col">판매량</th>
 	          <th scope="col">조회수 대비 구매율</th>
+	          <th scope="col">등록</th>
 	        </tr>
 	      </thead>
 	      <tbody class="align-middle text-center">
 	        <tr th:each="product : ${productList}">
-	          <td><input type="checkbox" name="statusCheck" th:value="${product.productId}"></td>
+	          <td><input type="checkbox"></td>
+	          <td></td>
 	          <td>
 	          	<th:block th:each="category,status :${product.categoryList}">
 	          		[[${category}]]<i th:if="${status.index}!=2" class="bi bi-caret-right-fill"/>
@@ -46,29 +47,18 @@
 	          </td>
 	          <td>
 	          	<a class="text-warning hiddentxt" th:onclick="fnModuleInfo([[${product.productId}]])" >[[${product.productId}]]</a>
-				<div class="hiddenimg">
-					<div class="card" style="width: 20rem;">
-					  <img class="card-img-top" th:src="${product.thumbnail}" alt="Card image cap">
-					  <div class="card-body">
-					    <h4 class="card-title">[[${product.brandName}]]</h5>
-					    <h5 class="card-title">[[${product.name}]]</h5>
-					    <p class="card-text"></p>
-					    
-					  </div>
-					</div>
-				</div>
+				<span class="hiddenimg"><img th:src="${product.thumbnail}" width="150" /></span>
 	          </td>
 	          <td>[[${product.name}]]</td>
+	          <td>[[${product.purchaseAmount}]]
 	          <td>
-	          	<th:block th:if="${product.status==1}"><span class="status text-success">&bull;</span>진열중</th:block>
-	          	<th:block th:if="${product.status==0}"><span class="status text-danger">&bull;</span>진열안됨</th:block>	
-	          </td>
-	          <td th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></td>
-	          <td>[[${product.regDate}]]</td>
-	          <td class="align-middle">
-				<div class="progress">
+	          	<div class="progress">
 				  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" th:style="'width:'+${((0.0 + product.purchaseAmount) / product.hitCount) * 100}+'%'"></div>
 				</div>
+	          </td>
+	          <td>
+	          	<th:block th:if="${product.mdStatus==0}"><a class="btn btn-sm btn-success" th:onclick="regMdProduct([[${product.productId}]])">등록</a></th:block>
+	            <th:block th:if="${product.mdStatus!=0}"><a class="btn btn-sm btn-outline-danger" th:onclick="delMdProduct([[${product.productId}]])">취소</a></th:block>
 	          </td>
 	        </tr>
 			<tr>
