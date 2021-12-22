@@ -10,7 +10,7 @@ public class Order {
 	String orderId;
 	String memberId;
 	Date orderDate;
-	String state;
+	int state;
 	String stateCode;
 	String request;
 	int zipCode;
@@ -21,4 +21,6 @@ public class Order {
 	String couponId;
 	List<OrderDetail> orderDetailList;
 	List<Payment> paymentList;
+	int totalPrice;
+	String payType;
 }

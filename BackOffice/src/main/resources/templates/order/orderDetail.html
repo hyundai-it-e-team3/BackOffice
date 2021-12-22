@@ -84,8 +84,7 @@
             <th scope="col">주문수량</th>
             <th scope="col">송장번호</th>
             <th scope="col">배송상태</th>
-            <th scope="col">물류</th>
-            <th scope="col">CS</th>
+            <th scope="col" th:if="${data.order.state != '주문확정'}">물류</th>
           </tr>
         </thead>
         
@@ -99,12 +98,20 @@
             <td th:text="${orderDetail.amount}"></td>
             <td th:text="${orderDetail.deliveryNo}"></td>
             <td th:text="${orderDetail.state}"></td>
-            <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" th:onclick="changeODInfo([[${orderDetail.productDetailId}]],[[${orderDetail.psize}]]);">배송상태 변경</button></td>
-            <td><button class="btn btn-secondary btn-sm">교환</button><button class="btn btn-secondary btn-sm">환불</button></td>
+            <td th:if="${data.order.state != '주문확정' && orderDetail.state != '반품'}">
+            	<button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" 
+            			th:onclick="changeODInfo([[${orderDetail.productDetailId}]],[[${orderDetail.psize}]]);">배송상태 변경</button>
+            </td>
           </tr>
         </tbody>
       </table>
-      <button class="btn btn-secondary btn-sm">전체 취소</button>
+      
+      <form id="cs-form" action="/order/returnOrder" method="post">
+      	<input type="hidden" id="hidden-oid-info" name="orderId" th:value="${data.order.orderId}"/>
+      	<button class="btn btn-secondary btn-sm" th:if="${data.order.state == 'CS처리중'}">주문 부분 취소</button>
+      </form>
+      
+      
 		<!-- Modal -->
 		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">

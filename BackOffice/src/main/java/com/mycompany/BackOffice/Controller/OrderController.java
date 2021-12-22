@@ -20,7 +20,6 @@ public class OrderController {
 	@Resource
 	OrderService orderService;
 	
-	
 	@RequestMapping("/orderList")
 	public String orderList(@RequestParam(defaultValue="1") int pageNo, Model model) {
 		PagerAndOrderInfo data = orderService.getOrderInfoList(pageNo);
@@ -53,4 +52,14 @@ public class OrderController {
 		model.addAttribute("pager", data.getPager());
 		return "order/orderList";
 	}
+	
+	@RequestMapping("/returnOrder")
+	public String returnOrder(
+			String orderId,
+			Model model) {
+		log.info(orderId);
+		orderService.returnOrder(orderId);
+		return "redirect:/order/orderDetail?oid="+orderId;
+	}
+	
 }
