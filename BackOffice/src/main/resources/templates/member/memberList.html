@@ -189,7 +189,9 @@
             <th scope="col">등급</th>
             <th scope="col">포인트</th>
             <th scope="col">회원상태</th>
+            <th scope="col">성별</th>
             <th scope="col">관련 내역 보기</th>
+            <th scope="col">수정</th>
           </tr>
         </thead>
         <tbody class="align-middle text-center">
@@ -203,10 +205,10 @@
             <td class="align-middle">[[${member.address1}]] [[${member.address2}]]</td>
             <td class="align-middle">[[${member.memberLevel}]]</td>
             <th:block th:if="${member.point}  > 99 or ${member.point} < -99">
-              <td>[[${#numbers.formatInteger(member.point, 3, 'COMMA')}]]</td>
+              <td class="align-middle">[[${#numbers.formatInteger(member.point, 3, 'COMMA')}]]</td>
             </th:block>
             <th:block th:unless="${member.point}  > 99 or ${member.point} < -99">
-              <td>[[${member.point}]]</td>
+              <td class="align-middle">[[${member.point}]]</td>
             </th:block>
             <td class="align-middle">
               <th:block th:switch="${member.status}">
@@ -215,10 +217,14 @@
                 <th:block th:case="'2'">휴면회원</th:block>
               </th:block>
             </td>
+            <td class="align-middle">[[${member.gender}]]</td>
             <td class="align-middle">
               <a th:href="@{'/member/memberOrder/' + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">주문</a>
               <a th:href="@{'/member/memberCoupon/' + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">쿠폰</a>
               <a th:href="@{'/member/memberPoint/'  + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">포인트</a>
+            </td>
+            <td class="align-middle">
+              <a th:href="@{'/member/updateMemberForm/' + ${member.memberId}}" class="btn btn-danger btn-sm">수정</a>
             </td>
           </tr>
         </tbody>

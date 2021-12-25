@@ -1,6 +1,8 @@
 package com.mycompany.BackOffice.Controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.mycompany.BackOffice.dto.member.Member;
 import com.mycompany.BackOffice.dto.member.PagerAndMember;
 import com.mycompany.BackOffice.dto.member.PagerAndMemberCoupon;
 import com.mycompany.BackOffice.dto.member.PagerAndPoint;
@@ -135,5 +139,40 @@ public class MemberController {
 		model.addAttribute("pager", data.getPager());
 	
 		return "member/memberPoint";
+	}
+	
+	@RequestMapping("/updateMemberForm/{memberId}")
+	public String updateMemberForm(@PathVariable String memberId, Model model) {
+		log.info("Run UpdateMemberForm");
+		
+		Member member = webClient
+				.get()
+				.uri("/member/" + memberId)
+				.retrieve()
+				.bodyToMono(Member.class)
+				.block();
+		
+		model.addAttribute("member", member);
+		
+		return "member/updateMemberForm";
+	}
+	
+	@RequestMapping("/updateMember")
+	@ResponseBody
+	public Map<String, String> updateMember(Member member) {
+		log.info("Run UpdateMember");
+		
+		String response = webClient
+			.post()
+			.uri("/member/update")
+			.bodyValue(member)
+			.retrieve()
+			.bodyToMono(String.class)
+			.block();
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("result", response);
+		
+		return map;
 	}
 }
