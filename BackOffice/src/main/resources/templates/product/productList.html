@@ -352,10 +352,10 @@
         </tr>
         <tr>
           <th class="align-middle">상품등록일</th>
-          <td class="pl-0 pt-1 pb-1">
+          <td>
             <input type="date" id="regStart" class="form-control" name="date">
           </td>
-          <td class="pl-0 pt-1 pb-1">
+          <td>
             <input type="date" id="regEnd" class="form-control" name="date">
           </td>
         </tr>
@@ -383,7 +383,7 @@
     <div class="d-flex justify-content-between mb-2">
     	<h4>상품 목록</h4>
         <div class="input-group-prepend">
-        	<a class="btn btn-primary btn-sm mr-2" onclick="changeStatus()">진열상태 변경</a>
+        	<button type="button" class="btn btn-primary btn-sm mr-2" onclick="changeStatus()">진열상태 변경</button>
         	<button class="btn  btn-outline-secondary dropdown-toggle" type="button" id="sortType" data-toggle="dropdown" aria-expanded="false">
             	정렬
             </button>

@@ -8,7 +8,7 @@
       <table class="table table-bordered">
         <tr>
           <th scope="row" style="width:20%">주문일자</th>
-          <td>[[${data.order.orderDate}]]</td>
+          <td>[[${#dates.format(data.order.orderDate, 'yyyy-MM-dd')}]]</td>
         </tr>
         <tr>
           <th scope="row">주문번호</th>
