@@ -17,10 +17,12 @@
 			<col style="width: 33%"/>
 		</colgroup>
 		<tr>
-			<td colspan="2" >
-				<div class="container">
-					<h4>분기별 그래프</h4>
-			      <div>
+			<td colspan="3" >
+				<div class="card shadow m-2">
+				  <div class="card-header">
+				  	분기별 그래프
+				  </div>
+			      <div class="card-body" style="height:350px">
 			        <canvas id="quaterChart"></canvas>
 			      </div>
 			    </div>
@@ -44,37 +46,102 @@
 				          {
 				            label: "매출액",
 				            data: [[${quater.data}]],
-				            backgroundColor: "rgba(0,150,136,0.5)",
+				            lineTension: 0.3,
+				            backgroundColor: "rgba(78, 115, 223, 0.05)",
+				            borderColor: "rgba(78, 115, 223, 1)",
+				            pointRadius: 3,
+				            pointBackgroundColor: "rgba(78, 115, 223, 1)",
+				            pointBorderColor: "rgba(78, 115, 223, 1)",
+				            pointHoverRadius: 3,
+				            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+				            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+				            pointHitRadius: 10,
+				            pointBorderWidth: 2
 				          },
 				        ],
 				      },
+				      options: {
+				    	    maintainAspectRatio: false,
+				    	    layout: {
+				    	      padding: {
+				    	        left: 10,
+				    	        right: 25,
+				    	        top: 0,
+				    	        bottom: 0
+				    	      }
+				    	    },
+				    	    scales: {
+				    	      xAxes: [{
+				    	        time: {
+				    	          unit: 'date'
+				    	        },
+				    	        gridLines: {
+				    	          display: false,
+				    	          drawBorder: false
+				    	        },
+				    	        ticks: {
+				    	          maxTicksLimit: 7
+				    	        }
+				    	      }],
+				    	      yAxes: [{
+				    	        ticks: {
+				    	          maxTicksLimit: 5,
+				    	          padding: 10,
+				    	          // Include a dollar sign in the ticks
+				    	          callback: function(value, index, values) {
+				    	            return '$' + number_format(value);
+				    	          }
+				    	        },
+				    	        gridLines: {
+				    	          color: "rgb(234, 236, 244)",
+				    	          zeroLineColor: "rgb(234, 236, 244)",
+				    	          drawBorder: false,
+				    	          borderDash: [2],
+				    	          zeroLineBorderDash: [2]
+				    	        }
+				    	      }],
+				    	    },
+				    	    legend: {
+				    	      display: false
+				    	    },
+				    	    tooltips: {
+				    	      backgroundColor: "rgb(255,255,255)",
+				    	      bodyFontColor: "#858796",
+				    	      titleMarginBottom: 10,
+				    	      titleFontColor: '#6e707e',
+				    	      titleFontSize: 14,
+				    	      borderColor: '#dddfeb',
+				    	      borderWidth: 1,
+				    	      xPadding: 15,
+				    	      yPadding: 15,
+				    	      displayColors: false,
+				    	      intersect: false,
+				    	      mode: 'index',
+				    	      caretPadding: 10,
+				    	      callbacks: {
+				    	        label: function(tooltipItem, chart) {
+				    	          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+				    	          return datasetLabel + ': ￦' + number_format(tooltipItem.yLabel);
+				    	        }
+				    	      }
+				    	    }
+				      }
 				    });
 				  </script>
 			</td>
-			<td style="vertical-align:middle">
-				<!-- 전분기 대비 판매 상승률 -->
-				<div class="card" style="text-align:center; vertical-align:middle; height:100%">
-					<h4>작년 동분기 대비 매출 상승률</h4>
-					<h1>[[${quater.lastYear}]]%</h1> 
-				</div>
-				<div class="card mt-2" style="text-align:center; vertical-align:middle; height:100%">
-					<h4>전 분기 대비 상승률</h4>
-					<h1>[[${quater.lastQuater}]]%</h1> 
-				</div>
-				<div class="card mt-2" style="text-align:center; vertical-align:middle; height:100%">
-					<h4>이번 분기 매출</h4>
-					<h1>[[${quater.data[7]}]]억원</h1> 
-				</div>
-			</td>
+
 		</tr>
 		
 		
 		<tr>
 			<td colspan="2">
-				<!-- 일별 매출 그래프 -->
-				<div class="container">
-				<h4>일별 그래프</h4>
-				<canvas id="weekChart"></canvas>
+				<div class="card shadow m-2">
+				  <div class="card-header">
+				  	일별 매출
+				  </div>
+			      <div class="card-body" style="height:350px">
+			        <canvas id="weekChart"></canvas>
+				  </div>
 				</div>
 				
 				
@@ -97,67 +164,130 @@
 			                labels: dailyLabels,
 			                datasets: [{
 			                    label: '일간 매출액',
-			                    backgroundColor: 'rgb(255, 99, 132)',
-			                    borderColor: 'rgb(255, 99, 132)',
+			                    backgroundColor: "#4e73df",
+			                    hoverBackgroundColor: "#2e59d9",
+			                    borderColor: "#4e73df",
 			                    data: [[${daily.data}]]
 			                }]
 			            },
+			            options: {
+			                maintainAspectRatio: false,
+			                layout: {
+			                  padding: {
+			                    left: 10,
+			                    right: 25,
+			                    top: 25,
+			                    bottom: 0
+			                  }
+			                },
+			                scales: {
+			                  xAxes: [{
+			                    time: {
+			                      unit: 'month'
+			                    },
+			                    gridLines: {
+			                      display: false,
+			                      drawBorder: false
+			                    },
+			                    ticks: {
+			                      maxTicksLimit: 6
+			                    },
+			                    maxBarThickness: 25,
+			                  }],
+			                  yAxes: [{
+			                    ticks: {
+			                      min: 0,
+			                      max: 15000,
+			                      maxTicksLimit: 5,
+			                      padding: 10,
+			                      // Include a dollar sign in the ticks
+			                      callback: function(value, index, values) {
+			                        return '$' + number_format(value);
+			                      }
+			                    },
+			                    gridLines: {
+			                      color: "rgb(234, 236, 244)",
+			                      zeroLineColor: "rgb(234, 236, 244)",
+			                      drawBorder: false,
+			                      borderDash: [2],
+			                      zeroLineBorderDash: [2]
+			                    }
+			                  }],
+			                },
+			                legend: {
+			                  display: false
+			                },
+			                tooltips: {
+			                  titleMarginBottom: 10,
+			                  titleFontColor: '#6e707e',
+			                  titleFontSize: 14,
+			                  backgroundColor: "rgb(255,255,255)",
+			                  bodyFontColor: "#858796",
+			                  borderColor: '#dddfeb',
+			                  borderWidth: 1,
+			                  xPadding: 15,
+			                  yPadding: 15,
+			                  displayColors: false,
+			                  caretPadding: 10,
+			                  callbacks: {
+			                    label: function(tooltipItem, chart) {
+			                      var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+			                      return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+			                    }
+			                  }
+			                },
+			              }
 			        });
 				</script>
 				
 			</td>
-			<td>
-				<!-- 브랜드별 매출 비교 파이 그래프 -->
-				<div class="col-xs-12 text-center">
-			      <h2>브랜드별 매출</h2>
-			    </div>
-			  
-			    <div id="brand-chart"></div>
-			  
-		      <script th:inline="javascript">
-				    let labels = [[${brand.labels}]];
-				    let data = [[${brand.data}]];
-				    
-				    var brandData = [];
-				    var temp;
-				    for(let i=0; i<labels.length; i++) {
-				    	temp = [];
-				    	temp.push(String(labels[i]));
-				    	temp.push(data[i]);
-				    	brandData.push(temp);
-				    }
-		    	</script>
-		    	
-			    <script>
-			      var brandChart = bb.generate({
-			        data: {
-			          columns: brandData,
-			          type: "donut",
-			          onclick: function (d, i) {
-			            console.log("onclick", d, i);
-			          },
-			          onover: function (d, i) {
-			            console.log("onover", d, i);
-			          },
-			          onout: function (d, i) {
-			            console.log("onout", d, i);
-			          },
-			        },
-			        donut: {
-			          title: "70",
-			        },
-			        bindto: "#brand-chart",
-			      });
-			    </script>
+			
+			<td style="vertical-align:middle" >
+				<div class="card shadow m-2 p-0">
+					<div class="card-body p-0" style="height:400px">
+						<!-- 전분기 대비 판매 상승률 -->
+						<div class="card m-1" style="text-align:center; height:32%">
+							<div class="card-header">
+								작년 동분기 대비 매출 상승률
+							</div>
+							<div class="card-body">
+								<h2>[[${quater.lastYear}]]%</h2>
+							</div>
+						</div>
+						<div class="card m-1" style="text-align:center; height:32%">
+							<div class="card-header">
+								전 분기 대비 상승률
+							</div>
+							<div class="card-body">
+								<h2>[[${quater.lastQuater}]]%</h2>
+							</div> 
+						</div>
+						<div class="card m-1" style="text-align:center; height:32%">
+							<div class="card-header">
+								이번 분기 매출
+							</div>
+							<div class="card-body">
+								<h2>[[${quater.data[7]}]]억원</h2>
+							</div> 
+						</div> 
+						</div>
+					</div>
+				</div>
 			</td>
+			
 		</tr>
 		
 		<tr>
 			<td colspan="2">
 				<!-- 연령별 남녀 고객 수 그래프 -->
-				<div class="container">
-				<h4>고객 현황</h4>
-				<canvas id="memberChart"></canvas>
+				
+				<div class="card shadow m-2">
+				  <div class="card-header">
+				  	고객 현황
+				  </div>
+			      <div class="card-body" style="height:350px">
+			        <canvas id="memberChart"></canvas>
+				  </div>
 				</div>
 				
 				<script th:inline="javascript">
@@ -166,12 +296,12 @@
 			            // type : 'bar' = 막대차트를 의미합니다.
 			            type: 'bar', // 
 			            data: {
-			          labels: ['10대', '20대', '30대', '40대', '50대', '60대이상'], // 큰 분류(하단 데이터 이름)
-			                datasets: [
+				          labels: ['10대', '20대', '30대', '40대', '50대', '60대이상'], // 큰 분류(하단 데이터 이름)
+			              datasets: [
 			                  {
 			                    label: '여성', //작은 분류
 			                    backgroundColor: [
-			                      'red',
+			                    	'#4e73df'
 			                    ],
 			                    borderColor: 'rgb(255, 99, 132)',
 			                    data: [[${member.womenList}]]
@@ -179,7 +309,7 @@
 			                  {
 			                    label: '남성', //작은 분류
 			                    backgroundColor: [
-			                      'blue',
+			                    	'#1cc88a'
 			                    ],
 			                    borderColor: 'rgb(255, 99, 132)',
 			                    data: [[${member.menList}]]
@@ -187,7 +317,7 @@
 			                  {
 			                    label: '전체', //작은 분류
 			                    backgroundColor: [
-			                      'green',
+			                    	'#36b9cc'
 			                    ],
 			                    borderColor: 'rgb(255, 99, 132)',
 			                    data: [[${member.totalList}]]
@@ -196,46 +326,122 @@
 			                
 			                ]
 			            },
+			            options: {
+			                maintainAspectRatio: false,
+			                layout: {
+			                  padding: {
+			                    left: 10,
+			                    right: 25,
+			                    top: 25,
+			                    bottom: 0
+			                  }
+			                },
+			                scales: {
+			                  xAxes: [{
+			                    time: {
+			                      unit: 'month'
+			                    },
+			                    gridLines: {
+			                      display: false,
+			                      drawBorder: false
+			                    },
+			                    ticks: {
+			                      maxTicksLimit: 6
+			                    },
+			                    maxBarThickness: 25,
+			                  }],
+			                  yAxes: [{
+			                    ticks: {
+			                      min: 0,
+			                      max: 15000,
+			                      maxTicksLimit: 5,
+			                      padding: 10,
+			                      // Include a dollar sign in the ticks
+			                      callback: function(value, index, values) {
+			                        return '$' + number_format(value);
+			                      }
+			                    },
+			                    gridLines: {
+			                      color: "rgb(234, 236, 244)",
+			                      zeroLineColor: "rgb(234, 236, 244)",
+			                      drawBorder: false,
+			                      borderDash: [2],
+			                      zeroLineBorderDash: [2]
+			                    }
+			                  }],
+			                },
+			                legend: {
+			                  display: false
+			                },
+			                tooltips: {
+			                  titleMarginBottom: 10,
+			                  titleFontColor: '#6e707e',
+			                  titleFontSize: 14,
+			                  backgroundColor: "rgb(255,255,255)",
+			                  bodyFontColor: "#858796",
+			                  borderColor: '#dddfeb',
+			                  borderWidth: 1,
+			                  xPadding: 15,
+			                  yPadding: 15,
+			                  displayColors: false,
+			                  caretPadding: 10,
+			                  callbacks: {
+			                    label: function(tooltipItem, chart) {
+			                      var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+			                      return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+			                    }
+			                  }
+			                },
+			              }
+			            
 			        });
 				
 				</script>
 			</td>
 			<td>
-				<!-- 외부 유입 경로 파이 그래프 -->
-				<div class="col-xs-12 text-center">
-			      <h2>외부 유입 경로</h2>
-			    </div>
+				<!-- 브랜드별 매출 비교 파이 그래프 -->
+				<div class="card shadow m-2">
+				  <div class="card-header">
+				  	일별 매출
+				  </div>
+			      <div class="card-body" style="height:350px">
+			        <canvas id="brandChart"></canvas>
+				  </div>
+				</div>
 			  
-			    <div id="link-chart"></div>
-			  
-			    <script>
-			      var linkChart = bb.generate({
-			        data: {
-			          columns: [
-			            ["가", 55],
-			            ["나", 32],
-			            ["다", 12],
-			            ["라", 23]
-			          ],
-			          type: "donut",
-			          onclick: function (d, i) {
-			            console.log("onclick", d, i);
-			          },
-			          onover: function (d, i) {
-			            console.log("onover", d, i);
-			          },
-			          onout: function (d, i) {
-			            console.log("onout", d, i);
-			          },
-			        },
-			        donut: {
-			          title: "70",
-			        },
-			        bindto: "#link-chart",
-			      });
-			    </script>
+		      <script th:inline="javascript">				    
+				    var ctx = document.getElementById("brandChart");
+				    var myPieChart = new Chart(ctx, {
+				      type: 'doughnut',
+				      data: {
+				        labels: [[${brand.labels}]],
+				        datasets: [{
+				          data: [[${brand.data}]],
+				          backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+				          hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+				          hoverBorderColor: "rgba(234, 236, 244, 1)",
+				        }],
+				      },
+				      options: {
+				        maintainAspectRatio: false,
+				        tooltips: {
+				          backgroundColor: "rgb(255,255,255)",
+				          bodyFontColor: "#858796",
+				          borderColor: '#dddfeb',
+				          borderWidth: 1,
+				          xPadding: 15,
+				          yPadding: 15,
+				          displayColors: false,
+				          caretPadding: 10,
+				        },
+				        legend: {
+				          display: false
+				        },
+				        cutoutPercentage: 80,
+				      },
+				    });
+			  </script>
 			</td>
-			
 		</tr>
 	
 	
