@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <th:block th:replace="~{common/layout::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+    
+      <div class="modal-body">
+        <h4 class="py-2"><b>고객정보 수정하기</b></h4>
+        
+        <form id="updateMemberForm">
+          <table class="table">
+            <tr>
+              <th scope="row" class="align-middle" style="width:15%;">이름</th>
+              <td colspan="2">
+                <input type="text" class="form-control" name="name" th:value="${member.name}">
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">아이디</th>
+              <td colspan="2">
+                [[${member.memberId}]]
+                <input type="hidden" class="form-control" name="memberId" th:value="${member.memberId}">
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">이메일</th>
+              <td colspan="2">
+                <input type="text" class="form-control" name="email" th:value="${member.email}">
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">전화번호</th>
+              <td colspan="2">
+                <input type="text" class="form-control" name="tel" th:value="${member.tel}">
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">생년월일</th>
+              <td colspan="2">[[${#dates.format(member.birthday, 'yyyy-MM-dd')}]]</td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">주소</th>
+              <td colspan="2">
+                <div>
+                  <input type="text" class="form-control" name="address1" th:value="${member.address1}">
+                </div>
+                <div class="mt-2 mb-1 ml-1" style="font-weight: bold;">
+                  상세주소
+                </div>
+                <div>
+                  <input type="text" class="form-control" name="address2" th:value="${member.address2}">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">등급</th>
+              <td colspan="2">
+                <span>
+                  <input type="radio" class="align-middle" name="memberLevel" id="memberLevel1" value="1">
+                  <label class="align-middle mb-0">Lv. 1</label>
+                </span>
+                <span>
+                  <input type="radio" class="align-middle ml-2" name="memberLevel" id="memberLevel2" value="2">
+                  <label class="align-middle mb-0">Lv. 2</label>
+                </span>
+                <span>
+                  <input type="radio" class="align-middle ml-2" name="memberLevel" id="memberLevel3" value="3">
+                  <label class="align-middle mb-0">Lv. 3</label>
+                </span>
+                <span>
+                  <input type="radio" class="align-middle ml-2" name="memberLevel" id="memberLevel4" value="4">
+                  <label class="align-middle mb-0">Lv. 4</label>
+                </span>
+                <span>
+                  <input type="radio" class="align-middle ml-2" name="memberLevel" id="memberLevel5" value="5">
+                  <label class="align-middle mb-0">Lv. 5</label>
+                </span>
+                <span>
+                  <input type="radio" class="align-middle ml-2" name="memberLevel" id="memberLevel"6 value="6">
+                  <label class="align-middle mb-0">Lv. 6</label>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">회원상태</th>
+              <td>
+                <span>
+                  <input class="align-middle" type="radio" name="status" id="memberstatus1" value="1">
+                  <label class="align-middle mb-0">일반회원</label>
+                </span>
+                <span>
+                  <input class="align-middle ml-2" type="radio" name="status" id="memberstatus2" value="2"> 
+                  <label class="align-middle mb-0">휴면회원</label>
+                </span>
+                <span>
+                  <input class="align-middle ml-2" type="radio" name="status" id="memberstatus0" value="0"> 
+                  <label class="align-middle mb-0">탈퇴회원</label>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">가입일자</th>
+              <td colspan="2">[[${#dates.format(member.regDate, 'yyyy-MM-dd')}]]</td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">최근 로그인 일자</th>
+              <td colspan="2">[[${#dates.format(member.lastLoginDate, 'yyyy-MM-dd')}]]</td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-middle">관련 내역</th>
+              <td colspan="2">
+                <a th:href="@{'/member/memberOrder/' + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">주문내역</a>
+                <a th:href="@{'/member/memberCoupon/' + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">쿠폰내역</a>
+                <a th:href="@{'/member/memberPoint/'  + ${member.memberId}(name=${member.name})}" class="btn btn-success btn-sm">포인트내역</a>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button type="button" class="btn btn-primary float-right" onclick="updateMember()">수정</button>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      
+      <div class="modal" id="updateMemberSuccessModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            
+            <div class="modal-header">
+              <h4><b>회원정보 수정</b></h4>
+            </div>
+            <div class="modal-body">
+              <p>회원정보를 성공적으로 수정했습니다.</p>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-primary" onclick="goMemberList()">회원 목록으로 돌아가기</button>
+            </div>
+              
+          </div>
+        </div>
+      </div>
+      
+      <script th:inline="javascript">
+      	function updateMember() {
+      		let memberForm = $('#updateMemberForm').serialize();
+      		
+      		console.log(memberForm);
+      		
+      		$.ajax({
+        		type:"POST",
+        		url:"/member/updateMember",
+    			data: memberForm,
+    			dataType: "json",
+    			success: function(data) {
+    				if(data.result == 'success') {
+    					$('#updateMemberSuccessModal').modal('show');
+    				}
+    			},
+    			error: function(error) {
+    				console.log(error);
+    				alert("회원정보 수정 실패");
+    			}
+        	});
+      	}
+
+      	function goMemberList() {
+        	location.href='/member/firstMemberList';
+        }
+      	
+      	/* 회원상태 체크 */
+     	let status = [[${member.status}]];
+      	
+    	if(status == '1') {
+    		document.getElementById('memberstatus1').checked = true;
+    	} else if (status =='2'){
+    		document.getElementById('memberstatus2').checked = true;
+    	} else {
+    		document.getElementById('memberstatus0').checked = true;
+    	}
+    	
+    	/* 등급 체크 */
+		let level = [[${member.memberLevel}]]
+    	
+    	if(level == '1') {
+    		document.getElementById('memberLevel1').checked = true;
+    	} else if(level == '2') {
+    		document.getElementById('memberLevel2').checked = true;
+    	} else if(level == '3') {
+    		document.getElementById('memberLevel3').checked = true;
+    	} else if(level == '4') {
+    		document.getElementById('memberLevel4').checked = true;
+    	} else if(level == '5') {
+    		document.getElementById('memberLevel5').checked = true;
+    	} else if(level == '6') {
+    		document.getElementById('memberLevel6').checked = true;
+    	} 
+      </script>
+      
+    </th:block>
+  </th:block>
+  
+</html>

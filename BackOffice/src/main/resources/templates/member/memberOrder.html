@@ -29,7 +29,7 @@
           <td><a th:href="@{/order/orderDetail(oid=${orderInfo.orderId})}">[[${orderInfo.orderId}]]</a></td>
           <td>[[${#numbers.formatInteger(orderInfo.totalPrice, 3, 'COMMA')}]]</td>
           <td>[[${orderInfo.payType}]]</td>
-          <td>[[${orderInfo.orderState}]]</td>
+          <td>[[${orderInfo.state}]]</td>
           <td>[[${orderInfo.state1}]]</td>
           <td>[[${orderInfo.state2}]]</td>
           <td>[[${orderInfo.state3}]]</td>
