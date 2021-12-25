@@ -28,24 +28,44 @@
 	          </td>
 	          <td>4/10</td>
 	        </tr>
-			<tr>
-				<td colspan="8" class="text-center">
-					<div>
-						<a onclick="goSearch(1)" class="btn btn-outline-primary btn-sm">처음</a>
-					    <a th:if="${pager.groupNo>1}" th:onclick="goSearch([[${pager.startPageNo-1}]])" class="btn btn-outline-primary btn-sm">이전</a>
-					    <th:block th:each="i : ${#numbers.sequence(pager.startPageNo,pager.endPageNo)}">
-					         			
-					    	<a th:class="(${pager.pageNo!=i})?'btn btn-primary btn-sm':'btn btn-warning btn-sm'" th:onclick="goSearch([[${i}]])">[[${i}]]</a>
-					        <!--  
-					        <a class="btn btn-sm" th:classappend="(${pager.pageNo!=i})?'btn-primary':''btn-warning'" th:href="@{boardList(pageNo=${i})}">[[${i}]]</a>
-					         -->
-					    </th:block>
-					    <a th:if="${pager.groupNo<pager.totalGroupNo}" th:onclick="goSearch([[${pager.endPageNo+1}]])" class="btn btn-outline-primary btn-sm">다음</a>
-					    <a th:onclick="goSearch([[${pager.totalPageNo}]])" class="btn btn-outline-primary btn-sm">맨끝</a>
-					</div>
-				</td>
-			</tr>
 	      </tbody>
 	    </table>
+      
+        <!-- Pagination -->
+      <nav  th:if="${pager.totalRows} > 0">
+        <ul class="pagination d-flex justify-content-center">
+          <li class="page-item">
+            <a class="page-link" onclick="goSearch(1)" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">First</span>
+            </a>
+          </li>
+          
+          <li class="page-item" th:if="${pager.groupNo>1}">
+            <a class="page-link"  th:onclick="goSearch([[${pager.startPageNo-1}]])"  aria-label="Previous">
+              <span aria-hidden="true">이전</span>
+              <span class="sr-only">이전</span>
+            </a>
+          </li>
+          
+          <th:block th:each="i : ${#numbers.sequence(pager.startPageNo, pager.endPageNo)}">
+            <li class="page-item"><a class="page-link" th:onclick="goSearch([[${i}]])">[[${i}]]</a></li>
+          </th:block>
+          
+          <li class="page-item" th:if="${pager.groupNo<pager.totalGroupNo}" >
+            <a class="page-link" th:onclick="goSearch([[${pager.endPageNo+1}]])" aria-label="Previous">
+              <span aria-hidden="true">다음</span>
+              <span class="sr-only">다음</span>
+            </a>
+          </li>
+          
+          <li class="page-item">
+            <a class="page-link" th:onclick="goSearch([[${pager.totalPageNo}]])" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Last</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
 </html>
