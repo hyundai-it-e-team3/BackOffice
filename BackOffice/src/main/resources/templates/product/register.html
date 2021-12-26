@@ -614,6 +614,7 @@
 	  	        data:formData,
 	  	        success: function(response){
 	  	        	console.log(response);
+	  	        	location.href="http://localhost:8082/product/list"
 	  	        },
 	  	        error: function(xhr, status, error) {
 	  	            alert(error);
@@ -666,20 +667,20 @@
         <tr>
           <th class="align-middle">상품 코드</th>
           <td>
-            <input type="text" id="idInput" class="form-control">
+            <input type="text" id="idInput" class="form-control" value="JWJWTEST1234">
           </td>
         </tr>
         <tr>
           <th class="align-middle">상품 명</th>
-          <td><input type="text" id="nameInput" class="form-control"></td>
+          <td><input type="text" id="nameInput" class="form-control" value="등록테스트 상품"></td>
         </tr>
         <tr>
           <th class="align-middle">상품 상세 문구</th>
-          <td><input type="text" id="contentInput" class="form-control"></td>
+          <td><input type="text" id="contentInput" class="form-control" value="등록테스트 상품 상세 문구입니다."></td>
         </tr>
         <tr>
           <th class="align-middle">상품 가격</th>
-          <td><input type="text" id="priceInput" class="form-control"></td>
+          <td><input type="text" id="priceInput" class="form-control" value="1234000" ></td>
         </tr>
         <tr>
           <th class="align-middle">브랜드</th>
@@ -725,7 +726,7 @@
         </tr>
         <tr>
           <th class="align-middle">상품 대표 이미지</th>
-          <td><img id="mainImg" width="100px" src="" class="d-none mb-2"/><input class="form-control" type="file"  onchange="imgChange(event,'mainImgInput','#mainImg')" id="mainImgInput"></td>
+          <td><div><img id="mainImg" width="100px" src="" class="d-none mb-2"/></div><div><input  type="file"  onchange="imgChange(event,'mainImgInput','#mainImg')" id="mainImgInput"></div></td>
         </tr>
         <tr>
           <th scope="row" class="align-middle">진행 여부</th>
@@ -767,19 +768,19 @@
         </tr>
         <tr>
           <th class="align-middle">상품 상세 이미지1</th>
-          <td><img id="img1Img" width="100px" src="" class="d-none mb-2"/><input class="form-control" type="file"  onchange="imgChange(event,'img1Input','#img1Img')" id="img1Input" disabled ></td>
+          <td><div><input type="file"  onchange="imgChange(event,'img1Input','#img1Img')" id="img1Input" disabled></div><div><img id="img1Img" width="100px" src="" class="d-none mb-2"/></div></td>
         </tr>
         <tr>
           <th class="align-middle">상품 상세 이미지2</th>
-          <td><img id="img2Img" width="100px" src="" class="d-none mb-2"/><input class="form-control" type="file"  onchange="imgChange(event,'img2Input','#img2Img')" id="img2Input" disabled></td>
+          <td><div><input type="file"  onchange="imgChange(event,'img2Input','#img2Img')" id="img2Input" disabled></div><div><img id="img2Img" width="100px" src="" class="d-none mb-2"/></div></td>
         </tr>
         <tr>
           <th class="align-middle">상품 상세 이미지3</th>
-          <td><img id="img3Img" width="100px" src="" class="d-none mb-2"/><input class="form-control" type="file" onchange="imgChange(event,'img3Input','#img3Img')" id="img3Input" disabled></td>
+          <td><div><input  type="file" onchange="imgChange(event,'img3Input','#img3Img')" id="img3Input" disabled></div><div><img id="img3Img" width="100px" src="" class="d-none mb-2"/></div></td>
         </tr>
         <tr>
           <th class="align-middle">칼라칩 이미지</th>
-          <td><img id="colorChipImg" width="50px" src="" class="d-none mb-2"/><input class="form-control" type="file" onchange="imgChange(event,'colorChipInput','#colorChipImg')" id="colorChipInput" disabled></td>
+          <td><div><input type="file" onchange="imgChange(event,'colorChipInput','#colorChipImg')" id="colorChipInput" disabled></div><div><img id="colorChipImg" width="50px" src="" class="d-none mb-2"/></div></td>
         </tr>
         <tr>
           <th class="align-middle">함께 코디한 상품 코드</th>

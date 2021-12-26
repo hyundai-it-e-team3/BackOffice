@@ -11,9 +11,7 @@
 		
 		.hiddentxt:hover ~ .hiddenimg {
 		  display: block;
-		  position: sticky;
-		  left:400px;
-		  top:100px;
+		  position: absolute;
 		  z-index: 2;
 		}
 	  </style>
@@ -47,7 +45,7 @@
 	          <td>
 	          	<a class="text-warning hiddentxt" th:onclick="fnModuleInfo([[${product.productId}]])" >[[${product.productId}]]</a>
 				<div class="hiddenimg">
-					<div class="card" style="width: 20rem;">
+					<div class="card" style="width: 16rem;">
 					  <img class="card-img-top" th:src="${product.thumbnail}" alt="Card image cap">
 					  <div class="card-body">
 					    <h4 class="card-title">[[${product.brandName}]]</h5>
